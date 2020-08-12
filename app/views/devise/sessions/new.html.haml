@@ -1,0 +1,26 @@
+.main
+  %h2.page-title Sign In
+  - if flash[:error]
+    .alert.alert-danger
+      = raw flash[:error]
+    - flash[:error] = nil
+  .visiting
+    .block
+      = form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'new-user form-horizontal' }) do |f|
+        .form-group
+          = f.label :email, class: 'col-sm-2 control-label'
+          .col-sm-10
+            = f.email_field :email, autofocus: true, class: "form-control"
+        .form-group
+          = f.label :password, class: 'col-sm-2 control-label'
+          .col-sm-10
+            = f.password_field :password, autocomplete: "off", class: "form-control"
+        .form-group
+          .col-sm-offset-2.col-sm-10
+            %button.btn.btn-primary{:type => "submit"}
+              %span.glyphicon.glyphicon-user{"aria-hidden" => "true"}
+              Sign In
+        .form-group
+          .col-sm-offset-2.col-sm-10
+            = link_to "Forgot password?", new_password_path('user')
+/ = render partial: 'website/sidebar_login'

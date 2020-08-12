@@ -1,0 +1,53 @@
+body {
+  margin: 0;
+}
+
+.alert-container {
+  float: left;
+  width: 96%;
+  padding: 5px 2%;
+}
+
+.header {
+  float: left;
+  width: 96%;
+  padding: 5px 2%;
+  .name-container {
+    p {
+      color: #fff;
+      float: left;
+    }
+  }
+  &.regular {
+    background-color: #800080;
+  }
+  &.guest {
+    background-color: #8A2BE2;
+  }
+  .logout-button, .signin-button {
+    float: right;
+    color: #fff;
+    text-decoration: none;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+  }
+}
+.results-main {
+  float: left;
+  width: 100%;
+  padding: 5px 10px;
+  p {
+    float: left;
+    width: 90%;
+  }
+  #results-welcome-text {
+    float: left;
+    width: 90%;
+    .greeting {
+      float: left;
+      width: 100%;
+    }
+  }
+}
