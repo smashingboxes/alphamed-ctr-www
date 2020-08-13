@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ButtonContainer } from './error-button.styles';
 
 const ErrorButton = ({ children, ...props }) => {
