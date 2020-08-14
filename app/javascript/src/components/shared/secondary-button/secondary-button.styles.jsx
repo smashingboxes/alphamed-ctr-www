@@ -14,4 +14,8 @@ export const ButtonContainer = styled.button`
     border: 1px solid #49be20;
     color: #fff;
   }
+
+  :focus {
+    outline: 0;
+  }
 `;
