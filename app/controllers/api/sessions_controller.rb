@@ -13,6 +13,8 @@ class Api::SessionsController < DeviseController
 
     if resource.valid_password?(params[:user_login][:password])
       sign_in("user", resource)
+      resource.generate_token
+      resource.save
       render :json=> {:success=>true, :auth_token=>resource.authentication_token, :email=>resource.email}
       return
     end
