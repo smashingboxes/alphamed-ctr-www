@@ -60,6 +60,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'haml'
 gem "devise", "~> 4.7"
-
 gem 'webpacker', '~> 5.x'
+gem "pg", "~> 1.1.0"
 
