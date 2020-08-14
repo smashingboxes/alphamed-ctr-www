@@ -15,6 +15,7 @@ class Api::SessionsController < DeviseController
       sign_in("user", resource)
       resource.generate_token
       resource.save
+      resource.reload
       render :json=> {:success=>true, :auth_token=>resource.authentication_token, :email=>resource.email}
       return
     end
