@@ -1,7 +1,7 @@
 class ResultsController < ApplicationController
 
     def index
-      @role = current_user ? current_user[:role] : "guest"
+      @role = current_api_user ? current_api_user[:role] : "guest"
       @regulars = User.regular
       @admins = User.admin
       @editors = User.editor
