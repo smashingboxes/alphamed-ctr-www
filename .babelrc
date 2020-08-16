@@ -1,0 +1,26 @@
+{
+  "presets": [
+    ["@babel/preset-env", { "targets": { "node": "current" } }],
+    "@babel/preset-react"
+  ],
+  "plugins": [
+    "transform-es2015-modules-commonjs",
+    "@babel/plugin-proposal-class-properties"
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        [
+          "@babel/preset-env",
+          {
+            "debug": false,
+            "targets": {
+              "browsers": ["last 3 versions"]
+            }
+          }
+        ],
+        "@babel/preset-react"
+      ]
+    }
+  }
+}
