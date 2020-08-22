@@ -32,6 +32,12 @@ Rails.application.configure do
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.delivery_method = :mailgun
+  # config.action_mailer.mailgun_settings = {
+  #   api_key: "key-7q13705llt7dzaknps6qxp1ca-tujv02",
+  #   domain: "ctr.theoncologist.com"
+  # }
+  # config.action_mailer.default_url_options = { host: "clinicaltrialresults.theoncologist.com" }
 
   config.action_mailer.perform_caching = false
 
