@@ -1,0 +1,22 @@
+defaults: &defaults
+  options:
+    raise_not_found_error: false
+development:
+  # Configure available database clients. (required)
+  clients:
+    default:
+      database: clinical_trials_development
+      hosts:
+        - localhost:27017
+  <<: *defaults
+staging:
+  clients:
+    default:
+      uri: <%= ENV['MONGODB_URI'] %>
+  <<: *defaults
+
+production:
+  clients:
+    default:
+      uri: <%= ENV['MONGODB_URI'] %>
+  <<: *defaults

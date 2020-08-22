@@ -16,20 +16,21 @@ class Api::UsersController < ApplicationController
 
       if params[:user][:email]
         if @user.email_exists? params[:user][:email]
+          has_changes = false
           render json: {message: "Email already exists."}, status: 422
         else
           @user.email = params[:user][:email]
           has_changes = true
         end
       end
-      if params[:user][:name]
-        if @user.name_exists? params[:user][:name]
-          render json: {message: "Name already exists."}, status: 422
-        else
-          @user.name = params[:user][:name]
-          has_changes = true
-        end
-      end
+      # if params[:user][:name]
+      #   if @user.name_exists? params[:user][:name]
+      #     render json: {message: "Name already exists."}, status: 422
+      #   else
+      #     @user.name = params[:user][:name]
+      #     has_changes = true
+      #   end
+      # end
 
       if has_changes
         if @user.save
