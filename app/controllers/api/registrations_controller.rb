@@ -8,8 +8,8 @@ class Api::RegistrationsController < ActionController::Base
       render json: {password: ["does not match."]}, status: 422
     else
       user = User.new(user_params)
-      if user.save
-        render json: user.as_json(auth_token: user.authentication_token, email: user.email), status: 201
+      if user.save!
+        render json: user, status: 201
         return
       else
         warden.custom_failure!
@@ -20,6 +20,6 @@ class Api::RegistrationsController < ActionController::Base
 
   private
     def user_params
-      params.require(:user).permit(:email, :name, :password, :password_confirmation, :salt, :encrypted_password)
+      params.require(:user).permit(:email, :first_name, :last_name, :password, :password_confirmation, :salt, :encrypted_password)
     end
 end
