@@ -29,11 +29,11 @@ export const FormInputContainer = styled.input`
   background: none;
   background-color: white;
   color: ${mainColor};
-  font-size: 18px;
+  font-size: 14px;
   padding: 10px;
   display: block;
-  width: 200px;
   border: none;
+  width: ${(props) => props.width};
   padding-left: 10px 0;
   border-radius: 8px;
   border: 1px solid ${subColor};
@@ -51,6 +51,10 @@ export const FormInputContainer = styled.input`
 
   &:focus ~ label {
     ${shrinkLabelStyles}
+  }
+
+  &::placeholder {
+    margin: 10px;
   }
 `;
 
