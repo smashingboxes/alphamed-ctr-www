@@ -62,4 +62,7 @@ gem 'haml'
 gem "devise", "~> 4.7"
 gem 'webpacker', '~> 5.x'
 gem "pg", "~> 1.1.0"
-
+gem 'mongoid', '~> 7.0.5'
+gem "mailgun_rails"
+gem 'kaminari-mongoid'
+# gem "mongoid-enum"
