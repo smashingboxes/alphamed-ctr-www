@@ -22,6 +22,12 @@ Rails.application.routes.draw do
         # post 'sign_in', to: 'devise/sessions#create'
       end
     end
+    resources :results, only: [] do 
+      collection do
+        get 'overview', to: 'results#overview'
+        post :update
+      end
+    end
   end  
 
   resources :results, as: "published_result"
