@@ -89,6 +89,10 @@ class User
     User.where(email: email).not.where(id: self.id).length > 0
   end
 
+  def current_result
+    self.results.where(state: "started").first
+  end
+
   def fetch_results state
     if self.role == "user"
       if state == "submitted"
