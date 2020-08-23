@@ -7,15 +7,19 @@ import {
   ErrorSpan
 } from './form-input.styles';
 
-const FormInput = ({ handleChange, label, error, ...props }) => {
+const FormInput = ({
+  handleChange,
+  width = '500px',
+  label,
+  error,
+  ...props
+}) => {
   return (
     <GroupContainer>
-      <FormInputContainer onChange={handleChange} {...props} />
+      <FormInputContainer width={width} onChange={handleChange} {...props} />
       {label ? (
         <>
-          <FormInputLabel className={props.value.length ? 'shrink' : ''}>
-            {label}
-          </FormInputLabel>
+          <FormInputLabel className='shrink'>{label}</FormInputLabel>
           {error ? (
             <ErrorSpan className='error'>&#10005; {error}</ErrorSpan>
           ) : null}
