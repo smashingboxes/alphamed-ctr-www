@@ -24,6 +24,9 @@ class Result
 
   field :author_id
 
+  field :study_phase
+  field :type_of_study_2
+
   # enum state: { started: 0, submitted: 1, in_review: 2, revision: 3, accepted: 4, rejected: 5, published: 6 }
 
   def self.started_all
@@ -52,6 +55,26 @@ class Result
 
   def self.published_all
     where(state: "published")
+  end
+
+  def set_overview result
+    self.title=result[:title]
+    self.running_head=result[:running_head]
+    self.identifier=result[:identifier]
+    self.sponsor=result[:sponsor]
+    self.irb_approved=result[:irb_approved]
+    self.study_phase=result[:study_phase]
+  end
+
+  def overview_json
+    {
+      title: self.title.to_s,
+      running_head: self.running_head.to_s,
+      identifier: self.identifier.to_s,
+      sponsor: self.sponsor.to_s,
+      irb_approved: self.irb_approved,
+      study_phase: self.study_phase.to_s
+    }
   end
 
   private
