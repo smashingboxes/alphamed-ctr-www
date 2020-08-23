@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   
+  get 'homepage/index'
   devise_for :users do
     get '/users/sign_out' => 'devise/sessions#destroy'
     post '/users/sign_in' => 'sessions#create'
@@ -31,5 +32,7 @@ Rails.application.routes.draw do
   end  
 
   resources :results, as: "published_result"
-  root to: "results#index"
+  
+  root 'homepage#index'
+  get '*path', to: 'homepage#index'
 end
