@@ -20,6 +20,16 @@ gem 'coffee-rails', '~> 4.2'
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
+
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+gem 'haml'
+gem "devise", "~> 4.7"
+gem 'webpacker', '~> 5.x'
+gem "pg", "~> 1.1.0"
+gem 'mongoid', '~> 7.0.5'
+gem "mailgun_rails"
+gem 'kaminari-mongoid'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
@@ -54,17 +64,8 @@ group :test do
 end
 
 group :production do 
-  gem 'pg'         #gem to use in production environment
+  gem "pg", "~> 1.1.0"         #gem to use in production environment
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
-gem 'haml'
-gem "devise", "~> 4.7"
-gem 'webpacker', '~> 5.x'
-gem "pg", "~> 1.1.0"
-gem 'mongoid', '~> 7.0.5'
-gem "mailgun_rails"
-gem 'kaminari-mongoid'
 # gem "mongoid-enum"
