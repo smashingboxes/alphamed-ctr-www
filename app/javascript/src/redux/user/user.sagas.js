@@ -21,7 +21,7 @@ function* signInWithEmail({ payload: { email, password } }) {
     });
 
     if (response) {
-      signInSuccess(response);
+      yield put(signInSuccess(response.data));
     }
   } catch (error) {
     yield put(signInFailure(error.message));
