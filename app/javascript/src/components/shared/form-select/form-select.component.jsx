@@ -7,10 +7,16 @@ import {
   ErrorSpan
 } from './form-select.styles';
 
-const FormSelect = ({ handleChange, label, error, ...props }) => {
+const FormSelect = ({
+  handleChange,
+  width = '500px',
+  label,
+  error,
+  ...props
+}) => {
   return (
     <GroupContainer>
-      <FormSelectContainer onChange={handleChange} {...props} />
+      <FormSelectContainer width={width} onChange={handleChange} {...props} />
       {label ? (
         <>
           <FormSelectLabel className='shrink'>{label}</FormSelectLabel>

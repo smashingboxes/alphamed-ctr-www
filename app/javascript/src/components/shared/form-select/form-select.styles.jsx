@@ -29,10 +29,10 @@ export const FormSelectContainer = styled.select`
   background: none;
   background-color: white;
   color: ${mainColor};
-  font-size: 18px;
+  font-size: 14px;
   padding: 10px;
   display: block;
-  width: 200px;
+  width: ${(props) => props.width};
   border: none;
   padding-left: 10px;
   border-radius: 8px;
