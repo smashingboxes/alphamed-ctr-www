@@ -1,0 +1,17 @@
+<%= form_with(model: mail_template, local: true) do |form| %>
+  <% if mail_template.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(mail_template.errors.count, "error") %> prohibited this mail_template from being saved:</h2>
+
+      <ul>
+      <% mail_template.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
