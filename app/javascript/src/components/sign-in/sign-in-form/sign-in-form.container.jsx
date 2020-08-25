@@ -1,9 +1,9 @@
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 
-import SignInForm from './sign-in-form.component';
-
 import { emailSignInStart } from '../../../redux/user/user.actions';
+
+import SignInForm from './sign-in-form.component';
 
 const mapDispatchToProps = (dispatch) => ({
   emailSignInStart: (email, password) =>

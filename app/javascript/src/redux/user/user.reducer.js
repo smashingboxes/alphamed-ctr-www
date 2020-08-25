@@ -1,12 +1,7 @@
 import UserActionTypes from './user.types';
 
-const user = {
-  user_type: 'se',
-  email: 'sample@gmail.com'
-};
-
 const INITIAL_STATE = {
-  currentUser: user,
+  currentUser: null,
   error: null
 };
 
