@@ -21,10 +21,14 @@ class MailTemplate
 
   def single_template_types
     FORM_TYPES.each do |ft|
-      if type == ft && MailTemplate.where(type: ft).count == 1
+      if type == ft && MailTemplate.duplicate_type?(type)
         errors.add(:type, "cannot be '#{ft}' because an email template for that action already" \
           " exists. Please edit the existing template.")
       end
     end
+  end
+
+  def self.duplicate_type? type
+    MailTemplate.where(type: type).count == 1
   end
 end

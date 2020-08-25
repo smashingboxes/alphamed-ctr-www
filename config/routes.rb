@@ -27,7 +27,12 @@ Rails.application.routes.draw do
         post :update
       end
     end
-    resources :mail_templates, only: [:index]
+    resources :mail_templates, only: [:index, :create] do
+      collection do
+        post "update", to: 'mail_templates#update'
+        delete "destroy", to: 'mail_templates#destroy'
+      end
+    end
   end  
 
   resources :results, as: "published_result"
