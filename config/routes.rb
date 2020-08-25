@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
   
+  resources :mail_templates
+  get 'homepage/index'
   devise_for :users do
     get '/users/sign_out' => 'devise/sessions#destroy'
     post '/users/sign_in' => 'sessions#create'
@@ -13,9 +15,6 @@ Rails.application.routes.draw do
   resources :results
   resources :posts
   namespace :api do
-    # devise_for :users, excepted: %w['sessions#new session#destroy'] do
-    #   get '/users/sign_out' => 'devise/sessions#destroy'
-    # end
     resources :users, only: [] do
       collection do
         post 'update', to: 'users#update'
@@ -28,8 +27,16 @@ Rails.application.routes.draw do
         post :update
       end
     end
+    resources :mail_templates, only: [:index, :create] do
+      collection do
+        post "update", to: 'mail_templates#update'
+        delete "destroy", to: 'mail_templates#destroy'
+      end
+    end
   end  
 
   resources :results, as: "published_result"
-  root to: "results#index"
+  
+  root 'homepage#index'
+  get '*path', to: 'homepage#index'
 end

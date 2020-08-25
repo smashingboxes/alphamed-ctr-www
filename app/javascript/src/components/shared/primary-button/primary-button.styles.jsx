@@ -8,6 +8,7 @@ export const ButtonContainer = styled.button`
   background-color: #fff;
   color: #58285f;
   cursor: pointer;
+  width: ${(props) => props.width};
 
   :hover {
     background-color: #58285f;
