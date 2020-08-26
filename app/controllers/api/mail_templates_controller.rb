@@ -59,6 +59,15 @@ class Api::MailTemplatesController < ApplicationController
     end
   end
 
+  def send_test_email
+    mt = MailTemplate.find_by(id: BSON::ObjectId(params[:mail_template_id]))
+    @user = User.find_by(id: BSON::ObjectId(params[:user_id]))
+    UserMailer.send([@user.email], nil, nil, "(Test Email) #{mt.subject}", mt.content)
+    flash[:notice] = "Delivered test email to #{@user.email}."
+    # redirect_to mail_templates_url
+    render json: {message: "Sample email sent."}, status: 201
+  end
+
   private
     def mail_params()
       params.require(:mail_template).permit(:subject, :content, :text_content, :type)
