@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     resources :results, only: [] do 
       collection do
         get 'overview', to: 'results#overview'
+        get 'your_information', to: 'results#your_information'
         post :update
       end
     end

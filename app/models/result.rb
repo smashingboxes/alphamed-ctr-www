@@ -23,6 +23,26 @@ class Result
   field :state_history, type: Array, default: []
 
   field :author_id
+  field :author_name
+  field :author_email
+  field :author_honorific
+  field :author_first_name
+  field :author_middle_name
+  field :author_last_name
+  field :author_degrees, type: Hash, default: { "first" => "", "second" => "" }
+  field :author_institutions, type: Hash, default: { "0" => "" }
+  field :author_pi       # BOOLEAN Principal Investigator 
+  field :author_ca       # BOOLEAN Corresponding Author
+  field :author_assisted # BOOLEAN Were the author assisted...
+  field :author_submitter # BOOLEAN Are you the submitter?
+  field :author_address_1
+  field :author_address_2
+  field :author_city
+  field :author_statoid
+  field :author_zip
+  field :author_country
+  field :author_phone
+  field :author_acknowledgements
 
   field :study_phase
   field :type_of_study_2
@@ -66,6 +86,35 @@ class Result
     self.study_phase=result[:study_phase]
   end
 
+  def set_your_information result
+    self.author_first_name=result[:author_first_name]
+    self.author_middle_name=result[:author_middle_name]
+    self.author_last_name=result[:author_last_name]
+    self.author_address_1=result[:author_address_1]
+    self.author_address_2=result[:author_address_2]
+    self.author_city=result[:author_city]
+    self.author_statoid=result[:author_statoid]
+    self.author_zip=result[:author_zip]
+    self.author_country=result[:author_country]
+    self.author_phone=result[:author_phone]
+    self.author_pi=result[:author_pi]
+    self.author_ca=result[:author_ca]
+    self.author_assisted=result[:author_assisted]
+    self.author_submitter=result[:author_submitter]
+    self.author_acknowledgements=result[:author_acknowledgements]
+    self.author_degrees={
+      "first" => result[:author_degrees][:first],
+      "second" => result[:author_degrees][:second]
+    }
+    inst_obj={}
+    ctr=0
+    result[:author_institutions].each do |institution|
+      inst_obj["#{ctr}"]=institution
+      ctr+=1
+    end
+    self.author_institutions=inst_obj
+  end
+
   def overview_json
     {
       title: self.title.to_s,
@@ -74,6 +123,28 @@ class Result
       sponsor: self.sponsor.to_s,
       irb_approved: self.irb_approved,
       study_phase: self.study_phase.to_s
+    }
+  end
+
+  def your_information_json
+    {
+      author_first_name: self.author_first_name.to_s,
+      author_middle_name: self.author_middle_name.to_s,
+      author_last_name: self.author_last_name.to_s,
+      author_degrees: self.author_degrees,
+      author_institutions: self.author_institutions,
+      author_address_1: self.author_address_1.to_s,
+      author_address_2: self.author_address_2.to_s,
+      author_city: self.author_city.to_s,
+      author_statoid: self.author_statoid.to_s,
+      author_zip: self.author_zip.to_s,
+      author_country: self.author_country.to_s,
+      author_phone: self.author_phone.to_s,
+      author_pi: self.author_pi,
+      author_ca: self.author_ca,
+      author_assisted: self.author_assisted,
+      author_submitter: self.author_submitter,
+      author_acknowledgements: self.author_acknowledgements
     }
   end
 
