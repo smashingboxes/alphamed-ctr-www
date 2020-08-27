@@ -19,6 +19,15 @@ class Api::ResultsController < ApplicationController
     end
   end
 
+  def author_summary
+    if @user = User.find_for_database_authentication(authentication_token: params[:auth_token])
+      @result = @user.current_result || Result.new
+      render json: @result.author_summary_json, status: 201
+    else
+      render json: {message: "Invalid authentication token"}, status: 422
+    end
+  end
+
   def update
     if params[:result]
       if @user = User.find_for_database_authentication(authentication_token: params[:authentication_token])
@@ -29,6 +38,8 @@ class Api::ResultsController < ApplicationController
           @result.set_overview(params[:result])
         elsif @section == "your_information"
           @result.set_your_information(params[:result])
+        elsif @section == "author_summary"
+          @result.set_author_summary(params[:result])
         end
         if @result.save
           render json: @result, status: 201
