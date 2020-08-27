@@ -10,6 +10,7 @@ class Result
   embeds_many :emails
   belongs_to :author, class_name: "User", inverse_of: :results, optional: true
   
+  # Result Overview page
   field :title
   field :running_head
   field :identifier
@@ -22,6 +23,7 @@ class Result
   field :time_spent, type: Hash, default: {}
   field :state_history, type: Array, default: []
 
+  # Author Information page
   field :author_id
   field :author_name
   field :author_email
@@ -46,6 +48,14 @@ class Result
 
   field :study_phase
   field :type_of_study_2
+
+  # Author Summary page
+  field :abstract_background
+  field :abstract_methods
+  field :abstract_results
+  field :abstract_conclusions
+  field :abstract_discussion
+  field :abstract_lessons_learned
 
   # enum state: { started: 0, submitted: 1, in_review: 2, revision: 3, accepted: 4, rejected: 5, published: 6 }
 
@@ -115,6 +125,15 @@ class Result
     self.author_institutions=inst_obj
   end
 
+  def set_author_summary result
+    self.abstract_background=result[:abstract_background]
+    self.abstract_methods=result[:abstract_methods]
+    self.abstract_results=result[:abstract_results]
+    self.abstract_conclusions=result[:abstract_conclusions]
+    self.abstract_discussion=result[:abstract_discussion]
+    self.abstract_lessons_learned=result[:abstract_lessons_learned]
+  end
+
   def overview_json
     {
       title: self.title.to_s,
@@ -145,6 +164,17 @@ class Result
       author_assisted: self.author_assisted,
       author_submitter: self.author_submitter,
       author_acknowledgements: self.author_acknowledgements
+    }
+  end
+
+  def author_summary_json 
+    {
+      abstract_background: self.abstract_background || "",
+      abstract_methods: self.abstract_methods || "",
+      abstract_results: self.abstract_results || "",
+      abstract_conclusions: self.abstract_conclusions || "",
+      abstract_discussion: self.abstract_discussion || "",
+      abstract_lessons_learned: self.abstract_lessons_learned || ""
     }
   end
 

@@ -25,6 +25,7 @@ Rails.application.routes.draw do
       collection do
         get 'overview', to: 'results#overview'
         get 'your_information', to: 'results#your_information'
+        get 'author_summary', to: 'results#author_summary'
         post :update
       end
     end
