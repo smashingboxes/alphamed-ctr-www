@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     resources :results, only: [] do 
       collection do
         get 'overview', to: 'results#overview'
+        get 'your_information', to: 'results#your_information'
         post :update
       end
     end
@@ -31,6 +32,7 @@ Rails.application.routes.draw do
       collection do
         post "update", to: 'mail_templates#update'
         delete "destroy", to: 'mail_templates#destroy'
+        post :send_test_email
       end
     end
   end  
