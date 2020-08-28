@@ -26,6 +26,8 @@ Rails.application.routes.draw do
         get 'overview', to: 'results#overview'
         get 'your_information', to: 'results#your_information'
         get 'author_summary', to: 'results#author_summary'
+        get 'trial_information', to: 'results#trial_information'
+        get 'get_trial_information_lists', to: 'results#get_trial_information_lists'
         post :update
       end
     end
