@@ -28,6 +28,19 @@ class Api::ResultsController < ApplicationController
     end
   end
 
+  def trial_information
+    if @user = User.find_for_database_authentication(authentication_token: params[:auth_token])
+      @result = @user.current_result || Result.new
+      render json: @result.trial_information_json, status: 201
+    else
+      render json: {message: "Invalid authentication token"}, status: 422
+    end
+  end
+
+  def get_trial_information_lists
+    render json: Result.trial_information_constants_json, status: 201
+  end
+
   def update
     if params[:result]
       if @user = User.find_for_database_authentication(authentication_token: params[:authentication_token])
@@ -40,6 +53,8 @@ class Api::ResultsController < ApplicationController
           @result.set_your_information(params[:result])
         elsif @section == "author_summary"
           @result.set_author_summary(params[:result])
+        elsif @section == "trial_information"
+          @result.set_trial_information(params[:result])
         end
         if @result.save
           render json: @result, status: 201
