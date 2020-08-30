@@ -9,7 +9,7 @@ class Result
 
   embeds_many :emails
   belongs_to :author, class_name: "User", inverse_of: :results, optional: true
-  
+  # TODO: Add more comments so we can understand the fields
   field :title
   field :running_head
   field :identifier
