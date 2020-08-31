@@ -176,6 +176,14 @@ class Result
     self.secondary_endpoints=inst_obj
   end
 
+  def set_coauthor_information result
+    arr = []
+    result[:coauthors].each do |coauthor|
+      arr<<{"email"=>coauthor[:email], "order"=>coauthor[:order]}
+    end
+    self.coauthors=arr
+  end
+
   def overview_json
     {
       title:self.title.to_s,
@@ -230,6 +238,12 @@ class Result
       secondary_endpoints:self.secondary_endpoints,
       endpoints_details:self.endpoints_details || "",
       investigators_assessment:self.investigators_assessment.to_s
+    }
+  end
+
+  def coauthor_information_json
+    {
+      coauthors:self.coauthors
     }
   end
 
