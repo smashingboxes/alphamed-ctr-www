@@ -37,6 +37,15 @@ class Api::ResultsController < ApplicationController
     end
   end
 
+  def coauthor_information
+    if @user = User.find_for_database_authentication(authentication_token: params[:auth_token])
+      @result = @user.current_result || Result.new
+      render json: @result.coauthor_information_json, status: 201
+    else
+      render json: {message: "Invalid authentication token"}, status: 422
+    end
+  end
+
   def get_trial_information_lists
     render json: Result.trial_information_constants_json, status: 201
   end
@@ -55,6 +64,9 @@ class Api::ResultsController < ApplicationController
           @result.set_author_summary(params[:result])
         elsif @section == "trial_information"
           @result.set_trial_information(params[:result])
+        elsif @section == "coauthor_information"
+          @result.set_coauthor_information(params[:result])
+          User.create_coauthors(params[:result][:users]) if params[:result][:users]
         end
         if @result.save
           render json: @result, status: 201
