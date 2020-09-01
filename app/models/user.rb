@@ -6,21 +6,12 @@ class User
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  after_create :generate_token
+
   # has_and_belongs_to_many :roles
   has_many :results, foreign_key: :author_id, dependent: :nullify, inverse_of: :author
 
-  field :user_type
-  # , type: String, default: "regular"
-  # enum role: [:regular, :admin, :section_editor, :corresponding_author, :coauthor]
-  # ROLE = { pending: 0, active: 1, inactive: 2, deleted: 3 }
-
-  # def role
-  #   ROLE.key(read_attribute(:role))
-  # end
-
-  # def role=(s)
-  #   write_attribute(:role, ROLE[s])
-  # end
+  field :user_type, type: Integer, default: 3
 
   field :email, type: String, default: ""
   field :encrypted_password, type: String, default: ""
@@ -38,6 +29,7 @@ class User
   field :first_name, type: String
   field :last_name, type: String
   field :middle_name, type: String
+  field :institutions, type: Hash, default: { "0" => "" }
 
   ## Trackable
   field :sign_in_count,      type: Integer, default: 0
@@ -83,6 +75,10 @@ class User
     end
 
     message
+  end
+
+  def self.email_duplicate? email
+    User.where(email: email).length > 0
   end
 
   def email_exists? email
@@ -141,5 +137,26 @@ class User
       "middle_name": null,
       "user_type": null
     }
+  end
+
+  def self.create_coauthors users
+    users.each do |user|
+      user=User.find_by(email:user[:email]) || User.new(email:user[:email])
+      user.first_name=user[:first_name]
+      user.middle_name=user[:middle_name]
+      user.last_name=user[:last_name]
+      user.password="password"
+      user.user_type=user[:ca] ? 3 : 4
+      inst_obj={}
+      ctr=0
+      user[:institutions].each do |institution|
+        inst_obj["#{ctr}"]=institution
+        ctr+=1
+      end
+      user.institutions=inst_obj
+      user.save
+      # user.princi=user[:]
+      # user.=user[:]
+    end
   end
 end

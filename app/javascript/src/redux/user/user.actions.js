@@ -37,12 +37,27 @@ export const signUpStart = (userCredentials) => ({
   payload: userCredentials
 });
 
-export const signUpSuccess = ({ user, additionalData }) => ({
+export const signUpSuccess = ({ user }) => ({
   type: UserActionTypes.SIGN_UP_SUCCESS,
-  payload: { user, additionalData }
+  payload: { user }
 });
 
 export const signUpFailure = (error) => ({
   type: UserActionTypes.SIGN_UP_FAILURE,
+  payload: error
+});
+
+export const editProfileStart = (userCredentials) => ({
+  type: UserActionTypes.EDIT_PROFILE_START,
+  payload: userCredentials
+});
+
+export const editProfileSuccess = ({ user }) => ({
+  type: UserActionTypes.EDIT_PROFILE_SUCCESS,
+  payload: user
+});
+
+export const editProfileFailure = (error) => ({
+  type: UserActionTypes.EDIT_PROFILE_FAILURE,
   payload: error
 });

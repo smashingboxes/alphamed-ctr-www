@@ -10,7 +10,12 @@ Rails.application.routes.draw do
   end
 
   resources :roles
-  resources :comments
+  resources :comments, only: [] do
+    collection do
+      post :create
+      post 'update', to: 'comments#update'
+    end
+  end
   resources :emails
   resources :results
   resources :posts
@@ -26,6 +31,9 @@ Rails.application.routes.draw do
         get 'overview', to: 'results#overview'
         get 'your_information', to: 'results#your_information'
         get 'author_summary', to: 'results#author_summary'
+        get 'trial_information', to: 'results#trial_information'
+        get 'coauthor_information', to: 'results#coauthor_information'
+        get 'get_trial_information_lists', to: 'results#get_trial_information_lists'
         post :update
       end
     end

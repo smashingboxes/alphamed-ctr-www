@@ -1,4 +1,5 @@
 import React from 'react';
+import validator from 'validator';
 
 import {
   PrimaryButtonContainer,
@@ -22,7 +23,28 @@ class SignInForm extends React.Component {
     const { email, password } = this.state;
     const { emailSignInStart } = this.props;
 
-    emailSignInStart(email, password);
+    if (validator.isEmpty(email)) {
+      this.setState({
+        emailError: 'This field is mandatory.'
+      });
+      return;
+    } else {
+      if (!validator.isEmail(email)) {
+        this.setState({
+          emailError: 'Invalid email address.'
+        });
+        return;
+      }
+    }
+
+    if (validator.isEmpty(password)) {
+      this.setState({
+        passwordError: 'This field is mandatory.'
+      });
+      return;
+    }
+
+    return emailSignInStart(email, password);
   };
 
   handleChange = (event) => {
@@ -59,7 +81,7 @@ class SignInForm extends React.Component {
         />
         <PrimaryButtonContainer>
           <PrimaryButton type='submit'>Sign In</PrimaryButton>
-          <ForgotPasswordLink href='/forgot-password'>
+          <ForgotPasswordLink to='/forgot-password'>
             Forgot Password?
           </ForgotPasswordLink>
         </PrimaryButtonContainer>

@@ -19,7 +19,7 @@ import SearchFilters from '../search-filters/search-filters.component';
 
 const Navbar = ({ history, user, signOutStart }) => {
   const [search, setSearch] = useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -66,7 +66,11 @@ const Navbar = ({ history, user, signOutStart }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant='h6' className={classes.title} onClick={goToHome}>
+          <Typography
+            variant='h6'
+            className={classes.title}
+            onClick={goToHome}
+          >
             Clinical Trial Results
           </Typography>
           {user === null ? (
