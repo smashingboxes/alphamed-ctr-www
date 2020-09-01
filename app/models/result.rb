@@ -7,6 +7,7 @@ class Result
 
   before_create :set_initial_state
 
+  embeds_many :comments
   embeds_many :emails
   belongs_to :author, class_name: "User", inverse_of: :results, optional: true
 
@@ -186,12 +187,14 @@ class Result
 
   def overview_json
     {
+      id:self.id.to_s,
       title:self.title.to_s,
       running_head:self.running_head.to_s,
       identifier:self.identifier.to_s,
       sponsor:self.sponsor.to_s,
       irb_approved:self.irb_approved,
-      study_phase:self.study_phase.to_s
+      study_phase:self.study_phase.to_s,
+      comments:self.comments.where(step:"overview").order(:created_at=>:asc).map{|c|c.to_json}
     }
   end
 
@@ -213,7 +216,8 @@ class Result
       author_ca:self.author_ca,
       author_assisted:self.author_assisted,
       author_submitter:self.author_submitter,
-      author_acknowledgements:self.author_acknowledgements
+      author_acknowledgements:self.author_acknowledgements,
+      comments:self.comments.where(step:"your_information").order(:created_at=>:asc).map{|c|c.to_json}
     }
   end
 
@@ -224,7 +228,8 @@ class Result
       abstract_results:self.abstract_results || "",
       abstract_conclusions:self.abstract_conclusions || "",
       abstract_discussion:self.abstract_discussion || "",
-      abstract_lessons_learned:self.abstract_lessons_learned || ""
+      abstract_lessons_learned:self.abstract_lessons_learned || "",
+      comments:self.comments.where(step:"author_summary").order(:created_at=>:asc).map{|c|c.to_json}
     }
   end
 
@@ -237,13 +242,15 @@ class Result
       primary_endpoints:self.primary_endpoints,
       secondary_endpoints:self.secondary_endpoints,
       endpoints_details:self.endpoints_details || "",
-      investigators_assessment:self.investigators_assessment.to_s
+      investigators_assessment:self.investigators_assessment.to_s,
+      comments:self.comments.where(step:"trial_information").order(:created_at=>:asc).map{|c|c.to_json}
     }
   end
 
   def coauthor_information_json
     {
-      coauthors:self.coauthors
+      coauthors:self.coauthors,
+      comments:self.comments.where(step:"coauthors_information").order(:created_at=>:asc).map{|c|c.to_json}
     }
   end
 

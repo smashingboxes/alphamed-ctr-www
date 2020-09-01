@@ -10,7 +10,12 @@ Rails.application.routes.draw do
   end
 
   resources :roles
-  resources :comments
+  resources :comments, only: [] do
+    collection do
+      post :create
+      post 'update', to: 'comments#update'
+    end
+  end
   resources :emails
   resources :results
   resources :posts

@@ -6,6 +6,8 @@ class Devise::RegistrationsController < ActionController::Base
 
     if params[:user][:password] != params[:user][:password_confirmation]
       render json: {password: ["does not match."]}, status: 422
+    elsif User.email_duplicate? params[:user][:email]
+        render json: {message: "Email already exists."}, status: 422
     else
       user = User.new(user_params)
       if user.save!
