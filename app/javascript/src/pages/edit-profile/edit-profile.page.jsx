@@ -3,7 +3,7 @@ import { Grid } from '@material-ui/core';
 
 import { useStyles } from './edit-profile.styles';
 
-import EditProfileForm from '../../components/edit-profile/edit-profile-form/edit-profile-form.component';
+import EditProfileForm from '../../components/edit-profile/edit-profile-form/edit-profile-form.container';
 
 const EditProfilePage = () => {
   const classes = useStyles();

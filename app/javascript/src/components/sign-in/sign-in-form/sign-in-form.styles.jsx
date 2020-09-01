@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const PrimaryButtonContainer = styled.div`
   display: flex;
@@ -7,7 +8,7 @@ export const PrimaryButtonContainer = styled.div`
   align-items: center;
 `;
 
-export const ForgotPasswordLink = styled.a`
+export const ForgotPasswordLink = styled(Link)`
   margin-top: 20px;
   text-decoration: none;
   color: #000;

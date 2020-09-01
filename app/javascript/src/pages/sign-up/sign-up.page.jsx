@@ -3,7 +3,7 @@ import { Grid } from '@material-ui/core';
 
 import { useStyles } from './sign-up.styles';
 
-import SignUpForm from '../../components/sign-up/sign-up-form/sign-up-form.component';
+import SignUpForm from '../../components/sign-up/sign-up-form/sign-up-form.container';
 
 const SignUpPage = () => {
   const classes = useStyles();

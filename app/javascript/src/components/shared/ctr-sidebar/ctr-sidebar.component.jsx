@@ -1,13 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 import { Grid } from '@material-ui/core';
-
-import { selectCurrentUser } from '../../../redux/user/user.selectors';
 
 import { ButtonContainer, PaperContainer } from './ctr-sidebar.styles';
 
-const CTRSidebar = ({ user }) => {
+const CTRSidebar = ({ user, history, isAuthenticated }) => {
   const goToPublishSite = () =>
     window.open(
       'https://theoncologist.onlinelibrary.wiley.com/page/journal/1549490x/homepage/clinical-trial-results',
@@ -19,13 +15,18 @@ const CTRSidebar = ({ user }) => {
       'https://theoncologistcommunity.com/sites/default/files/CTR_SubmissionProcessStepsandFAQ_2020.pdf'
     );
 
+  const goToCTROverview = () =>
+    isAuthenticated
+      ? history.push('/submission/results/new')
+      : history.push('/sign-in');
+
   return (
     <Grid container>
       <Grid item xs={1} />
       <Grid item container direction='column' justify='center' xs={4}>
         <PaperContainer elevation={0}>
-          {user && user.user_type === 'se' ? null : (
-            <ButtonContainer width='200px'>
+          {user && user.user_type === 2 ? null : (
+            <ButtonContainer width='200px' onClick={goToCTROverview}>
               Submit your Clinical Trial Results
             </ButtonContainer>
           )}
@@ -41,8 +42,4 @@ const CTRSidebar = ({ user }) => {
   );
 };
 
-const mapStateToProps = createStructuredSelector({
-  user: selectCurrentUser
-});
-
-export default connect(mapStateToProps)(CTRSidebar);
+export default CTRSidebar;
