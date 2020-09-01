@@ -6,6 +6,8 @@ class User
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  after_create :generate_token
+
   # has_and_belongs_to_many :roles
   has_many :results, foreign_key: :author_id, dependent: :nullify, inverse_of: :author
 
@@ -73,6 +75,10 @@ class User
     end
 
     message
+  end
+
+  def self.email_duplicate? email
+    User.where(email: email).length > 0
   end
 
   def email_exists? email
