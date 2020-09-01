@@ -1,4 +1,5 @@
 import React from 'react';
+import validator from 'validator';
 
 import { PrimaryButtonContainer } from './sign-up-form.styles';
 
@@ -19,10 +20,63 @@ class SignUpForm extends React.Component {
     event.preventDefault();
 
     const { email, password, confirmPassword } = this.state;
+    const { signUpStart } = this.props;
 
-    console.log('Email', email);
-    console.log('Password', password);
-    console.log('Confirm Password', confirmPassword);
+    if (validator.isEmpty(email)) {
+      this.setState({
+        emailError: 'This field is mandatory.'
+      });
+      return;
+    } else {
+      if (!validator.isEmail(email)) {
+        this.setState({
+          emailError: 'Invalid email address.'
+        });
+        return;
+      }
+    }
+
+    if (validator.isEmpty(password)) {
+      this.setState({
+        passwordError: 'This field is mandatory.'
+      });
+      return;
+    } else {
+      if (password.trim().length < 8) {
+        this.setState({
+          passwordError: 'Password is too short (minimum is 8 characters).'
+        });
+        return;
+      }
+    }
+
+    if (validator.isEmpty(confirmPassword)) {
+      this.setState({
+        confirmPasswordError: 'This field is mandatory.'
+      });
+      return;
+    } else {
+      if (confirmPassword.trim().length < 8) {
+        this.setState({
+          confirmPasswordError:
+            'Password is too short (minimum is 8 characters).'
+        });
+        return;
+      }
+    }
+
+    if (password.trim() !== confirmPassword.trim()) {
+      this.setState({
+        confirmPasswordError: "Password doesn't match."
+      });
+      return;
+    }
+
+    return signUpStart({
+      email,
+      password,
+      confirmPassword
+    });
   };
 
   handleChange = (event) => {

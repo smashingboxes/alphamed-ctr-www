@@ -1,4 +1,5 @@
 import React from 'react';
+import validator from 'validator';
 
 import {
   PrimaryButtonContainer,
@@ -20,15 +21,92 @@ class EditProfileForm extends React.Component {
     currentPasswordError: ''
   };
 
+  componentDidMount() {
+    const { email } = this.props.user;
+
+    this.setState({
+      email
+    });
+  }
+
   handleSubmit = (event) => {
     event.preventDefault();
 
     const { email, password, confirmPassword, currentPassword } = this.state;
+    const { editProfileStart, user } = this.props;
 
-    console.log('Email', email);
-    console.log('Password', password);
-    console.log('Confirm Password', confirmPassword);
-    console.log('Current Password', currentPassword);
+    if (validator.isEmpty(email)) {
+      this.setState({
+        emailError: 'This field is mandatory.'
+      });
+      return;
+    } else {
+      if (!validator.isEmail(email)) {
+        this.setState({
+          emailError: 'Invalid email address.'
+        });
+        return;
+      }
+    }
+
+    if (validator.isEmpty(password)) {
+      this.setState({
+        passwordError: 'This field is mandatory.'
+      });
+      return;
+    } else {
+      if (password.trim().length < 8) {
+        this.setState({
+          passwordError: 'Password is too short (minimum is 8 characters).'
+        });
+        return;
+      }
+    }
+
+    if (validator.isEmpty(confirmPassword)) {
+      this.setState({
+        confirmPasswordError: 'This field is mandatory.'
+      });
+      return;
+    } else {
+      if (confirmPassword.trim().length < 8) {
+        this.setState({
+          confirmPasswordError:
+            'Password is too short (minimum is 8 characters).'
+        });
+        return;
+      }
+    }
+
+    if (validator.isEmpty(currentPassword)) {
+      this.setState({
+        currentPasswordError: 'This field is mandatory.'
+      });
+      return;
+    } else {
+      if (currentPassword.trim().length < 8) {
+        this.setState({
+          currentPasswordError:
+            'Password is too short (minimum is 8 characters).'
+        });
+        return;
+      }
+    }
+
+    if (password.trim() !== confirmPassword.trim()) {
+      this.setState({
+        confirmPasswordError: "Password doesn't match."
+      });
+      return;
+    }
+
+    return editProfileStart({
+      authToken: user.authentication_token,
+      email,
+      password,
+      confirmPassword,
+      currentPassword
+    });
   };
 
   handleChange = (event) => {

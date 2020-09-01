@@ -1,9 +1,7 @@
 import React from 'react';
 import { Paper, Grid } from '@material-ui/core';
 
-import { OverviewContainer, ButtonContainer } from './overview-comments.styles';
-
-import SecondaryButton from '../../shared/secondary-button/secondary-button.component';
+import { OverviewContainer } from './overview-comments.styles';
 
 const OverviewComments = () => {
   return (
@@ -11,13 +9,6 @@ const OverviewComments = () => {
       <Grid container direction='column'>
         <Grid item xs={12}>
           <OverviewContainer>Author Information Comments</OverviewContainer>
-        </Grid>
-        <Grid item xs={12}>
-          <Grid item container justify='center'>
-            <ButtonContainer>
-              <SecondaryButton>Save</SecondaryButton>
-            </ButtonContainer>
-          </Grid>
         </Grid>
       </Grid>
     </Paper>

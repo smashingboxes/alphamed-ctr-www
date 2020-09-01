@@ -11,14 +11,16 @@ const SubNavbar = ({ user, history }) => {
   });
 
   useEffect(() => {
-    const urlLocation = history.location.pathname;
-
-    if (urlLocation === '/submission/author/results')
-      isSelected({ author: true });
-    if (urlLocation === '/submission/se/results') isSelected({ editor: true });
-    if (urlLocation === '/submission/admin/results')
-      isSelected({ admin: true });
-  }, [history.location.pathname]);
+    if (user) {
+      if (user.user_type === 3) {
+        isSelected({ author: true, admin: false, editor: false });
+      } else if (user.user_type === 1) {
+        isSelected({ author: false, admin: true, editor: false });
+      } else if (user.user_type === 2) {
+        isSelected({ author: false, admin: false, editor: true });
+      }
+    }
+  }, [user]);
 
   const classes = useStyles();
 
@@ -60,7 +62,7 @@ const SubNavbar = ({ user, history }) => {
           <Grid item xs={11}>
             {user === null ? null : (
               <Toolbar>
-                {user && user.user_type === 'se' ? null : (
+                {user && user.user_type === 2 ? null : (
                   <Button
                     onClick={authorClick}
                     className={
@@ -72,7 +74,7 @@ const SubNavbar = ({ user, history }) => {
                     Author Dashboard
                   </Button>
                 )}
-                {user && user.user_type === 'admin' ? (
+                {user && user.user_type === 1 ? (
                   <Button
                     onClick={adminClick}
                     className={
@@ -84,7 +86,7 @@ const SubNavbar = ({ user, history }) => {
                     Admin Dashboard
                   </Button>
                 ) : null}
-                {user && user.user_type === 'author' ? null : (
+                {user && user.user_type === 3 ? null : (
                   <Button
                     onClick={editorClick}
                     className={
