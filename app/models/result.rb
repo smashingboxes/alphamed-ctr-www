@@ -9,7 +9,13 @@ class Result
 
   embeds_many :comments
   embeds_many :emails
+  embeds_many :arms
+
   belongs_to :author, class_name: "User", inverse_of: :results, optional: true
+
+  accepts_nested_attributes_for :arms, allow_destroy: true
+  accepts_nested_attributes_for :comments, allow_destroy: true
+  accepts_nested_attributes_for :emails, allow_destroy: true
 
   # TODO: Add more comments so we can understand the fields
   # Result Overview page
@@ -185,6 +191,14 @@ class Result
     self.coauthors=arr
   end
 
+  def set_drug_information result
+    result[:arms].each do |arm_obj|
+      arm=self.arms.find_by(id:arm_obj[:id]) || self.arms.new
+      arm.set_arm_drug_information(arm_obj)
+      arm.save
+    end
+  end
+
   def overview_json
     {
       id:self.id.to_s,
@@ -251,6 +265,12 @@ class Result
     {
       coauthors:self.coauthors,
       comments:self.comments.where(step:"coauthors_information").order(:created_at=>:asc).map{|c|c.to_json}
+    }
+  end
+
+  def drug_information_json
+    {
+      arms:self.arms.order(:created_at=>:asc).map{|a|a.drug_information_json}
     }
   end
 
