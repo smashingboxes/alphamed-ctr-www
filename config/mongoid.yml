@@ -12,11 +12,11 @@ development:
 staging:
   clients:
     default:
-      uri: <%= ENV['MONGODB_URI'] %>
+      uri: mongodb+srv://admin-user:admin00@alphamed-rewrite.yj9yb.mongodb.net/clinical_trials_development?retryWrites=true&w=majority
   <<: *defaults
 
 production:
   clients:
     default:
-      uri: <%= ENV['MONGODB_URI'] %>
+      uri: mongodb+srv://admin-user:admin00@alphamed-rewrite.yj9yb.mongodb.net/clinical_trials_development?retryWrites=true&w=majority
   <<: *defaults
