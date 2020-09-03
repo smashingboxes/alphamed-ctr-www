@@ -22,7 +22,11 @@ class Arm
   # Dose Escalating Toxicities
   field :det, type: Hash,
     default: {
-      columns: [{ id: "dose_level",
+      columns: [
+  							{ id: "dose",
+                  name: "Dose",
+                  field: "dose" },
+      					{ id: "dose_level",
                   name: "Dose Level",
                   field: "dose_level" },
                 { id: "enrolled",
@@ -49,8 +53,16 @@ class Arm
   	self.name=arm[:name]
   	self.phase=arm[:phase]
   	self.drug_table=arm[:drug_table]
+
+  	arr=[]
+  	arm[:det][:rows].each do |row|
+  		arr << {dose:row[:dose],dose_level:row[:dose_level],enrolled:row[:enrolled],evaluable:row[:evaluable]}
+  	end
   	self.det={
-      columns: [{ id: "dose_level",
+      columns: [{ id: "dose",
+                  name: "Dose",
+                  field: "dose" },
+                { id: "dose_level",
                   name: "Dose Level",
                   field: "dose_level" },
                 { id: "enrolled",
@@ -59,7 +71,7 @@ class Arm
                 { id: "evaluable",
                   name: "Number Evaluable for Toxicity",
                   field: "evaluable" }],
-      rows: []
+      rows: arr
     }
   	arm[:drugs].each do |drug_obj|
   		drug=self.drugs.find_by(id:drug_obj[:id]) || self.drugs.new
