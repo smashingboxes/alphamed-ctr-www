@@ -270,7 +270,12 @@ class Result
 
   def drug_information_json
     {
-      arms:self.arms.order(:created_at=>:asc).map{|a|a.drug_information_json}
+      arms:self.arms.order(:created_at=>:asc).map{|a|a.drug_information_json},
+      comments:self.comments.where(step:"drug_information").order(:created_at=>:asc).map{|c|c.to_json},
+      drug_class_list:Result.drug_class_list,
+      drug_type_list:Result.drug_type_list,
+      drug_unit_list:Result.drug_unit_list,
+      drug_route_list:Result.drug_route_list
     }
   end
 
@@ -361,6 +366,31 @@ class Result
       "Level of activity did not meet planned end point",
       "Other" 
     ]
+  end
+
+  def self.drug_class_list
+    ['','AKT','ALK','Alkylating agent','Androgen receptor','Antimetabolite','Angiogenesis - VEGF','Angiogenesis -',
+      'Angiogenesis - antivascular','Anthracycline','Anthracenedione','Apoptosis - Bcl-2','Apoptosis - other',
+      'BCR-Abl','c-KIT','Cancer Vaccine','CD20','CD22','CD33','CD52','CD200','CDK','CHK1','CHK2','Demethylating Agent',
+      'DNA-PK','Drug conjugate','EGFR','Estrogen receptor','Farnesyl transferase','FLT3','Gene therapy','Geranylgeranyltransferase',
+      'HDAC','Her-2 / Neu','Hedgehog','HSP90','Insulin-like growth factors- IGF1R and IGF2','Immune therapy','Immunoconjugates',
+      'Immunotoxins','JAK kinase','MEK','Mesothelin','MET - cMET','Micro-RNA','Microtubule-targeting agent','Mitotic - Aurora kinase',
+      'Mitotic - Polo-like kinase','Mitotic - Kinetic spindle protein','m-TOR','NF-κB pathway','Notch','PAK (p-221 activated kinase)',
+      'PARP','PIM kinase','PI3 kinase','PDGFR','Platinum compound','Progesterone receptor','Proteasome','RAD51','Raf - BRAF',
+      'Ras','RET','Retinoid','SRC','siRNA','Telomerase','Topoisomerase I','Topoisomerase II','Topoisomerase I / Topoisomerase II',
+      'TRAIL pathway','Tubulin / Microtubules targeting agent','Vaccine therapy','VEGF','VEGFR','Vitamin D','WNT / β-catenin pathway','other']
+  end
+
+  def self.drug_type_list
+    ["Antibody","Biological","Immunotoxin","Liposomal encapsulated","Small molecule","Vaccine","Other"]
+  end
+
+  def self.drug_unit_list
+    ["flat dose","kilogram (kg)","squared meter (m2)"]
+  end
+
+  def self.drug_route_list
+    ["oral (po)","rectum (pr)","intraperitoneal (IP)","IV, per push","IV","Continuous intravenous infusion (CIV)","Other"]
   end
 
   private
