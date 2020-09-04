@@ -26,6 +26,8 @@ class Result
   field :sponsor
   field :irb_approved, type: Boolean, default: false
 
+  field :key_words
+
   field :coauthors, type: Array, default: [{ "email" => "", "order" => 0 }]
 
   field :state, type: String
@@ -116,6 +118,7 @@ class Result
   def set_overview result
     self.title=result[:title]
     self.running_head=result[:running_head]
+    self.key_words=result[:key_words]
     self.identifier=result[:identifier]
     self.sponsor=result[:sponsor]
     self.irb_approved=result[:irb_approved]
@@ -204,6 +207,7 @@ class Result
       id:self.id.to_s,
       title:self.title.to_s,
       running_head:self.running_head.to_s,
+      key_words:self.key_words.to_s,
       identifier:self.identifier.to_s,
       sponsor:self.sponsor.to_s,
       irb_approved:self.irb_approved,

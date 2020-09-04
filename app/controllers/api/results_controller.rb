@@ -2,8 +2,10 @@ class Api::ResultsController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [:update]
 
   def overview
+    #fetch result via result_id
     if @user = User.find_for_database_authentication(authentication_token: params[:auth_token])
-      @result = @user.current_result || Result.new
+      # @result = Result.find_by(id:params[:result_id]) || @user.current_result || Result.new
+      @result = Result.find_by(id:params[:result_id]) || Result.new
       render json: @result.overview_json, status: 201
     else
       render json: {message: "Invalid authentication token"}, status: 422
@@ -12,7 +14,7 @@ class Api::ResultsController < ApplicationController
 
   def your_information
     if @user = User.find_for_database_authentication(authentication_token: params[:auth_token])
-      @result = @user.current_result || Result.new
+      @result = Result.find_by(id:params[:result_id]) || Result.new
       render json: @result.your_information_json, status: 201
     else
       render json: {message: "Invalid authentication token"}, status: 422
@@ -21,7 +23,7 @@ class Api::ResultsController < ApplicationController
 
   def author_summary
     if @user = User.find_for_database_authentication(authentication_token: params[:auth_token])
-      @result = @user.current_result || Result.new
+      @result = Result.find_by(id:params[:result_id]) || Result.new
       render json: @result.author_summary_json, status: 201
     else
       render json: {message: "Invalid authentication token"}, status: 422
@@ -30,7 +32,7 @@ class Api::ResultsController < ApplicationController
 
   def trial_information
     if @user = User.find_for_database_authentication(authentication_token: params[:auth_token])
-      @result = @user.current_result || Result.new
+      @result = Result.find_by(id:params[:result_id]) || Result.new
       render json: @result.trial_information_json, status: 201
     else
       render json: {message: "Invalid authentication token"}, status: 422
@@ -39,7 +41,7 @@ class Api::ResultsController < ApplicationController
 
   def coauthor_information
     if @user = User.find_for_database_authentication(authentication_token: params[:auth_token])
-      @result = @user.current_result || Result.new
+      @result = Result.find_by(id:params[:result_id]) || Result.new
       render json: @result.coauthor_information_json, status: 201
     else
       render json: {message: "Invalid authentication token"}, status: 422
@@ -48,7 +50,7 @@ class Api::ResultsController < ApplicationController
 
   def drug_information
     if @user = User.find_for_database_authentication(authentication_token: params[:auth_token])
-      @result = @user.current_result || Result.new
+      @result = Result.find_by(id:params[:result_id]) || Result.new
       render json: @result.drug_information_json, status: 201
     else
       render json: {message: "Invalid authentication token"}, status: 422
@@ -64,7 +66,7 @@ class Api::ResultsController < ApplicationController
       if @user = User.find_for_database_authentication(authentication_token: params[:authentication_token])
         #params[:section] = overview || information || co_author information || author_summary
         @section = params[:section]
-        @result = @user.current_result || @user.results.new
+        @result = Result.find_by(id:params[:result_id]) || @user.current_result || @user.results.new
         if @section == "overview"
           @result.set_overview(params[:result])
         elsif @section == "your_information"
