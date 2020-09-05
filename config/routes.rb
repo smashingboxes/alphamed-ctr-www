@@ -34,6 +34,7 @@ Rails.application.routes.draw do
         get 'trial_information', to: 'results#trial_information'
         get 'coauthor_information', to: 'results#coauthor_information'
         get 'drug_information', to: 'results#drug_information'
+        get 'patient_characteristics', to: 'results#patient_characteristics'
         get 'get_trial_information_lists', to: 'results#get_trial_information_lists'
         post :update
       end
