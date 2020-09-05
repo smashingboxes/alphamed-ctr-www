@@ -21,6 +21,7 @@ class Result
   # Result Overview page
 
   field :title
+  field :ctr_code #"CTR#{yy}-#{index of result of that year}"
   field :running_head
   field :identifier
   field :sponsor
@@ -202,6 +203,14 @@ class Result
     end
   end
 
+  def set_patient_characteristics result
+    result[:arms].each do |arm_obj|
+      arm=self.arms.find_by(id:arm_obj[:id]) || self.arms.new
+      arm.set_arm_patient_characteristics(arm_obj)
+      arm.save
+    end
+  end
+
   def overview_json
     {
       id:self.id.to_s,
@@ -280,6 +289,13 @@ class Result
       drug_type_list:Result.drug_type_list,
       drug_unit_list:Result.drug_unit_list,
       drug_route_list:Result.drug_route_list
+    }
+  end
+
+  def patient_characteristics_json 
+    {
+      arms:self.arms.order(:created_at=>:asc).map{|a|a.patient_characteristics_json},
+      comments:self.comments.where(step:"patient_characteristics").order(:created_at=>:asc).map{|c|c.to_json}
     }
   end
 

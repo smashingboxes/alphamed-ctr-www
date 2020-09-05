@@ -16,6 +16,16 @@ class Arm
   field :phase, default: "I"
   # slug :phase, :name, scope: :result
 
+  field :patient_male, default: 0
+  field :patient_female, default: 0
+  field :patient_stage
+  field :patient_age
+  field :patient_median_therapies
+  field :patient_performance, type: Hash, default: { "0"=>"","1"=>"","2"=>"","3"=>"","unknown"=>"" }
+  field :patient_other
+  field :patient_cancer_types, type: Array,
+                               default: [{ "name" => "", "number" => "" }]
+
   # Drug information page
   field :drug_table
 
@@ -49,6 +59,19 @@ class Arm
   	}
   end
 
+  def patient_characteristics_json
+  	{
+  		patient_male:self.patient_male,
+  		patient_female:self.patient_female,
+  		patient_stage:self.patient_stage,
+  		patient_age:self.patient_age,
+  		patient_median_therapies:self.patient_median_therapies,
+  		patient_performance:self.patient_performance,
+  		patient_other:self.patient_other,
+  		patient_cancer_types:self.patient_cancer_types
+  	}
+  end
+
   def set_arm_drug_information arm
   	self.name=arm[:name]
   	self.phase=arm[:phase]
@@ -78,5 +101,26 @@ class Arm
   		drug.set_drug_drug_information(drug_obj)
   		drug.save
   	end
+  end
+
+  def set_arm_patient_characteristics arm
+  	self.patient_male=arm[:patient_male]
+		self.patient_female=arm[:patient_female]
+		self.patient_stage=arm[:patient_stage]
+		self.patient_age=arm[:patient_age]
+		self.patient_median_therapies=arm[:patient_median_therapies]
+		self.patient_other=arm[:patient_other]
+		self.patient_performance={
+      "0" => arm[:patient_performance]["0"],
+      "1" => arm[:patient_performance]["1"],
+      "2" => arm[:patient_performance]["2"],
+      "3" => arm[:patient_performance]["3"],
+      "unknown" => arm[:patient_performance]["unknown"]
+    }
+    arr = []
+    arm[:patient_cancer_types].each do |cancer_type|
+      arr<<{"name"=>cancer_type[:name], "number"=>cancer_type[:number]}
+    end
+    self.patient_cancer_types=arr
   end
 end
