@@ -66,6 +66,15 @@ class Api::ResultsController < ApplicationController
     end
   end
 
+  def pharmacokinetics_pharmacodynamics
+    if @user = User.find_for_database_authentication(authentication_token: params[:auth_token])
+      @result = Result.find_by(id:params[:result_id]) || Result.new
+      render json: @result.pharmacokinetics_pharmacodynamics_json, status: 201
+    else
+      render json: {message: "Invalid authentication token"}, status: 422
+    end
+  end
+
   def get_trial_information_lists
     render json: Result.trial_information_constants_json, status: 201
   end
@@ -91,6 +100,8 @@ class Api::ResultsController < ApplicationController
           @result.set_drug_information(params[:result])
         elsif @section == "patient_characteristics"
           @result.set_patient_characteristics(params[:result])
+        elsif @section == "pharmacokinetics_pharmacodynamics"
+          @result.set_pharmacokinetics_pharmacodynamics(params[:result])
         end
         if @result.save
           render json: @result, status: 201

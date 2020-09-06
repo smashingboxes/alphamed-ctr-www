@@ -48,6 +48,8 @@ class Arm
       rows: []
     }
 
+  field :dose_limiting_toxicities, type: Hash, default: {}
+
   def drug_information_json
   	{
   		id:self.id.to_s,
@@ -61,6 +63,7 @@ class Arm
 
   def patient_characteristics_json
   	{
+  		id:self.id.to_s,
   		patient_male:self.patient_male,
   		patient_female:self.patient_female,
   		patient_stage:self.patient_stage,
@@ -69,6 +72,13 @@ class Arm
   		patient_performance:self.patient_performance,
   		patient_other:self.patient_other,
   		patient_cancer_types:self.patient_cancer_types
+  	}
+  end
+
+  def pharmacokinetics_pharmacodynamics_json
+  	{
+  		id:self.id.to_s,
+  		dose_limiting_toxicities:self.dose_limiting_toxicities
   	}
   end
 
@@ -122,5 +132,12 @@ class Arm
       arr<<{"name"=>cancer_type[:name], "number"=>cancer_type[:number]}
     end
     self.patient_cancer_types=arr
+  end
+
+  def set_arm_pharmacokinetics_pharmacodynamics arm
+  	self.dose_limiting_toxicities={}
+  	arm[:dose_limiting_toxicities].each_pair { |key, value|
+  		self.dose_limiting_toxicities[key]=value
+  	}
   end
 end

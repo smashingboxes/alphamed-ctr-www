@@ -211,6 +211,14 @@ class Result
     end
   end
 
+  def set_pharmacokinetics_pharmacodynamics result
+    result[:arms].each do |arm_obj|
+      arm=self.arms.find_by(id:arm_obj[:id]) || self.arms.new
+      arm.set_arm_pharmacokinetics_pharmacodynamics(arm_obj)
+      arm.save
+    end
+  end
+
   def overview_json
     {
       id:self.id.to_s,
@@ -296,6 +304,13 @@ class Result
     {
       arms:self.arms.order(:created_at=>:asc).map{|a|a.patient_characteristics_json},
       comments:self.comments.where(step:"patient_characteristics").order(:created_at=>:asc).map{|c|c.to_json}
+    }
+  end
+
+  def pharmacokinetics_pharmacodynamics_json
+    {
+      arms:self.arms.order(:created_at=>:asc).map{|a|a.pharmacokinetics_pharmacodynamics_json},
+      comments:self.comments.where(step:"pharmacokinetics_pharmacodynamics").order(:created_at=>:asc).map{|c|c.to_json}
     }
   end
 
