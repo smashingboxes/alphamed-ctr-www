@@ -219,6 +219,14 @@ class Result
     end
   end
 
+  def set_adverse_events result
+    result[:arms].each do |arm_obj|
+      arm=self.arms.find_by(id:arm_obj[:id]) || self.arms.new
+      arm.set_arm_adverse_events(arm_obj)
+      arm.save
+    end
+  end
+
   def overview_json
     {
       id:self.id.to_s,
@@ -311,6 +319,13 @@ class Result
     {
       arms:self.arms.order(:created_at=>:asc).map{|a|a.pharmacokinetics_pharmacodynamics_json},
       comments:self.comments.where(step:"pharmacokinetics_pharmacodynamics").order(:created_at=>:asc).map{|c|c.to_json}
+    }
+  end
+
+  def adverse_events_json
+    {
+      arms:self.arms.order(:created_at=>:asc).map{|a|a.adverse_events_json},
+      comments:self.comments.where(step:"adverse_events").order(:created_at=>:asc).map{|c|c.to_json}
     }
   end
 
