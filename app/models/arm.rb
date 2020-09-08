@@ -7,8 +7,10 @@ class Arm
 
   embedded_in :result, inverse_of: :arms
   embeds_many :drugs
+  embeds_many :events_tables, cascade_callbacks: true
 
   accepts_nested_attributes_for :drugs, allow_destroy: true
+  accepts_nested_attributes_for :events_tables, allow_destroy: true
 
   # Experimental, Control, custom name, or empty for non-randomized trials
   field :name, default: "Experimental"
@@ -50,6 +52,39 @@ class Arm
 
   field :dose_limiting_toxicities, type: Hash, default: {}
 
+  field :dlt, type: Hash,
+    default: {
+      columns: [{ id: "dose_level",
+                  name: "Dose Level",
+                  field: "dose_level" },
+                { id: "enrolled",
+                  name: "Number Enrolled",
+                  field: "enrolled" },
+                { id: "evaluable",
+                  name: "Number Evaluable for Toxicity",
+                  field: "evaluable" },
+                { id: "number",
+                  name: "Number with a Dose Limiting Toxicity",
+                  field: "number" },
+                { id: "limiting",
+                  name: "Dose Limiting Toxicity Information",
+                  field: "limiting" }],
+      rows: []
+    }
+
+  # Adverse Events page
+  AE_SUBTITLE_OPTIONS = [
+    "Cycle 1", "All Cycles", "All Dose Levels, Cycle 1", "All Dose Levels, All Cycles",
+    "Of Special Interest, Cycle 1", "Of Special Interest, All Cycles"
+  ].freeze
+
+  field :adverse_cycle_type, type: String, default: "1"
+  field :ctcae_category_id
+  field :ctcae_version, default: 4
+  field :adverse_events_number, default: "Number of Patients" # number of patients or cycles
+  field :adverse_events_legend
+  field :adverse_events_subtitle, default: AE_SUBTITLE_OPTIONS[2]
+
   def drug_information_json
   	{
   		id:self.id.to_s,
@@ -79,6 +114,20 @@ class Arm
   	{
   		id:self.id.to_s,
   		dose_limiting_toxicities:self.dose_limiting_toxicities
+  	}
+  end
+
+  def adverse_events_json
+  	{
+  		id:self.id.to_s,
+  		ctcae_version:self.ctcae_version,
+  		adverse_events_subtitle:self.adverse_events_subtitle,
+  		adverse_events_number:self.adverse_events_number,
+  		adverse_events_legend:self.adverse_events_legend,
+  		dlt:self.dlt,
+  		events_tables:self.events_tables.order(:created_at=>:asc).map{|et|et.adverse_events_json},
+  		category_list: Category.Data,
+  		adverse_events_list: AdverseEvent.Data
   	}
   end
 
@@ -139,5 +188,39 @@ class Arm
   	arm[:dose_limiting_toxicities].each_pair { |key, value|
   		self.dose_limiting_toxicities[key]=value
   	}
+  end
+
+  def set_arm_adverse_events arm
+  	self.ctcae_version=arm[:ctcae_version]
+		self.adverse_events_subtitle=arm[:adverse_events_subtitle]
+		self.adverse_events_number=arm[:adverse_events_number]
+		self.adverse_events_legend=arm[:adverse_events_legend]
+		arr=[]
+  	arm[:dlt][:rows].each do |row|
+  		arr << {dose_level:row[:dose_level],enrolled:row[:enrolled],evaluable:row[:evaluable],number:row[:number],limiting:row[:limiting]}
+  	end
+  	self.dlt={
+      columns: [{ id: "dose_level",
+                  name: "Dose Level",
+                  field: "dose_level" },
+                { id: "enrolled",
+                  name: "Number Enrolled",
+                  field: "enrolled" },
+                { id: "evaluable",
+                  name: "Number Evaluable for Toxicity",
+                  field: "evaluable" },
+                { id: "number",
+                  name: "Number with a Dose Limiting Toxicity",
+                  field: "number" },
+                { id: "limiting",
+                  name: "Dose Limiting Toxicity Information",
+                  field: "limiting" }],
+      rows: arr
+    }
+    arm[:events_tables].each do |event_obj|
+  		event=self.events_tables.find_by(id:event_obj[:id]) || self.events_tables.new
+  		event.set_adverse_events(event_obj)
+  		event.save
+  	end
   end
 end
