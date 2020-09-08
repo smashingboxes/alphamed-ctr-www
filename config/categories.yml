@@ -1,0 +1,150 @@
+- :id: 1
+  :version: '3'
+  :name: ALLERGY/IMMUNOLOGY
+- :id: 2
+  :version: '3'
+  :name: AUDITORY/EAR
+- :id: 3
+  :version: '3'
+  :name: BLOOD/BONE MARROW
+- :id: 4
+  :version: '3'
+  :name: CARDIAC ARRHYTHMIA
+- :id: 5
+  :version: '3'
+  :name: CARDIAC GENERAL
+- :id: 6
+  :version: '3'
+  :name: COAGULATION
+- :id: 7
+  :version: '3'
+  :name: CONSTITUTIONAL SYMPTOMS
+- :id: 8
+  :version: '3'
+  :name: DEATH
+- :id: 9
+  :version: '3'
+  :name: DERMATOLOGY/SKIN
+- :id: 10
+  :version: '3'
+  :name: ENDOCRINE
+- :id: 11
+  :version: '3'
+  :name: GASTROINTESTINAL
+- :id: 12
+  :version: '3'
+  :name: GROWTH AND DEVELOPMENT
+- :id: 13
+  :version: '3'
+  :name: HEMORRHAGE/BLEEDING
+- :id: 14
+  :version: '3'
+  :name: HEPATOBILIARY/PANCREAS
+- :id: 15
+  :version: '3'
+  :name: INFECTION
+- :id: 16
+  :version: '3'
+  :name: LYMPHATICS
+- :id: 17
+  :version: '3'
+  :name: METABOLIC/LABORATORY
+- :id: 18
+  :version: '3'
+  :name: MUSCULOSKELETAL/SOFT TISSUE
+- :id: 19
+  :version: '3'
+  :name: NEUROLOGY
+- :id: 20
+  :version: '3'
+  :name: OCULAR/VISUAL
+- :id: 21
+  :version: '3'
+  :name: PAIN
+- :id: 22
+  :version: '3'
+  :name: PULMONARY/UPPER RESPIRATORY
+- :id: 23
+  :version: '3'
+  :name: RENAL/GENITOURINARY
+- :id: 24
+  :version: '3'
+  :name: SECONDARY MALIGNANCY
+- :id: 25
+  :version: '3'
+  :name: SEXUAL/REPRODUCTIVE FUNCTION
+- :id: 26
+  :version: '3'
+  :name: SURGERY/INTRA-OPERATIVE INJURY
+- :id: 27
+  :version: '3'
+  :name: SYNDROMES
+- :id: 28
+  :version: '3'
+  :name: VASCULAR
+- :id: 29
+  :version: '4'
+  :name: Respiratory, thoracic and mediastinal disorders
+- :id: 30
+  :version: '4'
+  :name: Immune system disorders
+- :id: 31
+  :version: '4'
+  :name: Vascular disorders
+- :id: 32
+  :version: '4'
+  :name: Ear and labyrinth disorders
+- :id: 33
+  :version: '4'
+  :name: Investigations
+- :id: 34
+  :version: '4'
+  :name: Blood and lymphatic system disorders
+- :id: 35
+  :version: '4'
+  :name: Neoplasms benign, malignant and unspecified (incl cysts and polyps)
+- :id: 36
+  :version: '4'
+  :name: Metabolism and nutrition disorders
+- :id: 37
+  :version: '4'
+  :name: Cardiac disorders
+- :id: 38
+  :version: '4'
+  :name: Nervous system disorders
+- :id: 39
+  :version: '4'
+  :name: Skin and subcutaneous tissue disorders
+- :id: 40
+  :version: '4'
+  :name: General disorders and administration site conditions
+- :id: 41
+  :version: '4'
+  :name: Psychiatric disorders
+- :id: 42
+  :version: '4'
+  :name: Injury, poisoning and procedural complications
+- :id: 43
+  :version: '4'
+  :name: Gastrointestinal disorders
+- :id: 44
+  :version: '4'
+  :name: Endocrine disorders
+- :id: 45
+  :version: '4'
+  :name: Reproductive system and breast disorders
+- :id: 46
+  :version: '4'
+  :name: Infections and infestations
+- :id: 47
+  :version: '4'
+  :name: Hepatobiliary disorders
+- :id: 48
+  :version: '4'
+  :name: Musculoskeletal and connective tissue disorders
+- :id: 49
+  :version: '4'
+  :name: Renal and urinary disorders
+- :id: 50
+  :version: '4'
+  :name: Eye disorders
