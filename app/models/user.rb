@@ -30,6 +30,7 @@ class User
   field :last_name, type: String
   field :middle_name, type: String
   field :institutions, type: Hash, default: { "0" => "" }
+  field :pi
 
   ## Trackable
   field :sign_in_count,      type: Integer, default: 0
@@ -147,6 +148,7 @@ class User
       user.last_name=user[:last_name]
       user.password="password"
       user.user_type=user[:ca] ? 3 : 4
+      user.pi=user[:pi]
       inst_obj={}
       ctr=0
       user[:institutions].each do |institution|
