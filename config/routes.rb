@@ -37,8 +37,10 @@ Rails.application.routes.draw do
         get 'patient_characteristics', to: 'results#patient_characteristics'
         get 'pharmacokinetics_pharmacodynamics', to: 'results#pharmacokinetics_pharmacodynamics'
         get 'adverse_events', to: 'results#adverse_events'
+        get 'primary_assessment_method', to: 'results#primary_assessment_method'
         get 'get_trial_information_lists', to: 'results#get_trial_information_lists'
-        post :update
+        patch :update
+        delete :destroy
       end
     end
     resources :mail_templates, only: [:index, :create] do

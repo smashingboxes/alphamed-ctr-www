@@ -6,9 +6,12 @@ class Arm
   include Mongoid::Attributes::Dynamic
 
   embedded_in :result, inverse_of: :arms
+
+  embeds_many :assessments, cascade_callbacks: true
   embeds_many :drugs
   embeds_many :events_tables, cascade_callbacks: true
 
+  accepts_nested_attributes_for :assessments, allow_destroy: true
   accepts_nested_attributes_for :drugs, allow_destroy: true
   accepts_nested_attributes_for :events_tables, allow_destroy: true
 
@@ -131,6 +134,13 @@ class Arm
   	}
   end
 
+  def primary_assessment_method_json
+  	{
+  		id:self.id.to_s,
+  		assessments:self.assessments.order(:created_at=>:asc).map{|a|a.primary_assessment_method_json}
+  	}
+  end
+
   def set_arm_drug_information arm
   	self.name=arm[:name]
   	self.phase=arm[:phase]
@@ -221,6 +231,14 @@ class Arm
   		event=self.events_tables.find_by(id:event_obj[:id]) || self.events_tables.new
   		event.set_adverse_events(event_obj)
   		event.save
+  	end
+  end
+
+  def set_primary_assessment_method arm
+  	arm[:assessments].each do |assessment_obj|
+  		assessment=self.assessments.find_by(id:assessment_obj[:id]) || self.assessments.new
+  		assessment.set_primary_assessment_method(assessment_obj)
+  		assessment.save
   	end
   end
 end
