@@ -227,6 +227,14 @@ class Result
     end
   end
 
+  def set_primary_assessment_method result
+    result[:arms].each do |arm_obj|
+      arm=self.arms.find_by(id:arm_obj[:id]) || self.arms.new
+      arm.set_primary_assessment_method(arm_obj)
+      arm.save
+    end
+  end
+
   def overview_json
     {
       id:self.id.to_s,
@@ -326,6 +334,13 @@ class Result
     {
       arms:self.arms.order(:created_at=>:asc).map{|a|a.adverse_events_json},
       comments:self.comments.where(step:"adverse_events").order(:created_at=>:asc).map{|c|c.to_json}
+    }
+  end
+
+  def primary_assessment_method_json
+    {
+      arms:self.arms.order(:created_at=>:asc).map{|a|a.primary_assessment_method_json},
+      comments:self.comments.where(step:"primary_assessment_method").order(:created_at=>:asc).map{|c|c.to_json}
     }
   end
 
