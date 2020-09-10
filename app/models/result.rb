@@ -368,6 +368,7 @@ class Result
       terminated_reason:self.terminated_reason,
       discussion:self.discussion,
       references:self.references
+      comments:self.comments.where(step:"assessment_analysis_discussion").order(:created_at=>:asc).map{|c|c.to_json}
     }
   end
 
