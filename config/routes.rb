@@ -38,6 +38,7 @@ Rails.application.routes.draw do
         get 'pharmacokinetics_pharmacodynamics', to: 'results#pharmacokinetics_pharmacodynamics'
         get 'adverse_events', to: 'results#adverse_events'
         get 'primary_assessment_method', to: 'results#primary_assessment_method'
+        get 'assessment_analysis_discussion', to: 'results#assessment_analysis_discussion'
         get 'get_trial_information_lists', to: 'results#get_trial_information_lists'
         patch :update
         delete :destroy
