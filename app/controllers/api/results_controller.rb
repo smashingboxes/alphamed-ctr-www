@@ -111,7 +111,7 @@ class Api::ResultsController < ApplicationController
       if @user = User.find_for_database_authentication(authentication_token: params[:authentication_token])
         #params[:section] = overview || information || co_author information || author_summary
         @section = params[:section]
-        @result = Result.find_by(id:params[:result_id]) || @user.current_result || @user.results.new
+        @result = Result.find_by(id:params[:result_id]) || @user.results.new
         if @section == "overview"
           @result.set_overview(params[:result])
         elsif @section == "your_information"
