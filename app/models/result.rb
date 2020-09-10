@@ -84,7 +84,14 @@ class Result
   field :primary_endpoints, type: Hash, default: { "0" => "" }
   field :secondary_endpoints, type: Hash, default: { "0" => "" }
   field :endpoints_details
+
+  # Assessment, Analysis, & Discussion Page
+  field :completed_or_terminated
   field :investigators_assessment
+  field :completed_reason
+  field :terminated_reason
+  field :discussion
+  field :references
 
   # enum state: { started: 0, submitted: 1, in_review: 2, revision: 3, accepted: 4, rejected: 5, published: 6 }
 
@@ -235,6 +242,15 @@ class Result
     end
   end
 
+  def set_assessment_analysis_discussion result
+    self.completed_or_terminated=result[:completed_or_terminated]
+    self.investigators_assessment=result[:investigators_assessment]
+    self.completed_reason=result[:completed_reason]
+    self.terminated_reason=result[:terminated_reason]
+    self.discussion=result[:discussion]
+    self.references=result[:references]
+  end
+
   def overview_json
     {
       id:self.id.to_s,
@@ -341,6 +357,17 @@ class Result
     {
       arms:self.arms.order(:created_at=>:asc).map{|a|a.primary_assessment_method_json},
       comments:self.comments.where(step:"primary_assessment_method").order(:created_at=>:asc).map{|c|c.to_json}
+    }
+  end
+
+  def assessment_analysis_discussion_json
+    {
+      completed_or_terminated:self.completed_or_terminated,
+      investigators_assessment:self.investigators_assessment,
+      completed_reason:self.completed_reason,
+      terminated_reason:self.terminated_reason,
+      discussion:self.discussion,
+      references:self.references
     }
   end
 

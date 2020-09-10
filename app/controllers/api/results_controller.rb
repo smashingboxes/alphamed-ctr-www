@@ -93,6 +93,15 @@ class Api::ResultsController < ApplicationController
     end
   end
 
+  def assessment_analysis_discussion
+    if @user = User.find_for_database_authentication(authentication_token: params[:auth_token])
+      @result = Result.find_by(id:params[:result_id]) || Result.new
+      render json: @result.assessment_analysis_discussion_json, status: 201
+    else
+      render json: {message: "Invalid authentication token"}, status: 422
+    end
+  end
+
   def get_trial_information_lists
     render json: Result.trial_information_constants_json, status: 201
   end
@@ -124,6 +133,8 @@ class Api::ResultsController < ApplicationController
           @result.set_adverse_events(params[:result])
         elsif @section == "primary_assessment_method"
           @result.set_primary_assessment_method(params[:result])
+        elsif @section == "assessment_analysis_discussion"
+          @result.set_assessment_analysis_discussion(params[:result])
         end
         if @result.save
           render json: @result, status: 201
