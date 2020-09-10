@@ -91,7 +91,7 @@ class User
   end
 
   def fetch_results state
-    if self.role == "user"
+    if self.role == "user" || self.role == "corresponding author"
       if state == "submitted"
         self.results.submitted_all
       elsif state == "revision"
