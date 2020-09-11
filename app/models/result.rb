@@ -284,7 +284,10 @@ class Result
       author_assisted:self.author_assisted,
       author_submitter:self.author_submitter,
       author_acknowledgements:self.author_acknowledgements,
-      comments:self.comments.where(step:"your_information").order(:created_at=>:asc).map{|c|c.to_json}
+      comments:self.comments.where(step:"your_information").order(:created_at=>:asc).map{|c|c.to_json},
+      first_degree_list:User::LIST_OF_DEGREES,
+      state_province_list:User::STATOIDS,
+      country_list:User::COUNTRIES
     }
   end
 
@@ -356,7 +359,8 @@ class Result
   def primary_assessment_method_json
     {
       arms:self.arms.order(:created_at=>:asc).map{|a|a.primary_assessment_method_json},
-      comments:self.comments.where(step:"primary_assessment_method").order(:created_at=>:asc).map{|c|c.to_json}
+      comments:self.comments.where(step:"primary_assessment_method").order(:created_at=>:asc).map{|c|c.to_json},
+      assessment_list:Assessment::EVALUATION_METHOD_LIST
     }
   end
 

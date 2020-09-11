@@ -63,6 +63,8 @@ class Assessment
   scope :secondary_control, -> { where(key: "secondary_control") }
   scope :control, -> { where(key: /control$/i) }
 
+  EVALUATION_METHOD_LIST = ['RECIST 1.0', 'RECIST 1.1', 'WHO', 'Tumor marker', '']
+
   def primary_assessment_method_json
     {
       id:self.id.to_s,
