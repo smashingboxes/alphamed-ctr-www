@@ -10,6 +10,7 @@ class Result
   embeds_many :comments
   embeds_many :emails
   embeds_many :arms
+  embeds_many :figures, cascade_callbacks: true
 
   belongs_to :author, class_name: "User", inverse_of: :results, optional: true
 
@@ -251,6 +252,14 @@ class Result
     self.references=result[:references]
   end
 
+  def set_figures_tables result
+    result[:figures].each do |fig_obj|
+      figure=self.figures.find_by(id:fig_obj[:id]) || self.figures.new
+      figure.set_figures_tables(fig_obj)
+      figure.save
+    end
+  end
+
   def overview_json
     {
       id:self.id.to_s,
@@ -373,6 +382,12 @@ class Result
       discussion:self.discussion,
       references:self.references,
       comments:self.comments.where(step:"assessment_analysis_discussion").order(:created_at=>:asc).map{|c|c.to_json}
+    }
+  end
+
+  def figures_tables_json
+    {
+      figures:self.figures.order(:position=>:asc).map{|a|a.figures_tables_json}
     }
   end
 
