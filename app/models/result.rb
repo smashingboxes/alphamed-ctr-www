@@ -7,16 +7,20 @@ class Result
 
   before_create :set_initial_state
 
+  embeds_many :activities, cascade_callbacks: true
   embeds_many :comments
   embeds_many :emails
   embeds_many :arms
   embeds_many :figures, cascade_callbacks: true
+  embeds_many :forms, validate: false
 
   belongs_to :author, class_name: "User", inverse_of: :results, optional: true
 
   accepts_nested_attributes_for :arms, allow_destroy: true
   accepts_nested_attributes_for :comments, allow_destroy: true
   accepts_nested_attributes_for :emails, allow_destroy: true
+  accepts_nested_attributes_for :figures, allow_destroy: true
+  accepts_nested_attributes_for :forms, allow_destroy: true
 
   # TODO: Add more comments so we can understand the fields
   # Result Overview page
@@ -387,7 +391,15 @@ class Result
 
   def figures_tables_json
     {
-      figures:self.figures.order(:position=>:asc).map{|a|a.figures_tables_json}
+      figures:self.figures.order(:position=>:asc).map{|a|a.figures_tables_json},
+      comments:self.comments.where(step:"figures_tables").order(:created_at=>:asc).map{|c|c.to_json}
+    }
+  end
+
+  def author_forms_json
+    {
+      forms:self.forms.order(:created_at=>:asc).map{|f|f.author_forms_json},
+      comments:self.comments.where(step:"author_forms").order(:created_at=>:asc).map{|c|c.to_json}
     }
   end
 
