@@ -1,5 +1,5 @@
 class Api::ResultsController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:update]
+  skip_before_action :verify_authenticity_token, only: [:update, :update_disclosure]
 
   def overview
     #fetch result via result_id
@@ -111,6 +111,21 @@ class Api::ResultsController < ApplicationController
     end
   end
 
+  def author_forms
+    if @user = User.find_for_database_authentication(authentication_token: params[:auth_token])
+      @result = Result.find_by(id:params[:result_id]) || Result.new
+      render json: @result.author_forms_json, status: 201
+    else
+      render json: {message: "Invalid authentication token"}, status: 422
+    end
+  end
+
+  def disclosure
+    @result=Result.find_by(id:params[:result_id]) || Result.new
+    @disclosure=@result.forms.find_by(id:params[:form_id]) || @result.forms.new
+    render json: @disclosure.disclosure_json, status:201
+  end
+
   def get_trial_information_lists
     render json: Result.trial_information_constants_json, status: 201
   end
@@ -157,6 +172,17 @@ class Api::ResultsController < ApplicationController
       end
     else
       render json: {message: "Result parameter is missing."}, status: 422
+    end
+  end
+
+  def update_disclosure
+    @result=Result.find_by(id:params[:result_id]) || Result.new
+    @disclosure=@result.forms.find_by(id:params[:form_id]) || @result.forms.new
+    @disclosure.set_disclosure(params[:disclosure])
+    if @disclosure.save
+      render json: @disclosure, status: 201
+    else
+      render json: {message: "Something went wrong when saving Disclosure"}, status: 422
     end
   end
 
