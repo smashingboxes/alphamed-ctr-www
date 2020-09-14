@@ -89,6 +89,7 @@ class OverviewForm extends React.Component {
         this.setState({
           keywordsError: 'Must be 5 words at most.'
         });
+
         return;
       }
     }
