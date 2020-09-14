@@ -57,7 +57,7 @@ class OverviewForm extends React.Component {
       });
       return;
     } else {
-      if (title.length > 150) {
+      if (title.split(' ').length > 150) {
         this.setState({
           titleError: 'Must be 150 words at most.'
         });
