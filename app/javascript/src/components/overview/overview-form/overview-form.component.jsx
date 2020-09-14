@@ -85,10 +85,11 @@ class OverviewForm extends React.Component {
       });
       return;
     } else {
-      if (keywords.length > 5) {
+      if (keywords.split(' ').length > 5) {
         this.setState({
           keywordsError: 'Must be 5 words at most.'
         });
+
         return;
       }
     }
