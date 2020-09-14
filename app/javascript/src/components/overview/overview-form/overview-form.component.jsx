@@ -18,6 +18,7 @@ import CTRInput from '../../shared/ctr-input/ctr-input.component';
 import CTRSelect from '../../shared/ctr-select/ctr-select.component';
 import SecondaryButton from '../../shared/secondary-button/secondary-button.component';
 import OverviewComments from '../overview-comments/overview-comments.component';
+import { swalMessage } from '../../shared/swal-message/swal-message';
 
 class OverviewForm extends React.Component {
   state = {
@@ -89,7 +90,6 @@ class OverviewForm extends React.Component {
         this.setState({
           keywordsError: 'Must be 5 words at most.'
         });
-
         return;
       }
     }
@@ -106,6 +106,13 @@ class OverviewForm extends React.Component {
         sponsorError: 'This field is mandatory.'
       });
       return;
+    }
+
+    if (checked === false) {
+      return swalMessage(
+        'Please check the IRB first before proceeding to next submission step.',
+        'error'
+      );
     }
 
     return createCTROverviewStart({
