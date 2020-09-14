@@ -162,4 +162,26 @@ class Assessment
       end
     end
   end
+
+  def submission_overview_response
+    obj=self.response_assessment
+    {
+      CR: {N:"N =#{obj[:cr_n]}", percent:obj[:cr]},
+      PR: {N:"N =#{obj[:pr_n]}", percent:obj[:pr]},
+      SD: {N:"N =#{obj[:sd_n]}", percent:obj[:sd]},
+      PD: {N:"N =#{obj[:pd_n]}", percent:obj[:pd]},
+      other: {N:"N =#{obj[:other_n]}", percent:obj[:other]}
+    }
+  end
+
+  def submission_overview_duration
+    obj=self.duration_assessments
+    {
+      PFS: "#{obj[:pfs]} #{obj[:pfs_time]}, CI:#{obj[:pfs_ci]}",
+      TTP: "#{obj[:ttp]} #{obj[:ttp_time]}, CI:#{obj[:ttp_ci]}",
+      OS: "#{obj[:os]} #{obj[:os_time]}, CI:#{obj[:os_ci]}",
+      response_duration: "#{obj[:response_duration]} #{obj[:response_duration_time]}",
+      treatment_duration: "#{obj[:treatment_duration]} #{obj[:treatment_duration_time]}"
+    }
+  end
 end

@@ -5,6 +5,8 @@ class Result
   # include Mongoid::Slug
   include Mongoid::Timestamps
 
+  include DateHelper
+
   before_create :set_initial_state
 
   embeds_many :activities, cascade_callbacks: true
@@ -49,7 +51,7 @@ class Result
   field :author_middle_name
   field :author_last_name
   field :author_degrees, type: Hash, default: { "first" => "", "second" => "" }
-  field :author_institutions, type: Hash, default: { "0" => "" }
+  field :author_institutions, type: Array, default: [""]
   field :author_pi       # BOOLEAN Principal Investigator 
   field :author_ca       # BOOLEAN Corresponding Author
   field :author_assisted # BOOLEAN Were the author assisted...
@@ -158,13 +160,14 @@ class Result
       "first" => result[:author_degrees][:first],
       "second" => result[:author_degrees][:second]
     }
-    inst_obj={}
-    ctr=0
-    result[:author_institutions].each do |institution|
-      inst_obj["#{ctr}"]=institution
-      ctr+=1
-    end
-    self.author_institutions=inst_obj
+    self.author_institutions=result[:author_institutions]
+    # inst_obj={}
+    # ctr=0
+    # result[:author_institutions].each do |institution|
+    #   inst_obj["#{ctr}"]=institution
+    #   ctr+=1
+    # end
+    # self.author_institutions=inst_obj
   end
 
   def set_author_summary result
@@ -403,6 +406,132 @@ class Result
     }
   end
 
+  def submission_overview_json params
+    arms=self.arms
+    {
+      summary: {
+        submitted_date:summary_date(self, params),
+        title:self.title,
+        authors:self.author_array,
+        identifier:self.identifier,
+        sponsor:self.sponsor,
+        pi:self.author_array,
+        irb_approved:self.irb_approved
+      },
+      author_summary: {
+        background:self.abstract_background,
+        methods:self.abstract_methods,
+        conclusions:self.abstract_conclusions,
+        discussion:self.abstract_discussion,
+        lessons_learned:self.abstract_lessons_learned
+      },
+      trial_information: {
+        diseases:self.diseases || [],
+        stage_of_disease_or_treatment:self.stage_of_disease_or_treatment,
+        prior_therapy:self.prior_therapy,
+        study_phase:self.study_phase,
+        type_of_study_2:self.type_of_study_2,
+        primary_endpoints:self.primary_endpoints,
+        secondary_endpoints:self.secondary_endpoints,
+        endpoints_details:self.endpoints_details,
+        investigators_assessment:self.investigators_assessment
+      },
+      drug_information_phase_1:arms.map{|arm|
+        {
+          id:arm.id.to_s,
+          name:arm.name,
+          phase:arm.phase,
+          drugs:arm.drugs.map{|drug|
+            {
+              id:drug.id.to_s,
+              generic_name:drug.generic_name,
+              trade_name:drug.trade_name,
+              company_name:drug.company_name,
+              drug_type:drug.drug_type,
+              drug_class:drug.drug_class,
+              dose:"#{drug.dose}#{drug.unit} per #{drug.route}",
+              route:drug.route,
+              schedule:drug.schedule
+            }
+          }
+        }
+      },
+      patient_characteristics_phase_1:arms.map{|arm|
+        {
+          id:arm.id.to_s,
+          name:arm.name,
+          phase:arm.phase,
+          patient_male:arm.patient_male,
+          patient_female:arm.patient_female,
+          patient_stage:arm.patient_stage,
+          patient_age:arm.patient_age,
+          patient_median_therapies:arm.patient_median_therapies,
+          patient_performance:arm.patient_performance,
+          patient_other:arm.patient_other,
+          patient_cancer_types:arm.patient_cancer_types
+        }
+      },
+      primary_assessment_method_phase_1:arms.map{|arm|
+        {
+          id:arm.id.to_s,
+          name:arm.name,
+          phase:arm.phase,
+          assessments:arm.assessments.map{|assess|
+            {
+              id:assess.id.to_s,
+              title:assess.title,
+              key:assess.key,
+              number_of_patients:assess.number_of_patients,
+              evaluation_method:assess.evaluation_method,
+              response_assessment:assess.submission_overview_response,
+              duration_assessments:assess.submission_overview_duration,
+              wfp_legend:assess.wfp_legend,
+              km_units:assess.km_units,
+              km_legend:assess.km_legend,
+              outcome_notes:assess.outcome_notes
+            }
+          }
+        }
+      },
+      adverse_events:arms.map{|arm|
+        {
+          id:arm.id.to_s,
+          name:arm.name,
+          phase:arm.phase,
+          tables:arm.events_tables.map{|t|
+            {
+              subtitle:t.subtitle,
+              thumbnail:self.figures.where(type:"adverse_events").first,
+              events:t.events,
+              legend:t.legend,
+              serious_adverse_events_legend:t.serious_adverse_events_legend,
+              sae:t.sae
+            }
+          }
+        }
+      },
+      pharmacokinetics_pharmacodynamics:arms.map {|arm|
+        {
+          id:arm.id.to_s,
+          name:arm.name,
+          phase:arm.phase,
+          dose_limiting_toxicities:arm.dose_limiting_toxicities
+        }
+      },
+      assessments_analyis:arms.map{|arm|
+        {
+          completed_or_terminated:self.completed_or_terminated,
+          completed_reason:self.completed_reason,
+          terminated_reason:self.terminated_reason,
+          discussion:self.discussion,
+          references:self.references
+        }
+      },
+      figures:self.figures,
+      comments:self.comments.where(step:"submission_overview").order(:created_at=>:asc).map{|c|c.to_json}
+    }
+  end
+
   def self.trial_information_constants_json
     {
       disease_list:disease_list,
@@ -417,6 +546,16 @@ class Result
       secondary_endpoints_phase_2_or_3_list:secondary_endpoints_phase_2_or_3_list,
       investigator_assessment_list:investigator_assessment_list
     }
+  end
+
+  def author_array
+    arr=[]
+    arr<<{first_name:author.first_name, last_name:author.last_name}
+    coauthors.each do |coauthor|
+      user=User.find_by(email:coauthor[:email])
+      arr<<{first_name:user.first_name.to_s,last_name:user.last_name.to_s} if user
+    end
+    arr
   end
 
   def self.disease_list
@@ -515,6 +654,11 @@ class Result
 
   def self.drug_route_list
     ["oral (po)","rectum (pr)","intraperitoneal (IP)","IV, per push","IV","Continuous intravenous infusion (CIV)","Other"]
+  end
+
+  def submit_result
+    self.state = "submitted"
+    self.state_history = [{ state => Time.now }]
   end
 
   private

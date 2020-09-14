@@ -10,6 +10,7 @@ class Figure
 
   field :legend
   field :position
+  field :type
 
   validates :legend, presence: true
   validates :attachment, presence: true
@@ -17,6 +18,7 @@ class Figure
   def figures_tables_json
     {
       id:self.id.to_s,
+      type:self.type,
       legend:self.legend,
       position:self.position,
       attachment:self.attachment
@@ -24,6 +26,7 @@ class Figure
   end
 
   def set_figures_tables figure
+    self.type=figure[:type]
     self.legend=figure[:legend]
     self.position=figure[:position]
     self.attachment=figure[:attachment]
