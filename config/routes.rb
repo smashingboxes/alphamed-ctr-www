@@ -41,11 +41,13 @@ Rails.application.routes.draw do
         get 'assessment_analysis_discussion', to: 'results#assessment_analysis_discussion'
         get 'figures_tables', to: 'results#figures_tables'
         get 'author_forms', to: 'results#author_forms'
+        get 'submission_overview', to: 'results#submission_overview'
         get 'disclosure', to: 'results#disclosure'
         get 'get_trial_information_lists', to: 'results#get_trial_information_lists'
         patch :update
         patch 'update_disclosure', to: 'results#update_disclosure'
         delete :destroy
+        post :submit
       end
     end
     resources :mail_templates, only: [:index, :create] do

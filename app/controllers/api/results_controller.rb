@@ -1,5 +1,5 @@
 class Api::ResultsController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:update, :update_disclosure]
+  skip_before_action :verify_authenticity_token, only: [:update, :update_disclosure, :submit]
 
   def overview
     #fetch result via result_id
@@ -120,6 +120,15 @@ class Api::ResultsController < ApplicationController
     end
   end
 
+  def submission_overview
+    if @user = User.find_for_database_authentication(authentication_token: params[:auth_token])
+      @result = Result.find_by(id:params[:result_id]) || Result.new
+      render json: @result.submission_overview_json(params), status: 201
+    else
+      render json: {message: "Invalid authentication token"}, status: 422
+    end
+  end
+
   def disclosure
     @result=Result.find_by(id:params[:result_id]) || Result.new
     @disclosure=@result.forms.find_by(id:params[:form_id]) || @result.forms.new
@@ -192,6 +201,19 @@ class Api::ResultsController < ApplicationController
       render json: {message: "Successfully deleted CTR."}, status: 201
     else
       render json: @result.errors, status: 422
+    end
+  end
+
+  def submit
+    if @result = Result.find_by(id:params[:result_id])
+      @result.submit_result
+      if @result.save
+        render json: {message: "Successfully submitted CTR."}, status: 201
+      else
+        render json: @result.errors, status: 422
+      end
+    else
+        render json: {message: "CTR not found."}, status: 422
     end
   end
 end
