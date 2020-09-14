@@ -18,6 +18,7 @@ import CTRInput from '../../shared/ctr-input/ctr-input.component';
 import CTRSelect from '../../shared/ctr-select/ctr-select.component';
 import SecondaryButton from '../../shared/secondary-button/secondary-button.component';
 import OverviewComments from '../overview-comments/overview-comments.component';
+import { swalMessage } from '../../shared/swal-message/swal-message';
 
 class OverviewForm extends React.Component {
   state = {
@@ -57,7 +58,7 @@ class OverviewForm extends React.Component {
       });
       return;
     } else {
-      if (title.length > 150) {
+      if (title.split(' ').length > 150) {
         this.setState({
           titleError: 'Must be 150 words at most.'
         });
@@ -71,7 +72,7 @@ class OverviewForm extends React.Component {
       });
       return;
     } else {
-      if (runningHead.length > 50) {
+      if (runningHead.split(' ').length > 50) {
         this.setState({
           runningHeadError: 'Must be 50 words at most.'
         });
@@ -85,7 +86,7 @@ class OverviewForm extends React.Component {
       });
       return;
     } else {
-      if (keywords.length > 5) {
+      if (keywords.split(' ').length > 5) {
         this.setState({
           keywordsError: 'Must be 5 words at most.'
         });
@@ -105,6 +106,13 @@ class OverviewForm extends React.Component {
         sponsorError: 'This field is mandatory.'
       });
       return;
+    }
+
+    if (checked === false) {
+      return swalMessage(
+        'Please check the IRB first before proceeding to next submission step.',
+        'error'
+      );
     }
 
     return createCTROverviewStart({

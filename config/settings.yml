@@ -1,0 +1,42 @@
+defaults: &defaults
+  from_email: THE ONCOLOGIST Clinical Trial Results <editorialoffice@ctr.theoncologist.com>
+  mailgun_api_url: https://api:key-7q13705llt7dzaknps6qxp1ca-tujv02@api.mailgun.net/v2/ctr.theoncologist.com/messages
+  host_url: http://0.0.0.0:3000
+  admin_email: editorialoffice@ctr.theoncologist.com
+  storage_options:
+    storage: :file
+    path: ':rails_root/public/system/:class/:id/:style/:basename.:extension'
+    url: '/system/:class/:id/:style/:basename.:extension'
+    default_url: /assets/image-loader.gif
+
+development: &dev
+  <<: *defaults
+  intercept_email: <%= `git config --get user.email`.strip %>
+
+staging:
+  <<: *defaults
+  host_url: http://staging.clinicaltrialresults.theoncologist.com 
+  intercept_email: ctr-staging@smashingboxes.com
+  storage_options:
+    path: ':class/:id/:style/:basename.:extension'
+    url: '/:class/:id/:style/:basename.:extension'
+    storage: :fog
+    s3_credentials:
+      bucket: ct-assets-staging
+      access_key_id: AKIAINZB4UDMY7OGMNGA
+      secret_access_key: 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
+
+production:
+  <<: *defaults
+  host_url: http://clinicaltrialresults.theoncologist.com
+  storage_options:
+    path: ':class/:id/:style/:basename.:extension'
+    url: '/:class/:id/:style/:basename.:extension'
+    storage: :fog
+    s3_credentials:
+      bucket: ct-assets
+      access_key_id: AKIAINZB4UDMY7OGMNGA
+      secret_access_key: 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
+
+test:
+  <<: *defaults

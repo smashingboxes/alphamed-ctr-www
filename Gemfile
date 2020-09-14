@@ -28,10 +28,12 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'haml'
 gem "devise", "~> 4.7"
 gem 'webpacker', '~> 5.x'
-gem "pg", "~> 1.1.0"
 gem 'mongoid', '~> 7.0.5'
 gem "mailgun_rails"
 gem 'kaminari-mongoid'
+gem "carrierwave"
+gem "carrierwave-aws"
+gem "carrierwave-mongoid"
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
@@ -49,12 +51,14 @@ gem 'bootsnap', '>= 1.1.0', require: false
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem "pg", "~> 1.1.0"
 end
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
   gem 'web-console', '>= 3.3.0'
   gem 'listen', '>= 3.0.5', '< 3.2'
+  gem "pg", "~> 1.1.0"
 end
 
 group :test do
@@ -63,6 +67,7 @@ group :test do
   gem 'selenium-webdriver'
   # Easy installation and use of chromedriver to run system tests with Chrome
   gem 'chromedriver-helper'
+  gem "pg", "~> 1.1.0"
 end
 
 group :production do 
