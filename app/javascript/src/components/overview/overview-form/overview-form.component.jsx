@@ -72,7 +72,7 @@ class OverviewForm extends React.Component {
       });
       return;
     } else {
-      if (runningHead.length > 50) {
+      if (runningHead.split(' ').length > 50) {
         this.setState({
           runningHeadError: 'Must be 50 words at most.'
         });
