@@ -127,7 +127,7 @@ const SubmissionTabs = ({ selected, isSelected }) => {
                     : classes.buttonInactive
                 }
               >
-                Revision Needed
+                Revisions Needed
               </Button>
               <Button
                 onClick={acceptedClick}
