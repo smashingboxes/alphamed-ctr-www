@@ -16,6 +16,7 @@
     "clsx": "^1.1.1",
     "cuid": "^2.1.8",
     "jquery": "^3.5.1",
+    "node-sass": "^4.14.1",
     "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
@@ -42,7 +43,6 @@
     "git-commit-msg-linter": "^2.4.4",
     "jest": "^26.4.0",
     "jest-styled-components": "^7.0.3",
-    "node-sass": "^4.14.1",
     "react-test-renderer": "^16.13.1",
     "webpack-dev-server": "^3.11.0"
   }
