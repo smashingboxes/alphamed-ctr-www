@@ -52,7 +52,7 @@ function* createCTRCoAuthor({
     }
   } catch (error) {
     yield put(createCTRCoAuthorFailure(error.message));
-    yield swalMessage(error.message, 'error');
+    yield swalMessage('Something went wrong!', 'error');
   }
 }
 

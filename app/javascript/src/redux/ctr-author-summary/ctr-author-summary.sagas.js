@@ -45,7 +45,7 @@ function* createCTRAuthorSummary({
     }
   } catch (error) {
     yield put(createCTRAuthorSummaryFailure(error.message));
-    yield swalMessage(error.message, 'error');
+    yield swalMessage('Something went wrong!', 'error');
   }
 }
 

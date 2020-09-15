@@ -78,7 +78,7 @@ function* createCTRYourInformation({
     }
   } catch (error) {
     yield put(createCTRYourInformationFailure(error.message));
-    yield swalMessage(error.message, 'error');
+    yield swalMessage('Something went wrong!', 'error');
   }
 }
 

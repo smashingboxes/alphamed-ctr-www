@@ -242,6 +242,7 @@ class OverviewForm extends React.Component {
               <CTRInput
                 type='text'
                 name='runningHead'
+                require={true}
                 value={runningHead}
                 onChange={this.handleChange}
                 label='Running Head'
@@ -252,6 +253,7 @@ class OverviewForm extends React.Component {
               <CTRInput
                 type='text'
                 name='keywords'
+                require={true}
                 value={keywords}
                 onChange={this.handleChange}
                 label='Keywords'
@@ -262,6 +264,7 @@ class OverviewForm extends React.Component {
               <CTRInput
                 type='text'
                 name='identifier'
+                require={true}
                 value={identifier}
                 onChange={this.handleChange}
                 label='ClinicalTrails.gov Identifier'
@@ -272,6 +275,7 @@ class OverviewForm extends React.Component {
               <CTRInput
                 type='text'
                 name='sponsor'
+                require={true}
                 value={sponsor}
                 onChange={this.handleChange}
                 label='Sponsor'
