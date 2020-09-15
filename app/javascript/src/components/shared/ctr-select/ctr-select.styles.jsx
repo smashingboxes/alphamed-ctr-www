@@ -20,12 +20,12 @@ export const ErrorSpan = styled.span`
   display: block;
   font-size: 12px;
   color: ${errorColor};
-  margin-left: 50px;
+  text-align: right;
 `;
 
 export const GroupContainer = styled.div`
   display: inline-block;
-  margin: 45px 0;
+  margin: 20px 0;
 
   input[type='password'] {
     letter-spacing: 0.3em;

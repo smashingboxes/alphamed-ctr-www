@@ -14,12 +14,15 @@ const CTRInput = ({
   width = '500px',
   label,
   error,
+  display,
+  require,
+  bottomMargin,
   ...props
 }) => {
   return (
     <InputContainer>
       <GroupContainer>
-        <FormInputLabel>
+        <FormInputLabel display={display}>
           {label} {require ? <FormSpan>*</FormSpan> : null}
         </FormInputLabel>
         <FormInputContainer width={width} onChange={handleChange} {...props} />

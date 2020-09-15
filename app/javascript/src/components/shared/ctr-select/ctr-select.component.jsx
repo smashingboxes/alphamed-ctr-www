@@ -14,6 +14,7 @@ const CTRSelect = ({
   width = '500px',
   label,
   error,
+  require,
   ...props
 }) => {
   return (
