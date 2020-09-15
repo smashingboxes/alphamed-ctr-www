@@ -10,7 +10,7 @@ import {
   ReactQuillContainer
 } from './form-editor.styles';
 
-const FormEditor = ({ label, error, ...props }) => {
+const FormEditor = ({ label, require, data, setData, error, ...props }) => {
   return (
     <FormEditorContainer>
       <GroupContainer>
@@ -19,7 +19,12 @@ const FormEditor = ({ label, error, ...props }) => {
             {label} {require ? <FormSpan>*</FormSpan> : null}
           </EditorLabelContainer>
         ) : null}
-        <ReactQuillContainer theme='snow' {...props} />
+        <ReactQuillContainer
+          theme='snow'
+          value={data}
+          onChange={setData}
+          {...props}
+        />
         {error ? (
           <ErrorSpan className='error'>&#10005; {error}</ErrorSpan>
         ) : null}

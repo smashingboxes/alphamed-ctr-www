@@ -13,14 +13,16 @@ import {
 
 import { typeOfStudyData } from './overview-form.data';
 
+import { swalMessage } from '../../shared/swal-message/swal-message';
 import FormEditor from '../../shared/form-editor/form-editor.component';
 import CTRInput from '../../shared/ctr-input/ctr-input.component';
 import CTRSelect from '../../shared/ctr-select/ctr-select.component';
 import SecondaryButton from '../../shared/secondary-button/secondary-button.component';
-import OverviewComments from '../overview-comments/overview-comments.component';
+import CTRComments from '../../shared/ctr-comments/ctr-comments.component';
 
 class OverviewForm extends React.Component {
   state = {
+    id: '',
     typeOfStudy: 'Phase I',
     title: '',
     runningHead: '',
@@ -33,8 +35,39 @@ class OverviewForm extends React.Component {
     keywordsError: '',
     identifierError: '',
     sponsorError: '',
-    checked: false
+    checked: false,
+    isEdit: false
   };
+
+  componentDidMount() {
+    const { ctrResult } = this.props;
+
+    if (ctrResult === null) return;
+    if (ctrResult.length === 0) return;
+
+    const {
+      study_phase,
+      title,
+      running_head,
+      key_words,
+      identifier,
+      irb_approved,
+      sponsor,
+      _id
+    } = ctrResult[0];
+
+    return this.setState({
+      typeOfStudy: study_phase,
+      title,
+      runningHead: running_head,
+      keywords: key_words,
+      identifier,
+      checked: irb_approved,
+      sponsor,
+      isEdit: true,
+      id: _id.$oid
+    });
+  }
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -46,18 +79,20 @@ class OverviewForm extends React.Component {
       keywords,
       identifier,
       sponsor,
-      checked
+      checked,
+      isEdit,
+      id
     } = this.state;
 
     const { createCTROverviewStart, user } = this.props;
 
-    if (validator.isEmpty(title)) {
+    if (validator.isEmpty(title) || title === null) {
       this.setState({
         titleError: 'This field is mandatory.'
       });
       return;
     } else {
-      if (title.length > 150) {
+      if (title.split(' ').length > 150) {
         this.setState({
           titleError: 'Must be 150 words at most.'
         });
@@ -71,7 +106,7 @@ class OverviewForm extends React.Component {
       });
       return;
     } else {
-      if (runningHead.length > 50) {
+      if (runningHead.split(' ').length > 50) {
         this.setState({
           runningHeadError: 'Must be 50 words at most.'
         });
@@ -89,7 +124,6 @@ class OverviewForm extends React.Component {
         this.setState({
           keywordsError: 'Must be 5 words at most.'
         });
-
         return;
       }
     }
@@ -108,6 +142,13 @@ class OverviewForm extends React.Component {
       return;
     }
 
+    if (checked === false) {
+      return swalMessage(
+        'Please check the IRB approved first before proceeding to next step.',
+        'error'
+      );
+    }
+
     return createCTROverviewStart({
       authToken: user.authentication_token,
       typeOfStudy,
@@ -116,7 +157,9 @@ class OverviewForm extends React.Component {
       keywords,
       identifier,
       sponsor,
-      checked
+      checked,
+      isEdit,
+      id
     });
   };
 
@@ -163,11 +206,11 @@ class OverviewForm extends React.Component {
         <OverviewContainer>Overview</OverviewContainer>
         <form onSubmit={this.handleSubmit}>
           <OverviewFormContainer>
-            {user.user_type === 3 ? null : (
+            {user.user_type === 2 ? (
               <FormContainer>
                 <FormEditor label='Section Editor Comments' />
               </FormContainer>
-            )}
+            ) : null}
             <FormContainer>
               <CTRSelect
                 label='Type of Study'
@@ -257,7 +300,7 @@ class OverviewForm extends React.Component {
               </Grid>
             </FormContainer>
           </OverviewFormContainer>
-          <OverviewComments />
+          <CTRComments />
           <Grid container justify='center' alignItems='center'>
             <ButtonContainer>
               <SecondaryButton type='submit'>Save</SecondaryButton>

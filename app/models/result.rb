@@ -205,7 +205,7 @@ class Result
   def set_coauthor_information result
     arr = []
     result[:coauthors].each do |coauthor|
-      arr<<{"email"=>coauthor[:email], "order"=>coauthor[:order]}
+      arr<<{"email"=>coauthor[:email], "order"=>coauthor[:order], "first_name"=>coauthor[:first_name], "middle_name"=>coauthor[:middle_name], "last_name"=>coauthor[:last_name], "full_name"=>coauthor[:full_name], "ca"=>coauthor[:ca], "pi"=>coauthor[:pi], "institutions"=>coauthor[:institutions], "id"=>coauthor[:id]}
     end
     self.coauthors=arr
   end

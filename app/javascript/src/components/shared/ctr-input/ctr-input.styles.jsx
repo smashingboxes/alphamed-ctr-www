@@ -25,7 +25,7 @@ export const InputContainer = styled.div`
 
 export const GroupContainer = styled.div`
   display: inline-block;
-  margin: 45px 0;
+  margin: 20px 0;
 
   input[type='password'] {
     letter-spacing: 0.3em;
@@ -65,7 +65,7 @@ export const FormInputContainer = styled.input`
 `;
 
 export const FormInputLabel = styled.label`
-  color: #58285f;
+  color: ${(props) => (props.display ? '#fff' : '#58285f')};
   font-size: 16px;
   font-weight: normal;
   margin-right: 10px;
