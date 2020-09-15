@@ -36,6 +36,13 @@ const Footer = () => {
                   TERMS OF USE
                 </FooterLinks>{' '}
                 |{' '}
+                <FooterLinks
+                  href='https://theoncologist.onlinelibrary.wiley.com/hub/journal/1549490x/privacy'
+                  target='_blank'
+                >
+                  PRIVACY POLICY
+                </FooterLinks>{' '}
+                |{' '}
                 <FooterLinks href='mailto:editorialoffice@ctr.theoncologist.com?subject=Please send us your overall feedback'>
                   PLEASE SEND US YOUR OVERALL FEEDBACK
                 </FooterLinks>
