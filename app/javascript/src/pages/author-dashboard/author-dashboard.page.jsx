@@ -24,7 +24,7 @@ const AuthorDashboardPage = ({ retrieveCTRResultsStart, authToken }) => {
   }, [authToken, retrieveCTRResultsStart]);
 
   return (
-    <Grid container>
+    <Grid container style={{ height: '75vh' }}>
       <Grid item xs={1} />
       <Grid item xs={2}>
         <Grid item container direction='column'>

@@ -17,11 +17,6 @@ const AuthorRoute = () => {
     <>
       <PrivateRoute path='/edit-profile' exact component={EditProfilePage} />
       <PrivateRoute
-        path='/submission/results/new'
-        exact
-        component={OverviewPage}
-      />
-      <PrivateRoute
         path='/submission/results/:id'
         exact
         component={OverviewPage}

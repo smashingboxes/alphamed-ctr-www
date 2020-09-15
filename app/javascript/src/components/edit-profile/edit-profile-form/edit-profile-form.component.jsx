@@ -150,6 +150,7 @@ class EditProfileForm extends React.Component {
             type='password'
             name='password'
             value={password}
+            require={true}
             onChange={this.handleChange}
             label="Password (leave blank if you don't want to change it)"
             error={passwordError}
@@ -158,6 +159,7 @@ class EditProfileForm extends React.Component {
             type='password'
             name='confirmPassword'
             value={confirmPassword}
+            require={true}
             onChange={this.handleChange}
             label='Confirm Password'
             error={confirmPasswordError}
@@ -166,8 +168,9 @@ class EditProfileForm extends React.Component {
             type='password'
             name='currentPassword'
             value={currentPassword}
+            require={true}
             onChange={this.handleChange}
-            label='Current Password'
+            label='Current Password (we need your current password to confirm your changes)'
             error={currentPasswordError}
           />
           <PrimaryButtonContainer>

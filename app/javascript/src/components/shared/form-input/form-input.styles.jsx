@@ -72,3 +72,8 @@ export const FormInputLabel = styled.label`
     ${shrinkLabelStyles}
   }
 `;
+
+export const FormSpan = styled.span`
+  color: ${errorColor};
+  font-size: 12px;
+`;

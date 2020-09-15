@@ -11,7 +11,7 @@ const CoAuthorInformationPage = ({ ctrResult }) => {
   const classes = useStyles();
 
   return (
-    <Grid container>
+    <Grid container style={{ height: '75vh' }}>
       <Grid item xs={3}>
         <Grid item container direction='column'>
           <SubmissionSidebar

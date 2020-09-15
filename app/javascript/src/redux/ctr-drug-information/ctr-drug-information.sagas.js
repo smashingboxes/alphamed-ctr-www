@@ -29,7 +29,7 @@ function* createDrugInformation({ payload: { authToken, arms } }) {
     }
   } catch (error) {
     yield put(createCTRDrugInformationFailure(error.message));
-    yield swalMessage(error.message, 'error');
+    yield swalMessage('Something went wrong!', 'error');
   }
 }
 

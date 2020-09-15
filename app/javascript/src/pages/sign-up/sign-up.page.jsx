@@ -9,7 +9,7 @@ const SignUpPage = () => {
   const classes = useStyles();
 
   return (
-    <Grid container>
+    <Grid container style={{ height: '75vh' }}>
       <Grid item xs={12} className={classes.form}>
         <Grid container justify='center' alignItems='center'>
           <SignUpForm />

@@ -175,6 +175,7 @@ const TableStarted = ({ ctrResults }) => {
   };
 
   const goToEdit = (id, e) => {
+    e.preventDefault();
     window.location.href = `/submission/results/${id}`;
   };
 
@@ -232,13 +233,25 @@ const TableStarted = ({ ctrResults }) => {
                       >
                         {row.title}
                       </TableCell>
-                      <TableCell className={classes.tableData} align='left'>
+                      <TableCell
+                        scope='row'
+                        className={classes.tableData}
+                        align='left'
+                      >
                         {author_name}
                       </TableCell>
-                      <TableCell className={classes.tableData} align='left'>
+                      <TableCell
+                        scope='row'
+                        className={classes.tableData}
+                        align='left'
+                      >
                         {row.created_at.substring(0, 10)}
                       </TableCell>
-                      <TableCell className={classes.tableData} align='left'>
+                      <TableCell
+                        scope='row'
+                        className={classes.tableData}
+                        align='left'
+                      >
                         <Menu
                           id='actions'
                           anchorEl={anchorEl}
