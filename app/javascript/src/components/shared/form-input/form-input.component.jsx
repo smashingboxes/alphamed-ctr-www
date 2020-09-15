@@ -4,7 +4,8 @@ import {
   GroupContainer,
   FormInputContainer,
   FormInputLabel,
-  ErrorSpan
+  ErrorSpan,
+  FormSpan
 } from './form-input.styles';
 
 const FormInput = ({
@@ -12,6 +13,7 @@ const FormInput = ({
   width = '500px',
   label,
   error,
+  require,
   ...props
 }) => {
   return (
@@ -19,7 +21,9 @@ const FormInput = ({
       <FormInputContainer width={width} onChange={handleChange} {...props} />
       {label ? (
         <>
-          <FormInputLabel className='shrink'>{label}</FormInputLabel>
+          <FormInputLabel className='shrink'>
+            {label} {require ? <FormSpan>*</FormSpan> : null}
+          </FormInputLabel>
           {error ? (
             <ErrorSpan className='error'>&#10005; {error}</ErrorSpan>
           ) : null}

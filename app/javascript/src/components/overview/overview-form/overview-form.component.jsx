@@ -13,15 +13,16 @@ import {
 
 import { typeOfStudyData } from './overview-form.data';
 
+import { swalMessage } from '../../shared/swal-message/swal-message';
 import FormEditor from '../../shared/form-editor/form-editor.component';
 import CTRInput from '../../shared/ctr-input/ctr-input.component';
 import CTRSelect from '../../shared/ctr-select/ctr-select.component';
 import SecondaryButton from '../../shared/secondary-button/secondary-button.component';
-import OverviewComments from '../overview-comments/overview-comments.component';
-import { swalMessage } from '../../shared/swal-message/swal-message';
+import CTRComments from '../../shared/ctr-comments/ctr-comments.component';
 
 class OverviewForm extends React.Component {
   state = {
+    id: '',
     typeOfStudy: 'Phase I',
     title: '',
     runningHead: '',
@@ -34,8 +35,39 @@ class OverviewForm extends React.Component {
     keywordsError: '',
     identifierError: '',
     sponsorError: '',
-    checked: false
+    checked: false,
+    isEdit: false
   };
+
+  componentDidMount() {
+    const { ctrResult } = this.props;
+
+    if (ctrResult === null) return;
+    if (ctrResult.length === 0) return;
+
+    const {
+      study_phase,
+      title,
+      running_head,
+      key_words,
+      identifier,
+      irb_approved,
+      sponsor,
+      _id
+    } = ctrResult[0];
+
+    return this.setState({
+      typeOfStudy: study_phase,
+      title,
+      runningHead: running_head,
+      keywords: key_words,
+      identifier,
+      checked: irb_approved,
+      sponsor,
+      isEdit: true,
+      id: _id.$oid
+    });
+  }
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -47,18 +79,20 @@ class OverviewForm extends React.Component {
       keywords,
       identifier,
       sponsor,
-      checked
+      checked,
+      isEdit,
+      id
     } = this.state;
 
     const { createCTROverviewStart, user } = this.props;
 
-    if (validator.isEmpty(title)) {
+    if (validator.isEmpty(title) || title === null) {
       this.setState({
         titleError: 'This field is mandatory.'
       });
       return;
     } else {
-      if (title.split(' ').length > 150) {
+      if (title.trim().split(' ').length > 150) {
         this.setState({
           titleError: 'Must be 150 words at most.'
         });
@@ -72,7 +106,7 @@ class OverviewForm extends React.Component {
       });
       return;
     } else {
-      if (runningHead.split(' ').length > 50) {
+      if (runningHead.trim().split(' ').length > 50) {
         this.setState({
           runningHeadError: 'Must be 50 words at most.'
         });
@@ -86,7 +120,7 @@ class OverviewForm extends React.Component {
       });
       return;
     } else {
-      if (keywords.split(' ').length > 5) {
+      if (keywords.trim().split(' ').length > 5) {
         this.setState({
           keywordsError: 'Must be 5 words at most.'
         });
@@ -110,7 +144,7 @@ class OverviewForm extends React.Component {
 
     if (checked === false) {
       return swalMessage(
-        'Please check the IRB first before proceeding to next submission step.',
+        'Please check the IRB approved first before proceeding to next step.',
         'error'
       );
     }
@@ -123,7 +157,9 @@ class OverviewForm extends React.Component {
       keywords,
       identifier,
       sponsor,
-      checked
+      checked,
+      isEdit,
+      id
     });
   };
 
@@ -170,11 +206,11 @@ class OverviewForm extends React.Component {
         <OverviewContainer>Overview</OverviewContainer>
         <form onSubmit={this.handleSubmit}>
           <OverviewFormContainer>
-            {user.user_type === 3 ? null : (
+            {user.user_type === 2 ? (
               <FormContainer>
                 <FormEditor label='Section Editor Comments' />
               </FormContainer>
-            )}
+            ) : null}
             <FormContainer>
               <CTRSelect
                 label='Type of Study'
@@ -206,6 +242,7 @@ class OverviewForm extends React.Component {
               <CTRInput
                 type='text'
                 name='runningHead'
+                require={true}
                 value={runningHead}
                 onChange={this.handleChange}
                 label='Running Head'
@@ -216,6 +253,7 @@ class OverviewForm extends React.Component {
               <CTRInput
                 type='text'
                 name='keywords'
+                require={true}
                 value={keywords}
                 onChange={this.handleChange}
                 label='Keywords'
@@ -226,6 +264,7 @@ class OverviewForm extends React.Component {
               <CTRInput
                 type='text'
                 name='identifier'
+                require={true}
                 value={identifier}
                 onChange={this.handleChange}
                 label='ClinicalTrails.gov Identifier'
@@ -236,6 +275,7 @@ class OverviewForm extends React.Component {
               <CTRInput
                 type='text'
                 name='sponsor'
+                require={true}
                 value={sponsor}
                 onChange={this.handleChange}
                 label='Sponsor'
@@ -264,7 +304,7 @@ class OverviewForm extends React.Component {
               </Grid>
             </FormContainer>
           </OverviewFormContainer>
-          <OverviewComments />
+          <CTRComments />
           <Grid container justify='center' alignItems='center'>
             <ButtonContainer>
               <SecondaryButton type='submit'>Save</SecondaryButton>

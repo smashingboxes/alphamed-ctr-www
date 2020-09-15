@@ -23,6 +23,7 @@ import SignUpPage from './pages/sign-up/sign-up.page';
 import ForgotPasswordPage from './pages/forgot-password/forgot-password.page';
 import ClinicalTrialResultsPage from './pages/clinical-trial-results/clinical-trial-results.page';
 import EmailTemplateFormPage from './pages/email-template-form/email-template-form.page';
+import TabsPhase from './components/shared/tabs-phase/tabs-phase.component';
 
 const App = ({ history, user, isAuthenticated }) => {
   const { pathname } = history.location;
@@ -42,6 +43,8 @@ const App = ({ history, user, isAuthenticated }) => {
       {excludedLinks.includes(pathname) ? null : <SubNavbar />}
       <Switch>
         <Redirect exact from='/' to='/visiting/results' />
+        <Route path='/tabs' exact component={TabsPhase} />
+        <Route path='/email-form' exact component={EmailTemplateFormPage} />
         <Route
           path='/sign-in'
           exact
@@ -68,7 +71,6 @@ const App = ({ history, user, isAuthenticated }) => {
           exact
           component={ClinicalTrialResultsPage}
         />
-        <Route path='/email-form' exact component={EmailTemplateFormPage} />
         {!isAuthenticated ? null : !user ? null : user.user_type === 3 ? (
           <AuthorRoute />
         ) : null}

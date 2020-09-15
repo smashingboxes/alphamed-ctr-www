@@ -3,7 +3,7 @@ import React from 'react';
 import PrivateRoute from './private.route';
 
 import EditProfilePage from '../pages/edit-profile/edit-profile.page';
-import OverviewPage from '../pages/overview/overview.page';
+import OverviewPage from '../pages/overview/overview.container';
 import AuthorDashboardPage from '../pages/author-dashboard/author-dashboard.page';
 import DisclosureDashboardPage from '../pages/disclosure-dashboard/disclosure-dashboard.page';
 import EmailTemplatesPage from '../pages/email-templates/email-templates.page';

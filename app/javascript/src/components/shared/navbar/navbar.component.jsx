@@ -34,10 +34,9 @@ const Navbar = ({ history, user, signOutStart }) => {
   };
 
   const goToHome = () => {
-    if (user && user.user_type === 'admin')
-      history.push('/submission/admin/results');
-    if (user && user.user_type === 'se') history.push('/submission/se/results');
-    if (user && user.user_type === 'author')
+    if (user && user.user_type === 1) history.push('/submission/admin/results');
+    if (user && user.user_type === 2) history.push('/submission/se/results');
+    if (user && user.user_type === 3)
       history.push('/submission/author/results');
   };
 
@@ -66,11 +65,7 @@ const Navbar = ({ history, user, signOutStart }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant='h6'
-            className={classes.title}
-            onClick={goToHome}
-          >
+          <Typography variant='h6' className={classes.title} onClick={goToHome}>
             Clinical Trial Results
           </Typography>
           {user === null ? (
