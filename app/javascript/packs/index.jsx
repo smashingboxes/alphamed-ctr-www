@@ -5,6 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 
 import { theme } from '../src/theme.styles';
+import 'react-quill/dist/quill.snow.css';
 
 import { store } from '../src/redux/store';
 
