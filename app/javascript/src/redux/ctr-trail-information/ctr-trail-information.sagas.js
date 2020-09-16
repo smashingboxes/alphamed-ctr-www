@@ -49,7 +49,7 @@ function* createTrailInformation({
     }
   } catch (error) {
     yield put(createCTRTrailInformationFailure(error.message));
-    yield swalMessage(error.message, 'error');
+    yield swalMessage('Something went wrong!', 'error');
   }
 }
 

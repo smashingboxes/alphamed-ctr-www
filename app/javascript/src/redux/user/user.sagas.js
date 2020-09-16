@@ -48,7 +48,7 @@ function* signInWithEmail({ payload: { email, password } }) {
     }
   } catch (error) {
     yield put(signInFailure(error.message));
-    yield swalMessage(error, 'error');
+    yield swalMessage('Something went wrong!', 'error');
   }
 }
 
@@ -73,11 +73,12 @@ function* updateProfile({
     }
   } catch (error) {
     yield put(editProfileFailure(error.message));
-    yield swalMessage(error.message, 'error');
+    yield swalMessage('Something went wrong!', 'error');
   }
 }
 
 function* signUp({ payload: { email, password, confirmPassword } }) {
+  console.log('i was here');
   try {
     const response = yield server.post('/users', {
       user: {
@@ -88,16 +89,13 @@ function* signUp({ payload: { email, password, confirmPassword } }) {
     });
 
     if (response) {
-      yield put(signUpSuccess({ user: response.data }));
+      yield put(signUpSuccess({ user: null }));
       yield swalMessage('Successfully signed up!', 'success');
-      yield setTimeout(
-        () => (window.location.href = '/submission/author/results'),
-        2000
-      );
+      yield setTimeout(() => (window.location.href = '/sign-in'), 2000);
     }
   } catch (error) {
     yield put(signUpFailure(error.message));
-    yield swalMessage(error.message, 'error');
+    yield swalMessage('Something went wrong!', 'error');
   }
 }
 
@@ -107,7 +105,7 @@ function* signOut() {
     yield put(signOutSuccess());
   } catch (error) {
     yield put(signOutFailure(error.message));
-    yield swalMessage(error.message, 'error');
+    yield swalMessage('Something went wrong!', 'error');
   }
 }
 

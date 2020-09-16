@@ -21,7 +21,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
         ...state,
         currentUser: action.payload.user,
         error: null,
-        isAuthenticated: true
+        isAuthenticated: false
       };
     case UserActionTypes.SIGN_OUT_SUCCESS:
       return {

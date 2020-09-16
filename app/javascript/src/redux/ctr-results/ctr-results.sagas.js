@@ -19,7 +19,7 @@ function* retrieveCTRResults({ payload: { authToken } }) {
     }
   } catch (error) {
     yield put(retrieveCTRResultsFailure(error));
-    yield swalMessage(error, 'error');
+    yield swalMessage('Something went wrong!', 'error');
   }
 }
 

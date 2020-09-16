@@ -6,6 +6,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 
 import { theme } from '../src/theme.styles';
 import 'react-quill/dist/quill.snow.css';
+import 'antd/dist/antd.css';
 
 import { store } from '../src/redux/store';
 
