@@ -34,6 +34,8 @@ class Result
   field :sponsor
   field :irb_approved, type: Boolean, default: false
 
+  field :result_count, default: 1
+
   field :key_words
 
   field :coauthors, type: Array, default: [{ "email" => "", "order" => 0 }]
@@ -131,6 +133,7 @@ class Result
   end
 
   def set_overview result
+    self.result_count=result[:result_count]
     self.title=result[:title]
     self.running_head=result[:running_head]
     self.key_words=result[:key_words]
@@ -141,6 +144,8 @@ class Result
   end
 
   def set_your_information result
+    self.result_count=result[:result_count]
+    self.author_name=result[:author_name]
     self.author_first_name=result[:author_first_name]
     self.author_middle_name=result[:author_middle_name]
     self.author_last_name=result[:author_last_name]
@@ -171,6 +176,7 @@ class Result
   end
 
   def set_author_summary result
+    self.result_count=result[:result_count]
     self.abstract_background=result[:abstract_background]
     self.abstract_methods=result[:abstract_methods]
     self.abstract_results=result[:abstract_results]
@@ -180,6 +186,7 @@ class Result
   end
 
   def set_trial_information result
+    self.result_count=result[:result_count]
     self.diseases=result[:diseases]
     self.stage_of_disease_or_treatment=result[:stage_of_disease_or_treatment]
     self.prior_therapy=result[:prior_therapy]
@@ -203,6 +210,7 @@ class Result
   end
 
   def set_coauthor_information result
+    self.result_count=result[:result_count]
     arr = []
     result[:coauthors].each do |coauthor|
       arr<<{"email"=>coauthor[:email], "order"=>coauthor[:order]}
@@ -211,6 +219,7 @@ class Result
   end
 
   def set_drug_information result
+    self.result_count=result[:result_count]
     result[:arms].each do |arm_obj|
       arm=self.arms.find_by(id:arm_obj[:id]) || self.arms.new
       arm.set_arm_drug_information(arm_obj)
@@ -219,6 +228,7 @@ class Result
   end
 
   def set_patient_characteristics result
+    self.result_count=result[:result_count]
     result[:arms].each do |arm_obj|
       arm=self.arms.find_by(id:arm_obj[:id]) || self.arms.new
       arm.set_arm_patient_characteristics(arm_obj)
@@ -227,6 +237,7 @@ class Result
   end
 
   def set_pharmacokinetics_pharmacodynamics result
+    self.result_count=result[:result_count]
     result[:arms].each do |arm_obj|
       arm=self.arms.find_by(id:arm_obj[:id]) || self.arms.new
       arm.set_arm_pharmacokinetics_pharmacodynamics(arm_obj)
@@ -235,6 +246,7 @@ class Result
   end
 
   def set_adverse_events result
+    self.result_count=result[:result_count]
     result[:arms].each do |arm_obj|
       arm=self.arms.find_by(id:arm_obj[:id]) || self.arms.new
       arm.set_arm_adverse_events(arm_obj)
@@ -243,6 +255,7 @@ class Result
   end
 
   def set_primary_assessment_method result
+    self.result_count=result[:result_count]
     result[:arms].each do |arm_obj|
       arm=self.arms.find_by(id:arm_obj[:id]) || self.arms.new
       arm.set_primary_assessment_method(arm_obj)
@@ -251,6 +264,7 @@ class Result
   end
 
   def set_assessment_analysis_discussion result
+    self.result_count=result[:result_count]
     self.completed_or_terminated=result[:completed_or_terminated]
     self.investigators_assessment=result[:investigators_assessment]
     self.completed_reason=result[:completed_reason]
@@ -260,6 +274,7 @@ class Result
   end
 
   def set_figures_tables result
+    self.result_count=result[:result_count]
     result[:figures].each do |fig_obj|
       figure=self.figures.find_by(id:fig_obj[:id]) || self.figures.new
       figure.set_figures_tables(fig_obj)
@@ -270,6 +285,7 @@ class Result
   def overview_json
     {
       id:self.id.to_s,
+      result_count:self.result_count,
       title:self.title.to_s,
       running_head:self.running_head.to_s,
       key_words:self.key_words.to_s,
@@ -283,6 +299,9 @@ class Result
 
   def your_information_json
     {
+      id:self.id.to_s,
+      result_count:self.result_count,
+      author_name:self.author_name.to_s,
       author_first_name:self.author_first_name.to_s,
       author_middle_name:self.author_middle_name.to_s,
       author_last_name:self.author_last_name.to_s,
@@ -309,6 +328,8 @@ class Result
 
   def author_summary_json 
     {
+      id:self.id.to_s,
+      result_count:self.result_count,
       abstract_background:self.abstract_background || "",
       abstract_methods:self.abstract_methods || "",
       abstract_results:self.abstract_results || "",
@@ -321,6 +342,8 @@ class Result
 
   def trial_information_json
     {
+      id:self.id.to_s,
+      result_count:self.result_count,
       diseases:self.diseases || [],
       stage_of_disease_or_treatment:self.stage_of_disease_or_treatment.to_s,
       prior_therapy:self.prior_therapy.to_s,
@@ -335,6 +358,8 @@ class Result
 
   def coauthor_information_json
     {
+      id:self.id.to_s,
+      result_count:self.result_count,
       coauthors:self.coauthors,
       comments:self.comments.where(step:"coauthors_information").order(:created_at=>:asc).map{|c|c.to_json}
     }
@@ -342,6 +367,8 @@ class Result
 
   def drug_information_json
     {
+      id:self.id.to_s,
+      result_count:self.result_count,
       arms:self.arms.order(:created_at=>:asc).map{|a|a.drug_information_json},
       comments:self.comments.where(step:"drug_information").order(:created_at=>:asc).map{|c|c.to_json},
       drug_class_list:Result.drug_class_list,
@@ -353,6 +380,8 @@ class Result
 
   def patient_characteristics_json 
     {
+      id:self.id.to_s,
+      result_count:self.result_count,
       arms:self.arms.order(:created_at=>:asc).map{|a|a.patient_characteristics_json},
       comments:self.comments.where(step:"patient_characteristics").order(:created_at=>:asc).map{|c|c.to_json}
     }
@@ -360,6 +389,8 @@ class Result
 
   def pharmacokinetics_pharmacodynamics_json
     {
+      id:self.id.to_s,
+      result_count:self.result_count,
       arms:self.arms.order(:created_at=>:asc).map{|a|a.pharmacokinetics_pharmacodynamics_json},
       comments:self.comments.where(step:"pharmacokinetics_pharmacodynamics").order(:created_at=>:asc).map{|c|c.to_json}
     }
@@ -367,6 +398,8 @@ class Result
 
   def adverse_events_json
     {
+      id:self.id.to_s,
+      result_count:self.result_count,
       arms:self.arms.order(:created_at=>:asc).map{|a|a.adverse_events_json},
       comments:self.comments.where(step:"adverse_events").order(:created_at=>:asc).map{|c|c.to_json}
     }
@@ -374,6 +407,8 @@ class Result
 
   def primary_assessment_method_json
     {
+      id:self.id.to_s,
+      result_count:self.result_count,
       arms:self.arms.order(:created_at=>:asc).map{|a|a.primary_assessment_method_json},
       comments:self.comments.where(step:"primary_assessment_method").order(:created_at=>:asc).map{|c|c.to_json},
       assessment_list:Assessment::EVALUATION_METHOD_LIST
@@ -382,6 +417,8 @@ class Result
 
   def assessment_analysis_discussion_json
     {
+      id:self.id.to_s,
+      result_count:self.result_count,
       completed_or_terminated:self.completed_or_terminated,
       investigators_assessment:self.investigators_assessment,
       completed_reason:self.completed_reason,
@@ -394,6 +431,8 @@ class Result
 
   def figures_tables_json
     {
+      id:self.id.to_s,
+      result_count:self.result_count,
       figures:self.figures.order(:position=>:asc).map{|a|a.figures_tables_json},
       comments:self.comments.where(step:"figures_tables").order(:created_at=>:asc).map{|c|c.to_json}
     }
@@ -401,6 +440,8 @@ class Result
 
   def author_forms_json
     {
+      id:self.id.to_s,
+      result_count:self.result_count,
       forms:self.forms.order(:created_at=>:asc).map{|f|f.author_forms_json},
       comments:self.comments.where(step:"author_forms").order(:created_at=>:asc).map{|c|c.to_json}
     }
@@ -409,6 +450,8 @@ class Result
   def submission_overview_json params
     arms=self.arms
     {
+      id:self.id.to_s,
+      result_count:self.result_count,
       summary: {
         submitted_date:summary_date(self, params),
         title:self.title,
@@ -657,8 +700,38 @@ class Result
   end
 
   def submit_result
-    self.state = "submitted"
-    self.state_history = [{ state => Time.now }]
+    self.change_state("submitted")
+  end
+
+  def set_in_review
+    self.change_state("in_review")
+  end
+
+  def set_revision
+    self.change_state("revision")
+  end
+
+  def set_accepted
+    self.change_state("accepted")
+  end
+
+  def set_rejected
+    self.change_state("rejected")
+  end
+
+  def set_publish
+    self.change_state("published")
+  end
+
+  def change_state value
+    self.state = value
+    self.activities.create(
+      key: "state",
+      state: self.state,
+      user_id: self.author_id
+    )
+    self.state_history<<{ state => Time.now }
+    self.update(state_history: self.state_history)
   end
 
   private
