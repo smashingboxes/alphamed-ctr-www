@@ -17,7 +17,11 @@ Rails.application.routes.draw do
     end
   end
   resources :emails
-  resources :results
+  resources :results do
+    resources :forms, context: "forms" do
+      post :send_request, on: :member
+    end
+  end
   resources :posts
   namespace :api do
     resources :users, only: [] do
@@ -43,6 +47,7 @@ Rails.application.routes.draw do
         get 'author_forms', to: 'results#author_forms'
         get 'submission_overview', to: 'results#submission_overview'
         get 'disclosure', to: 'results#disclosure'
+        get 'activity_logs', to: 'results#activity_logs'
         get 'get_trial_information_lists', to: 'results#get_trial_information_lists'
         patch :update
         patch 'update_disclosure', to: 'results#update_disclosure'

@@ -281,4 +281,12 @@ class Api::ResultsController < ApplicationController
         render json: {message: "CTR not found."}, status: 422
     end
   end
+
+  def activity_logs
+    if @result = Result.find_by(id:params[:result_id])
+      render json: @result.activity_logs, status: 201
+    else
+      render json: {message: "CTR not found."}, status: 422
+    end
+  end
 end

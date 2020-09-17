@@ -9,6 +9,11 @@ class Result
 
   before_create :set_initial_state
 
+  after_create do |r|
+    r.activities.create(key: "state", state: r.state,
+                        user_id: r.author_id, user_name: r.author_name)
+  end
+
   embeds_many :activities, cascade_callbacks: true
   embeds_many :comments
   embeds_many :emails
@@ -728,13 +733,61 @@ class Result
     self.activities.create(
       key: "state",
       state: self.state,
-      user_id: self.author_id
+      user_id: self.author_id,
+      user_name: self.author_name
     )
     self.state_history<<{ state => Time.now }
     self.update(state_history: self.state_history)
   end
 
+  def activity_logs
+    date_format="%l:%M %p on %B %e, %Y"
+    {
+      logs: self.activities.map{|a|
+        {
+          date:a.created_at.try(:strftime, date_format),
+          user:a.user_name.to_s,
+          type:a.key.humanize,
+          details:activity_presenter(a)
+        }
+      }
+    }
+  end
+
   private
+    def activity_presenter activity
+      case activity.key
+      when "state"
+        activity.state.humanize
+      when "email"
+        link_to(
+          activity.email_subject,
+          "#email_modal",
+          class: "email",
+          data: {
+            content: activity.email_html,
+            from: activity.email_from,
+            to: activity.email_to,
+            toggle: "modal"
+          }
+        )
+      when "form"
+        if activity.form_id && (form = activity.result.forms.find(activity.form_id))
+          # if form.government_employee
+          #   link_to(
+          #     activity.form_type.humanize,
+          #     edit_result_form_url(activity.result, form, gov: true)
+          #   )
+          # else
+            # link_to(activity.form_type.to_s.humanize, Rails.application.routes.url_helpers.edit_result_form_url(activity.result, form))
+          # end
+        else
+          activity.form_type.humanize
+        end
+      else
+        "N/A"
+      end
+    end
     def set_initial_state
       # TODO: Look into whether this needs to be here, since we have initial: :started
       self.state = "started"
