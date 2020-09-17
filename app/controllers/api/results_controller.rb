@@ -1,5 +1,5 @@
 class Api::ResultsController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: [:update, :update_disclosure, :submit]
+  skip_before_action :verify_authenticity_token
 
   def overview
     #fetch result via result_id
@@ -171,7 +171,7 @@ class Api::ResultsController < ApplicationController
         elsif @section =="figures_tables"
           @result.set_figures_tables(params[:result])
         end
-        if @result.save
+        if @result.save!
           render json: @result, status: 201
         else
           render json: {message: "Something went wrong when saving CTR"}, status: 422
@@ -209,6 +209,71 @@ class Api::ResultsController < ApplicationController
       @result.submit_result
       if @result.save
         render json: {message: "Successfully submitted CTR."}, status: 201
+      else
+        render json: @result.errors, status: 422
+      end
+    else
+        render json: {message: "CTR not found."}, status: 422
+    end
+  end
+
+  def in_review
+    if @result = Result.find_by(id:params[:result_id])
+      @result.set_in_review
+      if @result.save
+        render json: {message: "CTR is now in review."}, status: 201
+      else
+        render json: @result.errors, status: 422
+      end
+    else
+        render json: {message: "CTR not found."}, status: 422
+    end
+  end
+
+  def revision
+    if @result = Result.find_by(id:params[:result_id])
+      @result.set_revision
+      if @result.save
+        render json: {message: "CTR successfully submitted for revision."}, status: 201
+      else
+        render json: @result.errors, status: 422
+      end
+    else
+        render json: {message: "CTR not found."}, status: 422
+    end
+  end
+
+  def accepted
+    if @result = Result.find_by(id:params[:result_id])
+      @result.set_accepted
+      if @result.save
+        render json: {message: "Successfully accepted CTR."}, status: 201
+      else
+        render json: @result.errors, status: 422
+      end
+    else
+        render json: {message: "CTR not found."}, status: 422
+    end
+  end
+
+  def rejected
+    if @result = Result.find_by(id:params[:result_id])
+      @result.set_rejected
+      if @result.save
+        render json: {message: "Successfully rejected CTR."}, status: 201
+      else
+        render json: @result.errors, status: 422
+      end
+    else
+        render json: {message: "CTR not found."}, status: 422
+    end
+  end
+
+  def publish
+    if @result = Result.find_by(id:params[:result_id])
+      @result.set_publish
+      if @result.save
+        render json: {message: "Successfully published CTR."}, status: 201
       else
         render json: @result.errors, status: 422
       end
