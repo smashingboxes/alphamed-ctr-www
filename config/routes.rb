@@ -48,6 +48,11 @@ Rails.application.routes.draw do
         patch 'update_disclosure', to: 'results#update_disclosure'
         delete :destroy
         post :submit
+        post :in_review
+        post :revision
+        post :accepted
+        post :rejected
+        post :publish
       end
     end
     resources :mail_templates, only: [:index, :create] do
