@@ -32,6 +32,8 @@ gem 'kaminari-mongoid'
 gem "carrierwave"
 gem "carrierwave-aws"
 gem "carrierwave-mongoid"
+gem "resque", require: "resque/server"
+gem "resque-web", require: "resque_web"
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
