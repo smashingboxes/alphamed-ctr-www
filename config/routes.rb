@@ -47,8 +47,10 @@ Rails.application.routes.draw do
         get 'author_forms', to: 'results#author_forms'
         get 'submission_overview', to: 'results#submission_overview'
         get 'disclosure', to: 'results#disclosure'
+        get 'disclosure_forms', to: 'results#disclosure_forms'
         get 'activity_logs', to: 'results#activity_logs'
         get 'get_trial_information_lists', to: 'results#get_trial_information_lists'
+        post 'send_coauthor_forms', to: 'results#send_coauthor_forms'
         patch :update
         patch 'update_disclosure', to: 'results#update_disclosure'
         delete :destroy

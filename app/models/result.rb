@@ -8,6 +8,7 @@ class Result
   include DateHelper
 
   before_create :set_initial_state
+  after_create :create_forms_for
 
   after_create do |r|
     r.activities.create(key: "state", state: r.state,
@@ -752,6 +753,39 @@ class Result
         }
       }
     }
+  end
+
+  def generate_coauthor_forms(actor_id = nil)
+    emails = coauthors.map { |c| c["email"] }
+    new_authors = emails.select do |email|
+      forms.where(signer_email: /^#{::Regexp.escape(email)}$/i).count.zero?
+    end
+    new_authors.each do |new_email|
+      author = coauthors.find { |h| h["email"] == new_email }
+      if author
+        # dont' send email, but generate forms. (true parameter)
+        Resque.enqueue(CoauthorEmailer, id.to_s, author, actor_id.to_s, true)
+      end
+    end
+  end
+
+  def create_forms_for
+    %w[disclosure].each do |type|
+      auth=self.author.attributes.slice(
+        "email", "first_name", "middle_name", "last_name", "institutions"
+      )
+      form = forms.where(signer_email: /^#{::Regexp.escape(auth["email"])}$/i, type: type).first
+
+      form ||= forms.new(signer_email: auth["email"], type: type)
+      form.type = type
+      form.signer_institutions = auth["institutions"]
+      name = auth["first_name"].presence || ""
+      name += auth["middle_name"].blank? ? " " : " #{auth["middle_name"]} "
+      name += auth["last_name"].presence || ""
+      name = name.strip.presence || "Unknown"
+      form.signer_name = name
+      form.save
+    end
   end
 
   private

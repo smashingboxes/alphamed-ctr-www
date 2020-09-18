@@ -135,6 +135,15 @@ class Api::ResultsController < ApplicationController
     render json: @disclosure.disclosure_json, status:201
   end
 
+  def disclosure_forms
+    if @result=Result.find_by(id:params[:result_id]) || Result.new
+      @disclosures=@result.forms.map{|f|f.disclosure_form_json}
+      render json:{disclosures:@disclosures}, status:201
+    else
+      render json: {message: "CTR not found."}, status: 422
+    end
+  end
+
   def get_trial_information_lists
     render json: Result.trial_information_constants_json, status: 201
   end
@@ -192,6 +201,19 @@ class Api::ResultsController < ApplicationController
       render json: @disclosure, status: 201
     else
       render json: {message: "Something went wrong when saving Disclosure"}, status: 422
+    end
+  end
+
+  def send_coauthor_forms
+    if @user = User.find_for_database_authentication(authentication_token: params[:auth_token])
+      if @result=Result.find_by(id:params[:result_id])
+        @result.generate_coauthor_forms(@user.id)
+        render json:{message:"Co-author email sent."}, status:422
+      else
+        render json: {message: "CTR not found."}, status: 422
+      end
+    else
+      render json: {message: "Invalid authentication token"}, status: 422
     end
   end
 
