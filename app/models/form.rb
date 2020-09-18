@@ -71,6 +71,14 @@ class Form
   	}
   end
 
+  def disclosure_form_json
+    {
+      id:self.id.to_s,
+      name:"#{self.signer_name} (#{self.signer_email})",
+      form_date:self.signed_at ? self.signed_at.strftime("%d/%m/%y") : "N/A"
+    }
+  end
+
   def set_disclosure form_obj
   	self.relationships=form_obj[:relationships]
   	self.signature=form_obj[:signature]
@@ -84,6 +92,9 @@ class Form
   	self.ownership=set_disclosure_hash(form_obj[:ownership])
   	self.expert=set_disclosure_hash(form_obj[:expert])
   	self.other=set_disclosure_hash(form_obj[:other])
+    signer=self.result.author
+    self.signer_name="#{signer.first_name} #{signer.middle_name} #{signer.last_name}"
+    self.signer_email=signer.email
   end
 
   def set_disclosure_hash hash_obj
