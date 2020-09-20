@@ -27,6 +27,9 @@ gem 'haml'
 gem "devise", "~> 4.7"
 gem 'webpacker', '~> 5.x'
 gem 'mongoid', '~> 7.0.5'
+gem "mongoid-history"
+gem "mongoid-slug"
+gem "mongoid_fulltext"
 gem "mailgun_rails"
 gem 'kaminari-mongoid'
 gem "carrierwave"
@@ -34,6 +37,7 @@ gem "carrierwave-aws"
 gem "carrierwave-mongoid"
 gem "resque", require: "resque/server"
 gem "resque-web", require: "resque_web"
+gem "pandoc-ruby"
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
