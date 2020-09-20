@@ -1,8 +1,8 @@
 class Result
   include Mongoid::Document
   include Mongoid::Attributes::Dynamic
-  # include Mongoid::FullTextSearch
-  # include Mongoid::Slug
+  include Mongoid::FullTextSearch
+  include Mongoid::Slug
   include Mongoid::Timestamps
 
   include DateHelper
@@ -107,6 +107,49 @@ class Result
   field :terminated_reason
   field :discussion
   field :references
+
+  field :ctr_year
+  field :sequence_number
+  slug :ctr_year, :sequence_number, history: true do |r|
+    r.ctr_number.to_url
+  end
+
+  def needs_slug?
+    slug.blank? || slug == "#{id}-1"
+  end
+
+  def ctr_number
+    "#{ctr_year}-#{sequence_number}"
+  end
+
+  def set_ctr_year
+    t = created_at || Time.now
+    short_year = t.strftime("%y")
+    "CTR#{short_year}"
+  end
+
+  def generate_sequence_number
+    this_year = "CTR#{Time.now.strftime("%y")}"
+    if Result.where(ctr_year: this_year).count.positive?
+      max_seq = Result.where(ctr_year: this_year).max(:sequence_number)
+      if max_seq
+        format "%03d", (max_seq.to_i + 1)
+      else
+        "001"
+      end
+    else
+      "001"
+    end
+  end
+
+  before_validation do |r|
+    if r.ctr_year.nil?
+      r.ctr_year = set_ctr_year
+    end
+    if r.sequence_number.nil?
+      r.sequence_number = r.generate_sequence_number
+    end
+  end
 
   # enum state: { started: 0, submitted: 1, in_review: 2, revision: 3, accepted: 4, rejected: 5, published: 6 }
 
@@ -576,6 +619,11 @@ class Result
           references:self.references
         }
       },
+      completed_or_terminated:self.completed_or_terminated,
+      completed_reason:self.completed_reason,
+      terminated_reason:self.terminated_reason,
+      discussion:self.discussion,
+      references:self.references,
       figures:self.figures,
       comments:self.comments.where(step:"submission_overview").order(:created_at=>:asc).map{|c|c.to_json}
     }
