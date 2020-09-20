@@ -1,0 +1,189 @@
+- r_json=@result.submission_overview_json(nil)
+%h1 Clinical Trial Results
+%h2 Overview
+%h2=r_json[:summary][:submitted_date]
+%h2 DOI
+%h2 Title
+%p=r_json[:summary][:title]
+%h2 Authors
+- r_json[:summary][:authors].each do |auth| 
+  %p="#{auth[:first_name]} #{auth[:last_name]}"
+%h2 ClinicalTrials.gov Identifier
+%p=r_json[:summary][:identifier]
+%h2 Sponsor(s)
+%p=r_json[:summary][:sponsor]
+%h2 Principal Investigator
+- r_json[:summary][:pi].each do |pi| 
+  %p="#{pi[:first_name]} #{pi[:last_name]}"
+%h2 IRB Approved
+%p=r_json[:summary][:irb_approved] ? "Yes" : "No"
+%h2 Disclosure
+%h1 Author Summary: Abstract and Brief Discussion
+%h2 Lessons Learned
+%p=r_json[:author_summary][:lessons_learned]
+%h1 Trial Information
+%h2 Disease
+- r_json[:trial_information][:diseases].each do |disease| 
+  %p=disease
+%h2 Stage of disease / treatment
+%p=r_json[:trial_information][:stage_of_disease_or_treatment]
+%h2 Prior Therapy
+%p=r_json[:trial_information][:prior_therapy]
+%h2 Type of study - 1
+%p=r_json[:trial_information][:study_phase]
+%h2 Type of study - 2
+%p=r_json[:trial_information][:type_of_study_2]
+%h2 Additional Details of Endpoints or Study Design
+%p=r_json[:trial_information][:endpoints_details]
+%h2 Investigator's Analysis
+%p=r_json[:trial_information][:investigators_assessment]
+- arms=@result.arms
+- arms.each do |arm|
+  %h1="Drug Information for Phase #{arm[:phase]} #{arm[:name]}"
+  - ctr=1
+  - arm.drugs.each do |drug|
+    %h2="Drug #{ctr}"
+    %h3 Generic/Working name
+    %p=drug[:generic_name]
+    %h3 Trade Name
+    %p=drug[:trade_name]
+    %h3 Company Name
+    %p=drug[:company_name]
+    %h3 Drug Type
+    %p=drug[:drug_type]
+    %h3 Drug Class
+    %p=drug[:drug_class]
+    %h3 Dose
+    %p=drug[:dose]
+    %h3 Route
+    %p=drug[:route]
+    %h3 Schedule of Administration
+    %p=drug[:schedule]
+    - ctr=ctr+1
+  %h1="Patient Characteristics for Phase #{arm[:phase]} #{arm[:name]}"
+  %h2 Number of patients, male
+  %p=arm[:patient_male]
+  %h2 Number of patients, female
+  %p=arm[:patient_female]
+  %h2 Stage
+  %p=arm[:patient_stage]
+  %h2 Age
+  %p="Median (range):#{arm[:patient_age]}"
+  %h2 Number of prior systemic therapies
+  %p="Median (range):#{arm[:patient_median_therapies]}"
+  %h2 Performance Status: ECOG
+  %p="•   0 — #{arm[:patient_performance]["0"]}"
+  %p="•   1 — #{arm[:patient_performance]["1"]}"
+  %p="•   2 — #{arm[:patient_performance]["2"]}"
+  %p="•   3 — #{arm[:patient_performance]["3"]}"
+  %p="•   Unknown — #{arm[:patient_performance]["unknown"]}"
+  %h2 Other
+  %p=arm[:patient_other]
+  %h2 Cancer Types or Histologic Subtypes
+  - arm[:patient_cancer_types].each do |cancer|
+    %p="•   #{cancer[:name]} — #{cancer[:number]}"
+  %h1="Primary Assessment Method for Phase #{arm[:phase]} #{arm[:name]}"
+  - arm.assessments.where(key:"primary").each do |a|
+    %h2 Title
+    %p=a.title
+    %h2 Number of patients evaluable for toxicity
+    %p=a.number_of_patients[:evaluable]
+    %h2 Number of patients evaluated for efficacy
+    %p=a.number_of_patients[:evaluated]
+    %h2 Response assessment CR
+    %p="N = #{a.response_assessment[:cr_n]}"
+    %p=a.response_assessment[:cr]
+    %h2 Response assessment PR
+    %p="N = #{a.response_assessment[:pr_n]}"
+    %p=a.response_assessment[:pr]
+    %h2 Response assessment SD
+    %p="N = #{a.response_assessment[:sd_n]}"
+    %p=a.response_assessment[:sd]
+    %h2 Response assessment PD
+    %p="N = #{a.response_assessment[:pd_n]}"
+    %p=a.response_assessment[:pd]
+    %h2 Response assessment OTHER
+    %p="N = #{a.response_assessment[:other_n]}"
+    %p=a.response_assessment[:other]
+  %h1="Secondary Assessment Method for Phase #{arm[:phase]} #{arm[:name]}"
+  - arm.assessments.where(key:"secondary").each do |a|
+    %h2 Title
+    %p=a.title
+    %h2 Number of patients evaluable for toxicity
+    %p=a.number_of_patients[:evaluable]
+    %h2 Number of patients evaluated for efficacy
+    %p=a.number_of_patients[:evaluated]
+    %h2 Response assessment CR
+    %p="N = #{a.response_assessment[:cr_n]}"
+    %p=a.response_assessment[:cr]
+    %h2 Response assessment PR
+    %p="N = #{a.response_assessment[:pr_n]}"
+    %p=a.response_assessment[:pr]
+    %h2 Response assessment SD
+    %p="N = #{a.response_assessment[:sd_n]}"
+    %p=a.response_assessment[:sd]
+    %h2 Response assessment PD
+    %p="N = #{a.response_assessment[:pd_n]}"
+    %p=a.response_assessment[:pd]
+    %h2 Response assessment OTHER
+    %p="N = #{a.response_assessment[:other_n]}"
+    %p=a.response_assessment[:other]
+  %h1="Phase #{arm[:phase]} #{arm[:name]} Adverse Events"
+  - arm.events_tables.each do |table|
+    %h2="#{table.subtitle}"
+    %table
+      %tbody
+        %tr
+          %th Name
+          %th *NC/NA
+          %th 1
+          %th 2
+          %th 3
+          %th 4
+          %th 5
+          %th All Grades
+        - table.events.each do |e|
+          %tr
+            %td= e.name
+            %td= e.no_change
+            %td= e.grade_1
+            %td= e.grade_2
+            %td= e.grade_3
+            %td= e.grade_4
+            %td= e.grade_5
+            %td= e.total
+    %h2 Adverse Events Legend
+    %p= table.legend
+  %h1="Pharmacokinetics/Pharmacodynamics for Phase #{arm[:phase]} #{arm[:name]}"
+  - dlt=arm[:dose_limiting_toxicities]
+  %table
+    %tbody
+      %tr
+        %th Dose Level
+        %th Number Enrolled
+        %th Cmax (μg/L) mean ± SD
+        %th T max(h) (min - max)
+        %th AUC 0-12 (h*12μg/L) mean ± SD
+        %th T ½(h) mean ± SD
+        %th CI F (L/h) mean ± SD
+      %tr
+        %td= dlt[:dose_level]
+        %td= dlt[:enrolled]
+        %td= dlt[:cmax_mean]
+        %td= dlt[:tmax_range]
+        %td= dlt[:auc]
+        %td= dlt[:t_mean]
+        %td= dlt[:cif_mean]
+%h1 Assessment, Analysis, and Discussion
+%h2 Completion
+%p= r_json[:completed_or_terminated]
+%h2 Investigator's Assessment
+%p= r_json[:investigators_assessment]
+%h2 Discussion
+%p= r_json[:discussion]
+%h2 References
+%p= r_json[:references]
+%h1 Figures and Tables
+%h2 Print Figures
+%h2 Other Figures
+%p=r_json[:figures]
