@@ -311,4 +311,21 @@ class Api::ResultsController < ApplicationController
       render json: {message: "CTR not found."}, status: 422
     end
   end
+
+  def word_export
+    if @result = Result.find_by(id:params[:result_id])
+      @exporting = true
+      content = render_to_string(template: "results/docx_html", :locals => {:result => @result})
+      path = "#{Rails.root}/tmp/#{@result.slug}"
+      html = File.open(path + ".html", "w")
+      html.puts content
+      html.close
+      pandoc_success = system "pandoc -f html -t docx -o #{path}.docx #{path}.html" \
+                              " --data-dir=/app/.apt/usr/share/pandoc/data/"
+      Rails.logger.warn "Pandoc generation failed" unless pandoc_success
+      send_file File.join(path + ".docx"), disposition: "attachment"
+    else
+      render json: {message: "CTR not found."}, status: 422
+    end
+  end
 end
