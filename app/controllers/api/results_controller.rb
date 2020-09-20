@@ -328,4 +328,13 @@ class Api::ResultsController < ApplicationController
       render json: {message: "CTR not found."}, status: 422
     end
   end
+
+  def comments
+    if @result = Result.find_by(id:params[:result_id])
+      @comments=@result.comments.where(step:params[:step]).order(:created_at=>:asc).map{|c|c.to_json}
+      render json: {comments:@comments}, status:201
+    else
+      render json: {message: "CTR not found."}, status: 422
+    end
+  end
 end
