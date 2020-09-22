@@ -6,7 +6,8 @@ import {
   AuthorSummaryAbstractContainer,
   AuthorSummaryAbstractFormContainer,
   FormContainer,
-  ButtonContainer
+  ButtonContainer,
+  FormEditorLabel
 } from './author-summary-abstract-form.styles';
 
 import CTRComments from '../../shared/ctr-comments/ctr-comments.component';
@@ -169,65 +170,105 @@ class AuthorSummaryAbstractForm extends React.Component {
         </AuthorSummaryAbstractContainer>
         <form onSubmit={this.handleSubmit}>
           <AuthorSummaryAbstractFormContainer>
-            <FormContainer>
-              <FormEditor
+
+          <FormContainer>
+              <Grid style = {{ paddingLeft: 50, margin: "50px 0px" }} container alignItems = "start" spacing = {1}>
+                <Grid item xs = {3}>
+                <FormEditorLabel>Background</FormEditorLabel>
+                </Grid>
+                <Grid container item xs = {9}>
+                <FormEditor
                 require={false}
-                label='Background'
                 data={background}
                 setData={(value) =>
                   this.setState({ background: value, backgroundError: '' })
                 }
                 error={backgroundError}
               />
-            </FormContainer>
-            <FormContainer>
-              <FormEditor
+                </Grid>
+              </Grid>
+          </FormContainer>
+
+          <FormContainer>
+              <Grid style = {{ paddingLeft: 50, margin: "50px 0px" }} container alignItems = "start" spacing = {1}>
+                <Grid item xs = {3}>
+                <FormEditorLabel>Methods</FormEditorLabel>
+                </Grid>
+                <Grid container item xs = {9}>
+                <FormEditor
                 require={false}
-                label='Methods'
                 data={methods}
                 setData={(value) =>
                   this.setState({ methods: value, methodsError: '' })
                 }
                 error={methodsError}
               />
-            </FormContainer>
-            <FormContainer>
-              <FormEditor
+                </Grid>
+              </Grid>
+          </FormContainer>
+
+          <FormContainer>
+              <Grid style = {{ paddingLeft: 50, margin: "50px 0px" }} container alignItems = "start" spacing = {1}>
+                <Grid item xs = {3}>
+                <FormEditorLabel>Results</FormEditorLabel>
+                </Grid>
+                <Grid container item xs = {9}>
+                <FormEditor
                 require={false}
-                label='Results'
                 data={results}
                 setData={(value) =>
                   this.setState({ results: value, resultsError: '' })
                 }
                 error={resultsError}
               />
-            </FormContainer>
-            <FormContainer>
-              <FormEditor
+                </Grid>
+              </Grid>
+          </FormContainer>
+
+          <FormContainer>
+              <Grid style = {{ paddingLeft: 50, margin: "50px 0px" }} container alignItems = "start" spacing = {1}>
+                <Grid item xs = {3}>
+                <FormEditorLabel>Conclusions</FormEditorLabel>
+                </Grid>
+                <Grid container item xs = {9}>
+                <FormEditor
                 require={false}
-                label='Conclusions'
                 data={conclusions}
                 setData={(value) =>
                   this.setState({ conclusions: value, conclusionsError: '' })
                 }
                 error={conclusionsError}
               />
-            </FormContainer>
-            <FormContainer>
-              <FormEditor
+                </Grid>
+              </Grid>
+          </FormContainer>
+
+          <FormContainer>
+              <Grid style = {{ paddingLeft: 50, margin: "50px 0px" }} container alignItems = "start" spacing = {1}>
+                <Grid item xs = {3}>
+                <FormEditorLabel>Discussion</FormEditorLabel>
+                </Grid>
+                <Grid container item xs = {9}>
+                <FormEditor
                 require={false}
-                label='Discussion'
                 data={discussion}
                 setData={(value) =>
                   this.setState({ discussion: value, discussionError: '' })
                 }
                 error={discussionError}
               />
-            </FormContainer>
-            <FormContainer>
-              <FormEditor
+                </Grid>
+              </Grid>
+          </FormContainer>
+
+          <FormContainer>
+              <Grid style = {{ paddingLeft: 50, margin: "50px 0px" }} container alignItems = "start" spacing = {1}>
+                <Grid item xs = {3}>
+                <FormEditorLabel>Lessons Learned</FormEditorLabel>
+                </Grid>
+                <Grid container item xs = {9}>
+                <FormEditor
                 require={true}
-                label='Lessons Learned'
                 data={lessonsLearned}
                 setData={(value) =>
                   this.setState({
@@ -237,7 +278,10 @@ class AuthorSummaryAbstractForm extends React.Component {
                 }
                 error={lessonsLearnedError}
               />
-            </FormContainer>
+                </Grid>
+              </Grid>
+          </FormContainer>
+    
           </AuthorSummaryAbstractFormContainer>
           <CTRComments />
           <Grid container justify='center' alignItems='center'>
