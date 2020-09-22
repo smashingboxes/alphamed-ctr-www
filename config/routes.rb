@@ -60,6 +60,7 @@ Rails.application.routes.draw do
         post :accepted
         post :rejected
         post :publish
+        get :search
         get :word_export
         get :comments
       end

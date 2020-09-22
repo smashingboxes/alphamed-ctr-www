@@ -151,6 +151,15 @@ class Result
     end
   end
 
+  fulltext_search_in :ctr_number, index_name: "ctr_number_index"
+  fulltext_search_in :title,
+                     :author_first_name,
+                     :author_last_name,
+                     :endpoints_details,
+                     :identifier,
+                     :sponsor,
+                     index_name: "fulltext_index"
+
   # enum state: { started: 0, submitted: 1, in_review: 2, revision: 3, accepted: 4, rejected: 5, published: 6 }
 
   def self.started_all
@@ -647,10 +656,10 @@ class Result
 
   def author_array
     arr=[]
-    arr<<{first_name:author.first_name, last_name:author.last_name}
+    arr<<{first_name:author.first_name, last_name:author.last_name, email:author.email}
     coauthors.each do |coauthor|
       user=User.find_by(email:coauthor[:email])
-      arr<<{first_name:user.first_name.to_s,last_name:user.last_name.to_s} if user
+      arr<<{first_name:user.first_name.to_s,last_name:user.last_name.to_s,email:user.email.to_s} if user
     end
     arr
   end
