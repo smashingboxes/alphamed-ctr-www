@@ -62,12 +62,11 @@ export const FormSelectContainer = styled.select`
 
 export const FormSelectLabel = styled.label`
   color: #58285f;
-  font-size: 16px;
+  font-size: 1em;
   font-weight: normal;
-  margin-right: 10px;
 `;
 
 export const FormSpan = styled.span`
-  color: ${errorColor};
+  color: #FF5858;
   font-size: 12px;
 `;

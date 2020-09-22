@@ -17,12 +17,10 @@ export const ReactQuillContainer = styled(ReactQuill)`
 
 export const FormEditorContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
 `;
 
 export const GroupContainer = styled.div`
   display: block;
-  margin: 45px 0;
 `;
 
 export const EditorLabelContainer = styled.div`

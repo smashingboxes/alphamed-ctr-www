@@ -16,7 +16,7 @@ import PrimaryButton from '../../shared/primary-button/primary-button.component'
 import SecondaryButton from '../../shared/secondary-button/secondary-button.component';
 import CoAuthorInformationModal from '../co-author-information-modal/co-author-information-modal.container';
 import CoAuthorTable from '../co-author-table/co-author-table.component';
-import ErrorButton from '../../shared/error-button /error-button.component';
+import ErrorButton from '../../shared/error-button/error-button.component';
 
 class CoAuthorForm extends React.Component {
   state = {

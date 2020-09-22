@@ -111,7 +111,8 @@ const TableStarted = ({ ctrResults }) => {
 
   useEffect(() => {
     if (ctrResults) {
-      setRows(ctrResults.filter((data) => data.state === 'started'));
+      console.log(ctrResults);
+      setRows(ctrResults);
     }
   }, [ctrResults]);
 
@@ -202,7 +203,6 @@ const TableStarted = ({ ctrResults }) => {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row._id.$oid);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   let author_name = row.author_first_name
@@ -214,16 +214,7 @@ const TableStarted = ({ ctrResults }) => {
                     : 'N/A';
 
                   return (
-                    <TableRow
-                      className={classes.tableRow}
-                      hover
-                      onClick={(event) => handleClick(event, row.title)}
-                      role='checkbox'
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row._id.$oid}
-                      selected={isItemSelected}
-                    >
+                    <TableRow className={classes.tableRow}>
                       <TableCell
                         className={classes.tableData}
                         padding='default'

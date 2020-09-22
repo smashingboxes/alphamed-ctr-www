@@ -8,13 +8,11 @@ export const ButtonContainer = styled.button`
   background-color: #ff5858;
   color: #fff;
   cursor: pointer;
-
   :hover {
     background-color: #d34c4c;
     color: #fff;
     border: 1px solid #d34c4c;
   }
-
   :focus {
     outline: 0;
   }

@@ -283,33 +283,48 @@ class OverviewForm extends React.Component {
               />
             </FormContainer>
             <FormContainer>
-              <Grid container direction='row'>
-                <CheckboxContainer>
-                  <LabelContainer>IRB Approved?</LabelContainer>
-                  <Grid item xs={8}>
-                    IRB must approve to continue
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={checked}
-                          onChange={this.handleCheck}
-                          name='checkedA'
-                          color='secondary'
-                        />
-                      }
-                      label='Yes'
-                    />
-                  </Grid>
-                </CheckboxContainer>
+            <Grid style={{ paddingLeft: 40, margin: "20px 0px" }} container alignItems="start" spacing={1}>
+                <Grid item xs={3}>
+                  <LabelContainer style = {{ textAlign: "right", margin: "0px" }}>IRB Approved?</LabelContainer>
+                </Grid>
+                <Grid item xs={9}>
+                  <CheckboxContainer>
+                    <Grid container direction = "column">
+                      <Grid item xs>
+                        <LabelContainer>
+                        IRB must approve to continue
+                        </LabelContainer>
+                      </Grid>
+                      <Grid item xs>
+                      <FormControlLabel
+                      style = {{ color: "#58285f" }}
+                        control={
+                          <Checkbox
+
+                            checked={checked}
+                            onChange={this.handleCheck}
+                            name='checkedA'
+                            color='secondary'
+                          />
+                        }
+                        label='Yes'
+                      />
+                      </Grid>
+                    </Grid>
+
+                  </CheckboxContainer>
+                </Grid>
               </Grid>
             </FormContainer>
           </OverviewFormContainer>
           <CTRComments />
+
           <Grid container justify='center' alignItems='center'>
             <ButtonContainer>
               <SecondaryButton type='submit'>Save</SecondaryButton>
             </ButtonContainer>
           </Grid>
+
         </form>
       </Paper>
     );

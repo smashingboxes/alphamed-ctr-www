@@ -10,7 +10,7 @@ export const useStyles = makeStyles(() => ({
     backgroundColor: '#58285f',
     textAlign: 'center',
     padding: 10,
-    marginBottom: 10
+    fontSize: "1.2em"
   },
   itemsInactive: {
     color: '#917495',

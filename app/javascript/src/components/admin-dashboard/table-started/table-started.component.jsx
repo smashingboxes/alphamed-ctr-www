@@ -209,6 +209,8 @@ const TableStarted = () => {
                   const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
+                  console.log(labelId);
+
                   return (
                     <TableRow
                       className={classes.tableRow}

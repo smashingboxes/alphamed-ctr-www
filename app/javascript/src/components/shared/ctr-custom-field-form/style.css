@@ -1,0 +1,35 @@
+.field-item {
+    width: 90%;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    padding: 8px;
+}
+
+.field-spacer {
+    height: 1px;
+        background-color: lightgray;
+        border: none;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.table-header-items {
+    padding-left: 10px;
+}
+
+.margin-top {
+    margin-top: 10px;
+}
+
+.field-save-container {
+    text-align: center;
+}
+
+.field-save-button {
+    margin: 50px 0px 0px;
+    background-color: #6EDD47;
+    border: none;
+    border-radius: 25px;
+    color:white;
+    padding: 5px 30px;
+}

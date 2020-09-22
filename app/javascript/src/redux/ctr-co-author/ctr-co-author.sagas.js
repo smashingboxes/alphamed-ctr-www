@@ -31,16 +31,16 @@ function* createCTRCoAuthor({
           'Successfully deleted a CTR co-authors details!',
           'success'
         );
-        yield setTimeout(() => window.location.reload(), 1000);
+        yield setTimeout(() => window.location.reload(), 2000);
       } else if (type === 'add') {
         yield swalMessage(
-          'Successfully stored new CTR co-authors details',
+          'Successfully stored new CTR co-authors details!',
           'success'
         );
-        yield setTimeout(() => window.location.reload(), 1000);
+        yield setTimeout(() => window.location.reload(), 2000);
       } else {
         yield swalMessage(
-          'Successfully stored new CTR co-authors details',
+          'Successfully stored new CTR co-authors details!',
           'success'
         );
         yield setTimeout(
