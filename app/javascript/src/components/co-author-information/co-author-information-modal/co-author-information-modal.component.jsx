@@ -32,7 +32,7 @@ import {
 import CTRInput from '../../shared/ctr-input/ctr-input.component';
 import PrimaryButton from '../../shared/primary-button/primary-button.component';
 import SecondaryButton from '../../shared/secondary-button/secondary-button.component';
-import ErrorButton from '../../shared/error-button /error-button.component';
+import ErrorButton from '../../shared/error-button/error-button.component';
 
 class CoAuthorInformationModal extends React.Component {
   state = {
@@ -73,7 +73,7 @@ class CoAuthorInformationModal extends React.Component {
         firstName: ctrData.first_name ? ctrData.first_name : '',
         middleName: ctrData.middle_name ? ctrData.middle_name : '',
         lastName: ctrData.last_name ? ctrData.last_name : '',
-        institutions: ctrData.institutions ? ctrData.institutions : [],
+        institutions: ctrData.institutions ? ctrData.institutions : [''],
         coAuthorId: ctrData.id ? ctrData.id : ''
       });
     }
@@ -91,7 +91,7 @@ class CoAuthorInformationModal extends React.Component {
         lastName:
           filteredAuthor.length !== 0 ? filteredAuthor[0].last_name : '',
         institutions:
-          filteredAuthor.length !== 0 ? filteredAuthor[0].institutions : [],
+          filteredAuthor.length !== 0 ? filteredAuthor[0].institutions : [''],
         coAuthorId: filteredAuthor.length !== 0 ? filteredAuthor[0].id : ''
       });
     }

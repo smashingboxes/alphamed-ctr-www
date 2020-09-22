@@ -22,16 +22,13 @@ export const FormContainer = styled.div`
 `;
 
 export const CheckboxContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-left: 90px;
+
 `;
 
 export const LabelContainer = styled.div`
-  margin-top: 12px;
-  margin-left: -12px;
-  margin-right: 12px;
+  color: #58285f;
+  font-size: 1em;
+  font-weight: normal;
 `;
 
 export const ButtonContainer = styled.div`

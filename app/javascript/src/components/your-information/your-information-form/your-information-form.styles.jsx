@@ -10,7 +10,6 @@ export const YourInformationContainer = styled.div`
 
 export const YourInformationFormContainer = styled.div`
   padding: 10px;
-  width: 70vw;
   display: grid;
   direction: row;
   justify-content: center;

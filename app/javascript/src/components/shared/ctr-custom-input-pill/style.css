@@ -1,0 +1,26 @@
+.custom-input-pill-container{
+    display: flex;
+    width: 100%;
+}
+
+.custom-input-pill-label {
+    padding: 10px 30px;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    border: 1px solid lightgray;
+    color: #58285F;
+    font-weight: bold;
+}
+
+.custom-input-pill-input-container {
+    flex-grow: 1;
+}
+
+.custom-input-pill-input {
+    height: 100%;
+    width: 100%;
+    padding-left: 10px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border: 1px solid lightgray;
+}

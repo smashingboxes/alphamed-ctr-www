@@ -12,7 +12,7 @@ import {
 import CTRComments from '../../shared/ctr-comments/ctr-comments.component';
 import FormEditor from '../../shared/form-editor/form-editor.component';
 import SecondaryButton from '../../shared/secondary-button/secondary-button.component';
-import ErrorButton from '../../shared/error-button /error-button.component';
+import ErrorButton from '../../shared/error-button/error-button.component';
 
 class AuthorSummaryAbstractForm extends React.Component {
   state = {

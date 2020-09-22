@@ -1,5 +1,4 @@
 import React from 'react';
-
 import PrivateRoute from './private.route';
 
 import EditProfilePage from '../pages/edit-profile/edit-profile.page';
@@ -11,6 +10,15 @@ import YourInformationPage from '../pages/your-information/your-information.cont
 import CoAuthorInformationPage from '../pages/co-author-information/co-author-information.container';
 import AuthorSummaryAbstractPage from '../pages/author-summary-abstract/author-summary-abstract.container';
 import TrailInformationPage from '../pages/trial-information/trial-information.container';
+import AuthorDrugInformationPage from '../pages/author-drug-information/author-drug-information.container';
+import AuthorPatientCharPage from '../pages/author-patient-char/author-patient-char.page';
+import AuthorPrimaryAssessmentPage from '../pages/author-primary-assessment/author-primary-assessment.container';
+import AuthorAdverseEventPage from '../pages/author-adverse-event/author-adverse-event.container';
+import AuthorPharmaPagePage from '../pages/author-pharma/author-pharma.container';
+import AuthorAssessmentDiscussionPage from '../pages/author-assessment-discussion/author-assessment-discussion.container';
+import AuthorFigureTablePage from '../pages/author-figure-table/author-figure-table.container';
+import AuthorFormsPage from '../pages/author-forms/author-forms.container';
+import AuthorSubmissionOverviewPage from '../pages/author-submission-overview/author-submission-overview.container';
 
 const AuthorRoute = () => {
   return (
@@ -40,6 +48,51 @@ const AuthorRoute = () => {
         path='/submission/results/trial-information/:id'
         exact
         component={TrailInformationPage}
+      />
+      <PrivateRoute
+        path='/submission/results/drug-information/:id'
+        exact
+        component={AuthorDrugInformationPage}
+      />
+      <PrivateRoute
+        path='/submission/results/patient-char/:id'
+        exact
+        component={AuthorPatientCharPage}
+      />
+      <PrivateRoute
+        path='/submission/results/primary-assessment-method/:id'
+        exact
+        component={AuthorPrimaryAssessmentPage}
+      />
+      <PrivateRoute
+        path='/submission/results/adverse-event/:id'
+        exact
+        component={AuthorAdverseEventPage}
+      />
+      <PrivateRoute
+        path='/submission/results/pharma/:id'
+        exact
+        component={AuthorPharmaPagePage}
+      />
+      <PrivateRoute
+        path='/submission/results/assessment-discussion/:id'
+        exact
+        component={AuthorAssessmentDiscussionPage}
+      />
+      <PrivateRoute
+        path='/submission/results/figure-table/:id'
+        exact
+        component={AuthorFigureTablePage}
+      />
+      <PrivateRoute
+        path='/submission/results/author-forms/:id'
+        exact
+        component={AuthorFormsPage}
+      />
+      <PrivateRoute
+        path='/submission/results/submission-overview/:id'
+        exact
+        component={AuthorSubmissionOverviewPage}
       />
       <PrivateRoute
         path='/submission/author/results'

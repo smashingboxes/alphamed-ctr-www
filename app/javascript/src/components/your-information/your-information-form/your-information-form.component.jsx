@@ -34,7 +34,7 @@ import CTRSelect from '../../shared/ctr-select/ctr-select.component';
 import SecondaryButton from '../../shared/secondary-button/secondary-button.component';
 import CTRComments from '../../shared/ctr-comments/ctr-comments.component';
 import FormEditor from '../../shared/form-editor/form-editor.component';
-import ErrorButton from '../../shared/error-button /error-button.component';
+import ErrorButton from '../../shared/error-button/error-button.component';
 
 class YourInformationForm extends React.Component {
   state = {
@@ -570,7 +570,8 @@ class YourInformationForm extends React.Component {
           <YourInformationContainer>
             Additional Information
           </YourInformationContainer>
-          <YourInformationFormContainer>
+
+          <YourInformationFormContainer style = {{paddingLeft: "80px" }}>
             {institutions.map((institution, index) => (
               <InstitutionFormContainer>
                 <FormContainer key={index}>
@@ -598,32 +599,46 @@ class YourInformationForm extends React.Component {
                 </RemoveButton>
               </InstitutionFormContainer>
             ))}
-            <AddButtonContainer onClick={this.addInstitutionField}>
+
+            
+
+          </YourInformationFormContainer>
+
+          <AddButtonContainer onClick={this.addInstitutionField}>
               <AddButton>
                 <AddIcon fontSize='small' />
               </AddButton>
               <Typography color='primary'>Add another institution</Typography>
             </AddButtonContainer>
-          </YourInformationFormContainer>
-          <CheckboxContainer>
-            <Grid item xs={8}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={principalInvestigator}
-                    onChange={this.handleCheckPrincipalInvestigator}
-                    name='principalInvestigator'
-                    color='secondary'
+
+
+            <FormContainer>
+              <Grid style = {{ paddingLeft: 50, margin: "10px 0px" }} container alignItems = "start" spacing = {1}>
+                <Grid item xs = {4}>
+                </Grid>
+                <Grid container direction = "column" alignItems ="start" justify="flex-start" item xs = {8}>
+                    <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={principalInvestigator}
+                        onChange={this.handleCheckPrincipalInvestigator}
+                        name='principalInvestigator'
+                        color='secondary'
+                      />
+                    }
+                    label='Principle investigator?'
+                    color='primary'
                   />
-                }
-                label='Principle investigator?'
-                color='primary'
-              />
-            </Grid>
-          </CheckboxContainer>
-          <CheckboxContainer>
-            <Grid item xs={8}>
-              <FormControlLabel
+                </Grid>
+              </Grid>
+            </FormContainer>
+
+            <FormContainer>
+              <Grid style = {{ paddingLeft: 50, margin: "10px 0px" }} container alignItems = "start" spacing = {1}>
+                <Grid item xs = {4}>
+                </Grid>
+                <Grid container direction = "column" alignItems ="start" justify="flex-start" item xs = {8}>
+                <FormControlLabel
                 control={
                   <Checkbox
                     checked={correspondingAuthor}
@@ -634,11 +649,16 @@ class YourInformationForm extends React.Component {
                 }
                 label='Corresponding author?'
               />
-            </Grid>
-          </CheckboxContainer>
-          <CheckboxContainer>
-            <Grid item xs={8}>
-              <FormControlLabel
+                </Grid>
+              </Grid>
+            </FormContainer>
+
+            <FormContainer>
+              <Grid style = {{ paddingLeft: 50, margin: "10px 0px" }} container alignItems = "start" spacing = {1}>
+                <Grid item xs = {4}>
+                </Grid>
+                <Grid container direction = "column" alignItems ="start" justify="flex-start" item xs = {8}>
+                <FormControlLabel
                 control={
                   <Checkbox
                     checked={submitterOnly}
@@ -649,17 +669,29 @@ class YourInformationForm extends React.Component {
                 }
                 label='Are you the submitter?'
               />
-            </Grid>
-            <Grid item xs={8}>
-              <SubmitterDetails>
+                </Grid>
+              </Grid>
+            </FormContainer>
+
+            <FormContainer>
+              <Grid style = {{ paddingLeft: 50, margin: "10px 0px" }} container alignItems = "start" spacing = {1}>
+                <Grid item xs = {4}>
+                </Grid>
+                <Grid container direction = "column" alignItems ="start" justify="flex-start" item xs = {8}>
+                <SubmitterDetails>
                 By clicking this box you are indicating that you are not an
                 author on this paper
               </SubmitterDetails>
-            </Grid>
-          </CheckboxContainer>
-          <CheckboxContainer>
-            <Grid item xs={8}>
-              <FormControlLabel
+                </Grid>
+              </Grid>
+            </FormContainer>
+
+            <FormContainer>
+              <Grid style = {{ paddingLeft: 50, margin: "10px 0px" }} container alignItems = "start" spacing = {1}>
+                <Grid item xs = {4}>
+                </Grid>
+                <Grid container direction = "column" alignItems ="start" justify="flex-start" item xs = {8}>
+                <FormControlLabel
                 control={
                   <Checkbox
                     checked={assisted}
@@ -670,18 +702,25 @@ class YourInformationForm extends React.Component {
                 }
                 label='Were the authors assisted by a professional medical writer or editor in the preparation of this submission?'
               />
-            </Grid>
-          </CheckboxContainer>
-          <YourInformationFormContainer>
+                </Grid>
+              </Grid>
+            </FormContainer>
+
             <FormContainer>
-              <FormEditor
+              <Grid style = {{ paddingLeft: 50, margin: "40px 0px" }} container alignItems = "start" spacing = {1}>
+                <Grid item xs = {4}>
+                </Grid>
+                <Grid container direction = "column" alignItems ="start" justify="flex-start" item xs = {8}>
+                <FormEditor
                 require={false}
                 label='Acknowledgements'
                 data={acknowledgements}
                 setData={(value) => this.setState({ acknowledgements: value })}
               />
+                </Grid>
+              </Grid>
             </FormContainer>
-          </YourInformationFormContainer>
+
           <CTRComments />
           <Grid container justify='center' alignItems='center'>
             <ButtonContainer>

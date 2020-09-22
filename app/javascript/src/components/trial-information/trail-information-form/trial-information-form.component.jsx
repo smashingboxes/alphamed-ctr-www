@@ -6,18 +6,22 @@ import {
   TrailInformationContainer,
   TrailInformationFormContainer,
   FormContainer,
-  ButtonContainer
+  ButtonContainer,
+  FormSelectLabel,
+  FormSelectLabelSmall
 } from './trial-information-form.styles';
 
+import CTRSelect from '../../shared/ctr-select/ctr-select.component';
 import CTRComments from '../../shared/ctr-comments/ctr-comments.component';
 import FormEditor from '../../shared/form-editor/form-editor.component';
 import SecondaryButton from '../../shared/secondary-button/secondary-button.component';
 import DiseaseComboBox from '../disease-combobox/disease-combobox.component';
+import { GenericFormHeaderContainer } from '../../shared/styles/shared-styles';
 
 class TrailInformationForm extends React.Component {
   state = {
     id: '',
-    diseases: [''],
+    diseases: [],
     stageOfDisease: '',
     priorTherapy: '',
     typeOfStudy2: '',
@@ -69,6 +73,21 @@ class TrailInformationForm extends React.Component {
       investigatorsAssessment:
         investigators_assessment === null ? '' : investigators_assessment
     });
+  }
+
+  handleOnItemAdd = (disease) => {
+    console.log(disease);
+    let currentDiseases = [...this.state.diseases];
+
+    /*let currentDiseases = [...this.state.diseases];
+    currentDiseases.push(disease);
+    this.setState({ diseases: currentDiseases })*/
+  }
+
+  handleOnItemRemove = (disease) => {
+    let currentDiseases = [...this.state.diseases];
+    currentDiseases.splice(disease, 1);
+    this.setState({ diseases: currentDiseases })
   }
 
   handleSubmit = (event) => {
@@ -154,6 +173,8 @@ class TrailInformationForm extends React.Component {
     this.setState({ [name]: value });
   };
 
+
+
   render() {
     const {
       background,
@@ -172,21 +193,194 @@ class TrailInformationForm extends React.Component {
 
     return (
       <Paper elevation={0}>
-        <TrailInformationContainer>
+        <GenericFormHeaderContainer>
           Clinical Trial Information
-        </TrailInformationContainer>
+        </GenericFormHeaderContainer>
         <form onSubmit={this.handleSubmit}>
           <TrailInformationFormContainer>
             <FormContainer>
-              <DiseaseComboBox />
+              <DiseaseComboBox
+                name = "hello"
+                onItemAdd={ (selected) => this.handleOnItemAdd(selected)}
+                onItemRemove={ (removed) => console.log(removed)}
+              />
             </FormContainer>
+
+            <FormContainer>
+              <CTRSelect
+                label='Stage of disease / treatment'
+                require={true}
+                onChange={this.handleChange}
+                name = "stageOfDisease"
+              >
+                {
+                  [
+                    "Prevention",
+                    "Neo-adjuvant",
+                    "Adjuvant",
+                    "Primary",
+                    "Metastatic/Advanced"
+                  ].map((stage, key) => (
+                    <option key={key}>{stage}</option>
+                  ))
+                }
+              </CTRSelect>
+            </FormContainer>
+
+            <FormContainer>
+              <CTRSelect
+                label='Prior Therapy'
+                require={true}
+                onChange={this.handleChange}
+                name = "priorTherapy"
+              >
+                {
+                  [
+                    "None",
+                    "1 prior regimen",
+                    "2 prior regimens",
+                    "More than 2 prior regimens",
+                    "No designated number of regimens"
+                  ].map((stage, key) => (
+                    <option key={key}>{stage}</option>
+                  ))
+                }
+              </CTRSelect>
+            </FormContainer>
+
+            <FormContainer>
+              <CTRSelect
+                label='Type of study - 2'
+                require={true}
+                onChange={this.handleChange}
+                name = "typeOfStudy2"
+              >
+                {
+                  [
+                    "3+3",
+                    "Accelerated Titration",
+                    "Adaptive Design",
+                    "Modified Fibonacci",
+                    "Rolling Six",
+                    "Other"
+                  ].map((stage, key) => (
+                    <option key={key}>{stage}</option>
+                  ))
+                }
+              </CTRSelect>
+            </FormContainer>
+
+            <FormContainer>
+              <CTRSelect
+                label='Primary Endpoint(s)'
+                require={true}
+                onChange={this.handleChange}
+                name = "primaryEndpoints"
+              >
+                {
+                  [
+                    "Toxicity",
+                    "Tolerability",
+                    "Deliverability",
+                    "Safety",
+                    "Maximum Tolerated Dose",
+                    "Recommended Phase II Dose",
+                    "Pharmacodynamic",
+                    "Correlative Endpoint",
+                    "other"
+                  ].map((stage, key) => (
+                    <option key={key}>{stage}</option>
+                  ))
+                }
+              </CTRSelect>
+            </FormContainer>
+
+            <FormContainer>
+
+              <CTRSelect
+                label='Secondary Endpoints(s)'
+                require={true}
+                onChange={this.handleChange}
+                name = "secondaryEndpoints"
+              >
+                {
+                  [
+                    "Toxicity",
+                    "Tolerability",
+                    "Deliverability",
+                    "Safety",
+                    "Maximum Tolerated Dose",
+                    "Recommended Phase II Dose",
+                    "Pharmacodynamic",
+                    "Correlative Endpoint",
+                    "other"
+                  ].map((stage, key) => (
+                    <option key={key}>{stage}</option>
+                  ))
+                }
+              </CTRSelect>
+            </FormContainer>
+
+            <FormContainer>
+              <Grid style = {{ paddingLeft: 50, margin: "50px 0px" }} container alignItems = "start" spacing = {1}>
+                <Grid item xs = {3}>
+                <FormSelectLabel>Additional Details of Endpoints or Study Design:</FormSelectLabel>
+                </Grid>
+                <Grid container direction = "column" alignItems ="start" justify="flex-start" item xs = {9}>
+                  <FormEditor
+                    require={true}
+                    data={lessonsLearned}
+                    //onChange={this.handleChange}
+                    name = "additionalDetails"
+                    error={lessonsLearnedError}
+                  />
+                  <FormSelectLabelSmall>
+                    Include Endpoint Target and Power Analysis.
+                  </FormSelectLabelSmall>
+                  <FormSelectLabelSmall>
+                    Include outcome considered positive or that would meet futility
+                  </FormSelectLabelSmall>
+                </Grid>
+              </Grid>
+
+            </FormContainer>
+
+            <FormContainer>
+              <CTRSelect
+                label='Investigator’s Assessment'
+                require={true}
+                onChange={this.handleChange}
+                name = "investigatorsAssessment"
+              >
+                {
+                  [
+                    "Active and should be pursued further",
+                    "Active but results overtaken by other developments",
+                    "Active but too toxic as administered in this study",
+                    "Inactive because results did not meet primary endpoint",
+                    "Correlative endpoints met but not powered to assess activity",
+                    "Correlative endpoints not met but clinical activity observed",
+                    "Evidence of target inhibition but no or minimal anti-tumor activity",
+                    "Poorly tolerated/not feasible",
+                    "Level of activity did not meet planned end point",
+                    "Other"
+                  ].map((stage, key) => (
+                    <option key={key}>{stage}</option>
+                  ))
+                }
+              </CTRSelect>
+            </FormContainer>
+
           </TrailInformationFormContainer>
+
           <CTRComments />
+
           <Grid container justify='center' alignItems='center'>
             <ButtonContainer>
               <SecondaryButton type='submit'>Save</SecondaryButton>
             </ButtonContainer>
           </Grid>
+
         </form>
       </Paper>
     );

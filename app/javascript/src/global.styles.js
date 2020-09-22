@@ -13,6 +13,10 @@ export const GlobalStyle = createGlobalStyle`
         font-size: 16px;
     }
 
+    div {
+        box-sizing: border-box;
+    }
+
     body {
         font-family: 'Franklin Gothic Medium', arial;
         box-sizing: border-box;

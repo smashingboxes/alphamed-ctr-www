@@ -5,7 +5,6 @@ export const TrailInformationContainer = styled.div`
   color: white;
   padding: 10px;
   width: 70vw;
-  margin-left: 30px;
 `;
 
 export const TrailInformationFormContainer = styled.div`
@@ -17,10 +16,30 @@ export const TrailInformationFormContainer = styled.div`
   align-items: center;
 `;
 
+export const TrailInformationLabelContainer = styled.div`
+color: #58285f;
+font-size: 16px;
+font-weight: normal;
+margin-left: -200px;
+padding-right: 10px;
+`;
+
 export const FormContainer = styled.div`
   margin: -10px;
 `;
 
 export const ButtonContainer = styled.div`
   margin: 10px;
+`;
+
+export const FormSelectLabel = styled.label`
+  color: #58285f;
+  font-size: 1em;
+  font-weight: normal;
+`;
+
+export const FormSelectLabelSmall = styled.label`
+  color: #58285f;
+  font-size: 0.9em;
+  font-weight: normal;
 `;
