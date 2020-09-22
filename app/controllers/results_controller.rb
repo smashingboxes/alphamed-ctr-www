@@ -9,8 +9,8 @@ class ResultsController < ApplicationController
 
       # @role = @user.role
       @results = @user.fetch_results(params[:state])
-      @page = params[:page] || 1
-      @limit = params[:per_page] || 10
+      @page=params[:page] || 1
+      @limit=params[:per_page] || 10
 
       @results = @results.page(@page).limit(@limit)
 
