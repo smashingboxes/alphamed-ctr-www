@@ -73,7 +73,7 @@ class CoAuthorInformationModal extends React.Component {
         firstName: ctrData.first_name ? ctrData.first_name : '',
         middleName: ctrData.middle_name ? ctrData.middle_name : '',
         lastName: ctrData.last_name ? ctrData.last_name : '',
-        institutions: ctrData.institutions ? ctrData.institutions : [''],
+        institutions: ctrData.institutions ? ctrData.institutions : [],
         coAuthorId: ctrData.id ? ctrData.id : ''
       });
     }
@@ -91,7 +91,7 @@ class CoAuthorInformationModal extends React.Component {
         lastName:
           filteredAuthor.length !== 0 ? filteredAuthor[0].last_name : '',
         institutions:
-          filteredAuthor.length !== 0 ? filteredAuthor[0].institutions : [''],
+          filteredAuthor.length !== 0 ? filteredAuthor[0].institutions : [],
         coAuthorId: filteredAuthor.length !== 0 ? filteredAuthor[0].id : ''
       });
     }
@@ -294,8 +294,11 @@ class CoAuthorInformationModal extends React.Component {
               <CoAuthorFormContainer>
                 <form onSubmit={this.handleSubmit}>
                   <input type='hidden' value={coAuthorId} />
-                  <FormContainer>
+                  <FormContainer >
                     <CTRInput
+                      style={{ margin: "0px", padding: "10px 30px" }}
+                      left={2}
+                      right={10}
                       type='text'
                       name='firstName'
                       require={true}
@@ -307,6 +310,9 @@ class CoAuthorInformationModal extends React.Component {
                   </FormContainer>
                   <FormContainer>
                     <CTRInput
+                      style={{ margin: "0px", padding: "10px 30px" }}
+                      left={2}
+                      right={10}
                       type='text'
                       name='middleName'
                       require={false}
@@ -318,6 +324,9 @@ class CoAuthorInformationModal extends React.Component {
                   </FormContainer>
                   <FormContainer>
                     <CTRInput
+                      style={{ margin: "0px", padding: "10px 30px" }}
+                      left={2}
+                      right={10}
                       type='text'
                       name='lastName'
                       require={true}
@@ -327,11 +336,15 @@ class CoAuthorInformationModal extends React.Component {
                       error={lastNameError}
                     />
                   </FormContainer>
+
                   <FormContainer>
                     {institutions.map((institution, index) => (
-                      <InstitutionFormContainer>
-                        <InstitutionContainer key={index}>
+                      <Grid container>
+                        <Grid style = {{ paddingLeft: "30px" }} item xs={11} key={index}>
                           <CTRInput
+                            style={{ margin: "0px", padding: "10px 0px" }}
+                            left={2}
+                            right={10}
                             type='text'
                             name={`institution-${index}`}
                             require={index === 0 ? true : false}
@@ -345,15 +358,22 @@ class CoAuthorInformationModal extends React.Component {
                             }
                             error={institutionsError}
                           />
-                        </InstitutionContainer>
-                        <RemoveButton
-                          onClick={() => this.removeInstitutionField(index)}
-                          aria-label='delete'
-                          size='small'
-                        >
-                          <RemoveIcon fontSize='small' />
-                        </RemoveButton>
-                      </InstitutionFormContainer>
+                        </Grid>
+                        <Grid
+                          style = {{ padding: "25px 10px" }}
+                          item
+                          xs={1}>
+                          <RemoveButton
+
+                            onClick={() => this.removeInstitutionField(index)}
+                            aria-label='delete'
+                            size='small'
+                          >
+                            <RemoveIcon fontSize='small' />
+                          </RemoveButton>
+                        </Grid>
+                      </Grid>
+
                     ))}
                     <AddButtonContainer onClick={this.addInstitutionField}>
                       <AddButton>
@@ -364,8 +384,9 @@ class CoAuthorInformationModal extends React.Component {
                       </Typography>
                     </AddButtonContainer>
                   </FormContainer>
-                  <CheckboxContainer>
-                    <Grid item xs={8}>
+
+                  <CheckboxContainer style = {{ marginTop: "20px" }}>
+                    <Grid item xs={7}>
                       <FormControlLabel
                         control={
                           <Checkbox
@@ -381,7 +402,7 @@ class CoAuthorInformationModal extends React.Component {
                     </Grid>
                   </CheckboxContainer>
                   <CheckboxContainer>
-                    <Grid item xs={8}>
+                    <Grid item xs={7}>
                       <FormControlLabel
                         control={
                           <Checkbox
