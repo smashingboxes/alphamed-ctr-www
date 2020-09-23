@@ -123,13 +123,13 @@ class CoAuthorForm extends React.Component {
           <CoAuthorFormContainer>
             <FormContainer>
               <CTRInput
-                left = {2}
-                right = {10}
-                width = {"80%"}
+                left={2}
+                right={10}
+                width={'80%'}
                 type='text'
                 name='coAuthorEmail'
                 require={true}
-                value={"tjcoyoca@gmail.com"}
+                value={coAuthorEmail}
                 onChange={this.handleChange}
                 label='Email'
                 error={coAuthorEmailError}

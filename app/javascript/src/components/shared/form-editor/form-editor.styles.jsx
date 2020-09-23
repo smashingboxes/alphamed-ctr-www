@@ -17,6 +17,7 @@ export const ReactQuillContainer = styled(ReactQuill)`
 
 export const FormEditorContainer = styled.div`
   display: flex;
+  margin-bottom: 10px;
 `;
 
 export const GroupContainer = styled.div`

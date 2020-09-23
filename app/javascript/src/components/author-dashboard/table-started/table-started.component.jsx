@@ -9,15 +9,12 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
-  Paper,
-  Button,
-  Menu,
-  MenuItem
+  Paper
 } from '@material-ui/core';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
 import { useStyles } from './table-started.styles';
+
+import { RowMenu } from '../row-menu/row-menu.component';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -131,26 +128,6 @@ const TableStarted = ({ ctrResults }) => {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -160,20 +137,8 @@ const TableStarted = ({ ctrResults }) => {
     setPage(0);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const goToEdit = (id, e) => {
     e.preventDefault();
@@ -243,33 +208,7 @@ const TableStarted = ({ ctrResults }) => {
                         className={classes.tableData}
                         align='left'
                       >
-                        <Menu
-                          id='actions'
-                          anchorEl={anchorEl}
-                          keepMounted
-                          open={Boolean(anchorEl)}
-                          onClose={handleClose}
-                        >
-                          <MenuItem onClick={(e) => goToEdit(row._id.$oid, e)}>
-                            Edit
-                          </MenuItem>
-                          <MenuItem onClick={handleClose}>Delete</MenuItem>
-                        </Menu>
-                        <Button
-                          aria-controls='simple-menu'
-                          aria-haspopup='true'
-                          onClick={handleMenuClick}
-                          className={classes.menuButton}
-                          endIcon={
-                            anchorEl ? (
-                              <ArrowDropUpIcon />
-                            ) : (
-                              <ArrowDropDownIcon />
-                            )
-                          }
-                        >
-                          Actions
-                        </Button>
+                        <RowMenu row={row} goToEdit={goToEdit} />
                       </TableCell>
                     </TableRow>
                   );
