@@ -8,7 +8,8 @@ import {
   FormContainer,
   CheckboxContainer,
   LabelContainer,
-  ButtonContainer
+  ButtonContainer,
+  GridContainer
 } from './overview-form.styles';
 
 import { typeOfStudyData } from './overview-form.data';
@@ -283,38 +284,38 @@ class OverviewForm extends React.Component {
               />
             </FormContainer>
             <FormContainer>
-            <Grid style={{ paddingLeft: 40, margin: "20px 0px" }} container alignItems="start" spacing={1}>
+              <GridContainer container alignItems='start' spacing={1}>
                 <Grid item xs={3}>
-                  <LabelContainer style = {{ textAlign: "right", margin: "0px" }}>IRB Approved?</LabelContainer>
+                  <LabelContainer style={{ textAlign: 'right', margin: '0px' }}>
+                    IRB Approved?
+                  </LabelContainer>
                 </Grid>
                 <Grid item xs={9}>
                   <CheckboxContainer>
-                    <Grid container direction = "column">
+                    <Grid container direction='column'>
                       <Grid item xs>
                         <LabelContainer>
-                        IRB must approve to continue
+                          IRB must approve to continue
                         </LabelContainer>
                       </Grid>
                       <Grid item xs>
-                      <FormControlLabel
-                      style = {{ color: "#58285f" }}
-                        control={
-                          <Checkbox
-
-                            checked={checked}
-                            onChange={this.handleCheck}
-                            name='checkedA'
-                            color='secondary'
-                          />
-                        }
-                        label='Yes'
-                      />
+                        <FormControlLabel
+                          style={{ color: '#58285f' }}
+                          control={
+                            <Checkbox
+                              checked={checked}
+                              onChange={this.handleCheck}
+                              name='checkedA'
+                              color='secondary'
+                            />
+                          }
+                          label='Yes'
+                        />
                       </Grid>
                     </Grid>
-
                   </CheckboxContainer>
                 </Grid>
-              </Grid>
+              </GridContainer>
             </FormContainer>
           </OverviewFormContainer>
           <CTRComments />
@@ -324,7 +325,6 @@ class OverviewForm extends React.Component {
               <SecondaryButton type='submit'>Save</SecondaryButton>
             </ButtonContainer>
           </Grid>
-
         </form>
       </Paper>
     );
