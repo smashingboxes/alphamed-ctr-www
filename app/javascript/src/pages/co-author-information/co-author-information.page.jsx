@@ -21,7 +21,7 @@ const CoAuthorInformationPage = ({
   }, [authToken, retrieveCTRResultsStart]);
 
   return (
-    <Grid container style={{ height: '75vh' }}>
+    <Grid container>
       <Grid item xs={3}>
         <Grid item container direction='column'>
           <SubmissionSidebar
