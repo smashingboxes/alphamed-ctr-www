@@ -1,10 +1,16 @@
 import styled from 'styled-components';
+import { Grid } from '@material-ui/core';
 
 export const AuthorSummaryAbstractContainer = styled.div`
   background-color: #58285f;
   color: white;
   padding: 10px;
   width: 70vw;
+`;
+
+export const GridContainer = styled(Grid)`
+  padding-left: 50px;
+  margin: 50px 0px;
 `;
 
 export const AuthorSummaryAbstractFormContainer = styled.div`
@@ -17,9 +23,9 @@ export const FormContainer = styled.div`
 `;
 
 export const FormEditorLabel = styled.div`
-color: #58285f;
-font-size: 1em;
-font-weight: normal;
+  color: #58285f;
+  font-size: 1em;
+  font-weight: normal;
 `;
 
 export const ButtonContainer = styled.div`
