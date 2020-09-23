@@ -656,7 +656,11 @@ class Result
 
   def author_array
     arr=[]
-    arr<<{first_name:author.first_name, last_name:author.last_name, email:author.email}
+    if author
+      arr<<{first_name:author.first_name, last_name:author.last_name, email:author.email}
+    else
+      arr<<{first_name:author_first_name, last_name:author_last_name, email:author_email}
+    end
     coauthors.each do |coauthor|
       user=User.find_by(email:coauthor[:email])
       arr<<{first_name:user.first_name.to_s,last_name:user.last_name.to_s,email:user.email.to_s} if user
@@ -845,6 +849,46 @@ class Result
     end
   end
 
+  def self.full_search query
+    @results=[]
+    if /ctr\d+-\d+/i.match? query
+      Result.all.each do |r|
+        @results << r if r.ctr_number.include?query
+      end
+    else
+      @results=any_of({ title: /.*#{query}.*/i },{ctr_number: /.*#{query}.*/i},{ author_last_name: /.*#{query}.*/i },
+        { author_first_name: /.*#{query}.*/i },{ sponsor: /.*#{query}.*/i }, {identifier:/.*#{query}.*/i},
+        {endpoints_details: /.*#{query}.*/i},{ctr_year: /.*#{query}.*/i},{sequence_number: /.*#{query}.*/i})
+    end
+    @results
+  end
+
+  def self.advance_search params
+    query_map = {
+      author_name: :author_name,
+      sponsor: :sponsor,
+      diseases: :disease,
+      "drugs.generic_name" => :drug,
+      number: :number,
+      type_of_study_2: :type_of_study_2
+    }
+
+    arr = query_map.map do |k, v|
+      next if params[:drug].empty?
+
+      [k, /#{Object::Regexp.escape(params[v])}/i]
+    end.to_h
+
+    @results = !arr.empty? ? Result.all_of(arr) : []
+
+    @results += hash_search("author_institutions", params[:author_institution])
+    @results += hash_search("primary_endpoints", params[:end_point])
+    @results += hash_search("secondary_endpoints", params[:end_point])
+
+    @results.uniq!
+    @results
+  end
+
   private
     def activity_presenter activity
       case activity.key
@@ -883,5 +927,18 @@ class Result
       # TODO: Look into whether this needs to be here, since we have initial: :started
       self.state = "started"
       self.state_history = [{ state => Time.now }]
+    end
+    def self.hash_search(field_name, param_name)
+      if param_name.blank?
+        return []
+      end
+
+      arr = []
+      3.times do |i|
+        arr << { "#{field_name}.#{i}" => /#{param_name}/i }
+      end
+      result = []
+      result = Result.any_of(arr) unless arr.empty?
+      result
     end
 end
