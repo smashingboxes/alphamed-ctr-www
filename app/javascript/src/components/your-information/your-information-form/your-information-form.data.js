@@ -96,33 +96,3 @@ export const degreeData = [
   'RNC',
   'Other'
 ];
-
-export const stateProvinceData = [
-  '',
-  'Alabama',
-  'Alaska',
-  'Arizona',
-  'Arkansas',
-  'California',
-  'Colorado',
-  'Connecticut',
-  'Delaware',
-  'District Of Columbia',
-  'Florida',
-  'Georgia',
-  'Hawaii'
-];
-
-export const countryData = [
-  '',
-  'United States',
-  'Canada',
-  'Afghanistan',
-  'Albania',
-  'Algeria',
-  'American Samoa',
-  'Andorra',
-  'Angola',
-  'Anguilla',
-  'Antarctica'
-];

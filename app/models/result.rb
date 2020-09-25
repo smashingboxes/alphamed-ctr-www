@@ -96,8 +96,8 @@ class Result
   field :statistical_ttp, type: Hash
   field :statistical_os, type: Hash
   field :statistical_response_duration, type: Hash
-  field :primary_endpoints, type: Hash, default: { "0" => "" }
-  field :secondary_endpoints, type: Hash, default: { "0" => "" }
+  field :primary_endpoints, type: Array, default: []
+  field :secondary_endpoints, type: Array, default: []
   field :endpoints_details
 
   # Assessment, Analysis, & Discussion Page
@@ -251,20 +251,8 @@ class Result
     self.type_of_study_2=result[:type_of_study_2]
     self.endpoints_details=result[:endpoints_details]
     self.investigators_assessment=result[:investigators_assessment]
-    inst_obj={}
-    ctr=0
-    result[:primary_endpoints].each do |endpoint|
-      inst_obj["#{ctr}"]=endpoint
-      ctr+=1
-    end
-    self.primary_endpoints=inst_obj
-    inst_obj={}
-    ctr=0
-    result[:secondary_endpoints].each do |endpoint|
-      inst_obj["#{ctr}"]=endpoint
-      ctr+=1
-    end
-    self.secondary_endpoints=inst_obj
+    self.primary_endpoints=result[:primary_endpoints]
+    self.secondary_endpoints=result[:secondary_endpoints]
   end
 
   def set_coauthor_information result

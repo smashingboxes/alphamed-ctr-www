@@ -20,7 +20,7 @@ export const ErrorSpan = styled.span`
   display: block;
   font-size: 12px;
   color: ${errorColor};
-  text-align: right;
+  text-align: left;
 `;
 
 export const GroupContainer = styled.div`
@@ -67,6 +67,6 @@ export const FormSelectLabel = styled.label`
 `;
 
 export const FormSpan = styled.span`
-  color: #FF5858;
+  color: #ff5858;
   font-size: 12px;
 `;
