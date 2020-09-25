@@ -93,7 +93,7 @@ class OverviewForm extends React.Component {
       });
       return;
     } else {
-      if (title.trim().split(' ').length > 150) {
+      if (title.match(/(\w+)/g).length > 150) {
         this.setState({
           titleError: 'Must be 150 words at most.'
         });
@@ -107,7 +107,7 @@ class OverviewForm extends React.Component {
       });
       return;
     } else {
-      if (runningHead.trim().split(' ').length > 50) {
+      if (runningHead.match(/(\w+)/g).length > 50) {
         this.setState({
           runningHeadError: 'Must be 50 words at most.'
         });
@@ -121,7 +121,7 @@ class OverviewForm extends React.Component {
       });
       return;
     } else {
-      if (keywords.trim().split(' ').length > 5) {
+      if (keywords.match(/(\w+)/g).length > 5) {
         this.setState({
           keywordsError: 'Must be 5 words at most.'
         });

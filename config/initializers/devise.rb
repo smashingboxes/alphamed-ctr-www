@@ -25,6 +25,7 @@ Devise.setup do |config|
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
   config.mailer_sender = 'editorialoffice@ctr.theoncologist.com'
+  # config.mailer_sender = 'sample@email.com'
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'

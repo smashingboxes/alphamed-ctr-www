@@ -23,10 +23,12 @@ class UserMailer
   # rubocop:disable Naming/UncommunicativeMethodParamName
   def self.send(to, cc, bcc, subject, html, text = "", result = nil, actor = nil, template = nil)
     data = Hash.new { |h, k| h[k] = [] }
+    reply_to_email="editorialoffice@ctr.theoncologist.com"
+    reply_to_email="sample@email.com"
     # data[:from] = Settings.from_email
-    data[:from] = "THE ONCOLOGIST Clinical Trial Results <editorialoffice@ctr.theoncologist.com>"
+    data[:from] = "THE ONCOLOGIST Clinical Trial Results <#{reply_to_email}>"
     # data["h:Reply-To"] = Settings.admin_email
-    data["h:Reply-To"] = "editorialoffice@ctr.theoncologist.com"
+    data["h:Reply-To"] = "#{reply_to_email}"
     # if Settings.intercept_email
     # if "ctr-staging@smashingboxes.com"
     #   # data[:to] = Settings.intercept_email

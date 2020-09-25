@@ -345,7 +345,12 @@ class Api::ResultsController < ApplicationController
     @search=params[:query]
 
     @results=Result.all
-    @results=@results.fulltext_search(@search, :index => /ctr\d+-\d+/i.match?(@search) ? 'ctr_number_index' : 'fulltext_index')
+    # @results=@results.fulltext_search(@search, :index => /ctr\d+-\d+/i.match?(@search) ? 'ctr_number_index' : 'fulltext_index')
+    if @search
+      @results=Result.full_search(@search)
+    else
+      @results=Result.advance_search(params)
+    end
     @results=@results[@page, @limit]
     @results=@results.map{|r|
       @date = r.state_history.select { |h| h.key?("submitted") }.last
