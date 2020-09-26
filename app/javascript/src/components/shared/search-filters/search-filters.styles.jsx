@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Paper } from '@material-ui/core';
 
-import ErrorButton from '../error-button /error-button.component';
+import ErrorButton from '../error-button/error-button.component';
 
 export const PaperContainer = styled(Paper)`
   position: absolute;

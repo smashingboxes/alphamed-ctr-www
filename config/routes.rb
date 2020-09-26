@@ -60,7 +60,9 @@ Rails.application.routes.draw do
         post :accepted
         post :rejected
         post :publish
+        get :search
         get :word_export
+        get :comments
       end
     end
     resources :mail_templates, only: [:index, :create] do

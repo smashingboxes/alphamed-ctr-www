@@ -6,13 +6,15 @@ import {
   AuthorSummaryAbstractContainer,
   AuthorSummaryAbstractFormContainer,
   FormContainer,
-  ButtonContainer
+  ButtonContainer,
+  FormEditorLabel,
+  GridContainer
 } from './author-summary-abstract-form.styles';
 
 import CTRComments from '../../shared/ctr-comments/ctr-comments.component';
 import FormEditor from '../../shared/form-editor/form-editor.component';
 import SecondaryButton from '../../shared/secondary-button/secondary-button.component';
-import ErrorButton from '../../shared/error-button /error-button.component';
+import ErrorButton from '../../shared/error-button/error-button.component';
 
 class AuthorSummaryAbstractForm extends React.Component {
   state = {
@@ -170,73 +172,117 @@ class AuthorSummaryAbstractForm extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <AuthorSummaryAbstractFormContainer>
             <FormContainer>
-              <FormEditor
-                require={false}
-                label='Background'
-                data={background}
-                setData={(value) =>
-                  this.setState({ background: value, backgroundError: '' })
-                }
-                error={backgroundError}
-              />
+              <GridContainer container alignItems='start' spacing={1}>
+                <Grid item xs={3}>
+                  <FormEditorLabel>Background</FormEditorLabel>
+                </Grid>
+                <Grid container item xs={9}>
+                  <FormEditor
+                    require={false}
+                    data={background}
+                    setData={(value) =>
+                      this.setState({ background: value, backgroundError: '' })
+                    }
+                    error={backgroundError}
+                  />
+                </Grid>
+              </GridContainer>
             </FormContainer>
+
             <FormContainer>
-              <FormEditor
-                require={false}
-                label='Methods'
-                data={methods}
-                setData={(value) =>
-                  this.setState({ methods: value, methodsError: '' })
-                }
-                error={methodsError}
-              />
+              <GridContainer container alignItems='start' spacing={1}>
+                <Grid item xs={3}>
+                  <FormEditorLabel>Methods</FormEditorLabel>
+                </Grid>
+                <Grid container item xs={9}>
+                  <FormEditor
+                    require={false}
+                    data={methods}
+                    setData={(value) =>
+                      this.setState({ methods: value, methodsError: '' })
+                    }
+                    error={methodsError}
+                  />
+                </Grid>
+              </GridContainer>
             </FormContainer>
+
             <FormContainer>
-              <FormEditor
-                require={false}
-                label='Results'
-                data={results}
-                setData={(value) =>
-                  this.setState({ results: value, resultsError: '' })
-                }
-                error={resultsError}
-              />
+              <GridContainer container alignItems='start' spacing={1}>
+                <Grid item xs={3}>
+                  <FormEditorLabel>Results</FormEditorLabel>
+                </Grid>
+                <Grid container item xs={9}>
+                  <FormEditor
+                    require={false}
+                    data={results}
+                    setData={(value) =>
+                      this.setState({ results: value, resultsError: '' })
+                    }
+                    error={resultsError}
+                  />
+                </Grid>
+              </GridContainer>
             </FormContainer>
+
             <FormContainer>
-              <FormEditor
-                require={false}
-                label='Conclusions'
-                data={conclusions}
-                setData={(value) =>
-                  this.setState({ conclusions: value, conclusionsError: '' })
-                }
-                error={conclusionsError}
-              />
+              <GridContainer container alignItems='start' spacing={1}>
+                <Grid item xs={3}>
+                  <FormEditorLabel>Conclusions</FormEditorLabel>
+                </Grid>
+                <Grid container item xs={9}>
+                  <FormEditor
+                    require={false}
+                    data={conclusions}
+                    setData={(value) =>
+                      this.setState({
+                        conclusions: value,
+                        conclusionsError: ''
+                      })
+                    }
+                    error={conclusionsError}
+                  />
+                </Grid>
+              </GridContainer>
             </FormContainer>
+
             <FormContainer>
-              <FormEditor
-                require={false}
-                label='Discussion'
-                data={discussion}
-                setData={(value) =>
-                  this.setState({ discussion: value, discussionError: '' })
-                }
-                error={discussionError}
-              />
+              <GridContainer container alignItems='start' spacing={1}>
+                <Grid item xs={3}>
+                  <FormEditorLabel>Discussion</FormEditorLabel>
+                </Grid>
+                <Grid container item xs={9}>
+                  <FormEditor
+                    require={false}
+                    data={discussion}
+                    setData={(value) =>
+                      this.setState({ discussion: value, discussionError: '' })
+                    }
+                    error={discussionError}
+                  />
+                </Grid>
+              </GridContainer>
             </FormContainer>
+
             <FormContainer>
-              <FormEditor
-                require={true}
-                label='Lessons Learned'
-                data={lessonsLearned}
-                setData={(value) =>
-                  this.setState({
-                    lessonsLearned: value,
-                    lessonsLearnedError: ''
-                  })
-                }
-                error={lessonsLearnedError}
-              />
+              <GridContainer container alignItems='start' spacing={1}>
+                <Grid item xs={3}>
+                  <FormEditorLabel>Lessons Learned</FormEditorLabel>
+                </Grid>
+                <Grid container item xs={9}>
+                  <FormEditor
+                    require={true}
+                    data={lessonsLearned}
+                    setData={(value) =>
+                      this.setState({
+                        lessonsLearned: value,
+                        lessonsLearnedError: ''
+                      })
+                    }
+                    error={lessonsLearnedError}
+                  />
+                </Grid>
+              </GridContainer>
             </FormContainer>
           </AuthorSummaryAbstractFormContainer>
           <CTRComments />

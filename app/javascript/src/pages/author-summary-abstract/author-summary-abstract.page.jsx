@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid } from '@material-ui/core';
 
 import { useStyles } from './author-summary-abstract.styles';
@@ -7,8 +7,18 @@ import SubmissionSidebar from '../../components/shared/submission-sidebar/submis
 import ThirdSidebar from '../../components/shared/third-sidebar/third-sidebar.component';
 import AuthorSummaryAbstractForm from '../../components/author-summary-abstract/author-summary-abstract-form/author-summary-abstract-form.container';
 
-const AuthorSummaryAbstractPage = ({ ctrResult }) => {
+const AuthorSummaryAbstractPage = ({
+  ctrResult,
+  retrieveCTRResultsStart,
+  authToken
+}) => {
   const classes = useStyles();
+
+  useEffect(() => {
+    if (authToken) {
+      retrieveCTRResultsStart(authToken);
+    }
+  }, [authToken, retrieveCTRResultsStart]);
 
   return (
     <Grid container>

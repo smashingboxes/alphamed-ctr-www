@@ -42,6 +42,11 @@ function* createCTRAuthorSummary({
         'Successfully stored CTR author summary/abstract!',
         'success'
       );
+      yield setTimeout(
+        () =>
+          (window.location.href = `/submission/results/trial-information/${response.data._id.$oid}`),
+        2000
+      );
     }
   } catch (error) {
     yield put(createCTRAuthorSummaryFailure(error.message));

@@ -5,22 +5,16 @@ export const CoAuthorContainer = styled.div`
   color: white;
   padding: 10px;
   width: 70vw;
-  margin-left: 30px;
 `;
 
 export const CoAuthorFormContainer = styled.div`
-  padding: 10px;
-  width: 70vw;
-  display: grid;
-  direction: row;
-  justify-content: center;
-  align-items: center;
+  padding: 60px 0px;
 `;
 
 export const CoAuthorTableContainer = styled.div`
   width: 50vw;
   padding-left: 100px;
-  margin-left: 100px;
+  margin: 50px 0px 50px 100px;
 `;
 
 export const FormContainer = styled.div`

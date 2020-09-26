@@ -65,10 +65,9 @@ export const FormInputContainer = styled.input`
 `;
 
 export const FormInputLabel = styled.label`
-  color: ${(props) => (props.display ? '#fff' : '#58285f')};
-  font-size: 16px;
+  color: #58285f;
+  font-size: 1em;
   font-weight: normal;
-  margin-right: 10px;
 `;
 
 export const FormSpan = styled.span`

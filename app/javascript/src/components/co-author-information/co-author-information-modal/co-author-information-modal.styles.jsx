@@ -37,12 +37,7 @@ export const CoAuthorContainer = styled.div`
 `;
 
 export const CoAuthorFormContainer = styled.div`
-  padding: 10px;
-  width: 50vw;
-  display: grid;
-  direction: row;
-  justify-content: center;
-  align-items: center;
+ 
 `;
 
 export const FormContainer = styled.div`
@@ -55,10 +50,9 @@ export const InstitutionContainer = styled.div`
 
 export const RemoveButton = styled.div`
   background-color: red;
-  height: 10px;
   color: white;
-  margin-left: -20px;
   height: 20px;
+  width: 20px;
   border-radius: 20px;
   cursor: pointer;
 `;
@@ -83,8 +77,6 @@ export const AddButton = styled.div`
 
 export const InstitutionFormContainer = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 export const ButtonContainer = styled.div`

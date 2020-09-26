@@ -1,0 +1,42 @@
+.custom-tab-container {
+    width: 70vw;
+    background-color: rgba(88, 40, 95, 0.6);
+    color: white;
+    border-bottom: 1px solid black;
+
+    display:flex;
+}
+
+.custom-tab-container > div {
+    padding: 10px 15px;
+    min-width: 70px;
+}
+
+.white-item {
+    background-color: white;
+    color: rgb(88, 40, 95);
+}
+
+.removable {
+    display: flex;
+    padding: 5px;
+    cursor: pointer;
+    border-right: 0.5px dashed gray;
+    border-left: 0.5px dashed gray;
+}
+
+.removable div:first-child {
+    margin-right: 10px;
+}
+
+.removable div:last-child {
+    color: #FF5858;
+}
+
+.append {
+    cursor: pointer;
+}
+
+.append:hover {
+    background-color: rgba(88, 40, 95, 0.6);
+}

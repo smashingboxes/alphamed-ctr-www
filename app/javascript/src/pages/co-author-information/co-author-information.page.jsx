@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid } from '@material-ui/core';
 
 import { useStyles } from './co-author-information.styles';
@@ -7,11 +7,21 @@ import SubmissionSidebar from '../../components/shared/submission-sidebar/submis
 import ThirdSidebar from '../../components/shared/third-sidebar/third-sidebar.component';
 import CoAuthorForm from '../../components/co-author-information/co-author-information-form/co-author-information-form.container';
 
-const CoAuthorInformationPage = ({ ctrResult }) => {
+const CoAuthorInformationPage = ({
+  ctrResult,
+  retrieveCTRResultsStart,
+  authToken
+}) => {
   const classes = useStyles();
 
+  useEffect(() => {
+    if (authToken) {
+      retrieveCTRResultsStart(authToken);
+    }
+  }, [authToken, retrieveCTRResultsStart]);
+
   return (
-    <Grid container style={{ height: '75vh' }}>
+    <Grid container>
       <Grid item xs={3}>
         <Grid item container direction='column'>
           <SubmissionSidebar

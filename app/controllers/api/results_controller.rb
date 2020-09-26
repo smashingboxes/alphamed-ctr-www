@@ -328,4 +328,43 @@ class Api::ResultsController < ApplicationController
       render json: {message: "CTR not found."}, status: 422
     end
   end
+
+  def comments
+    if @result = Result.find_by(id:params[:result_id])
+      @comments=@result.comments.where(step:params[:step]).order(:created_at=>:asc).map{|c|c.to_json}
+      render json: {comments:@comments}, status:201
+    else
+      render json: {message: "CTR not found."}, status: 422
+    end
+  end
+
+  def search
+    @page=params[:page] || 1
+    @page=@page.to_i - 1 >=0 ? @page.to_i - 1 : 0
+    @limit=params[:per_page] || 10
+    @search=params[:query]
+
+    @results=Result.all
+    # @results=@results.fulltext_search(@search, :index => /ctr\d+-\d+/i.match?(@search) ? 'ctr_number_index' : 'fulltext_index')
+    if @search
+      @results=Result.full_search(@search)
+    else
+      @results=Result.advance_search(params)
+    end
+    @results=@results[@page, @limit]
+    @results=@results.map{|r|
+      @date = r.state_history.select { |h| h.key?("submitted") }.last
+      @date=@date.present? ? @date[:submitted].try(:strftime, "%m/%d/%y") : "N/A"
+      {
+        title:"#{r.title}(#{r.ctr_number})",
+        authors:r.author_array,
+        submitted:@date
+      }
+    }
+
+    respond_to do |format|
+      format.json { render json: @results }
+      format.html
+    end
+  end
 end

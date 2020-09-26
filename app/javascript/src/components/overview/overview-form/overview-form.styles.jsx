@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Grid } from '@material-ui/core';
 
 export const OverviewContainer = styled.div`
   background-color: #58285f;
@@ -6,6 +7,11 @@ export const OverviewContainer = styled.div`
   padding: 10px;
   width: 70vw;
   margin-left: 30px;
+`;
+
+export const GridContainer = styled(Grid)`
+  padding-left: 40px;
+  margin: 20px 0px;
 `;
 
 export const OverviewFormContainer = styled.div`
@@ -21,17 +27,12 @@ export const FormContainer = styled.div`
   margin: -10px;
 `;
 
-export const CheckboxContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-left: 90px;
-`;
+export const CheckboxContainer = styled.div``;
 
 export const LabelContainer = styled.div`
-  margin-top: 12px;
-  margin-left: -12px;
-  margin-right: 12px;
+  color: #58285f;
+  font-size: 1em;
+  font-weight: normal;
 `;
 
 export const ButtonContainer = styled.div`
