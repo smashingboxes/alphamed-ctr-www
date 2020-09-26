@@ -34,7 +34,8 @@ function* createCTRYourInformation({
     submitterOnly,
     assisted,
     acknowledgements,
-    id
+    id,
+    resultCount
   }
 }) {
   try {
@@ -42,6 +43,7 @@ function* createCTRYourInformation({
       section: 'your_information',
       authentication_token: authToken,
       result: {
+        result_count: resultCount,
         author_first_name: firstName,
         author_middle_name: middleName,
         author_last_name: lastName,

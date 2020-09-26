@@ -22,6 +22,7 @@ class CoAuthorForm extends React.Component {
   state = {
     id: '',
     coAuthorEmail: '',
+    resultCount: 0,
     coAuthorEmailError: '',
     ctrData: {},
     coAuthorArray: [],
@@ -35,11 +36,12 @@ class CoAuthorForm extends React.Component {
     if (ctrResult === null) return;
     if (ctrResult.length === 0) return;
 
-    const { coauthors, _id } = ctrResult[0];
+    const { coauthors, _id, result_count } = ctrResult[0];
 
     return this.setState({
       coAuthorArray: coauthors,
-      id: _id.$oid
+      id: _id.$oid,
+      resultCount: result_count === null || result_count <= 2 ? 3 : result_count
     });
   }
 
@@ -92,11 +94,12 @@ class CoAuthorForm extends React.Component {
 
   handleSave = () => {
     const { createCTRCoAuthorStart, user } = this.props;
-    const { coAuthorArray, id } = this.state;
+    const { coAuthorArray, id, resultCount } = this.state;
 
     return createCTRCoAuthorStart({
       authToken: user.authentication_token,
       coAuthors: coAuthorArray,
+      resultCount,
       id,
       type: 'save'
     });

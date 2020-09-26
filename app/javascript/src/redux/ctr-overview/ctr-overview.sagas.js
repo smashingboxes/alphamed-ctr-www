@@ -21,7 +21,8 @@ function* createCTROverview({
     typeOfStudy,
     keywords,
     isEdit,
-    id
+    id,
+    resultCount
   }
 }) {
   try {
@@ -33,6 +34,7 @@ function* createCTROverview({
         section: 'overview',
         authentication_token: authToken,
         result: {
+          result_count: 1,
           title,
           running_head: runningHead,
           identifier,
@@ -59,6 +61,7 @@ function* createCTROverview({
         section: 'overview',
         authentication_token: authToken,
         result: {
+          result_count: resultCount,
           title,
           running_head: runningHead,
           identifier,

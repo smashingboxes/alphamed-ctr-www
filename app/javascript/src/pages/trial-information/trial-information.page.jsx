@@ -21,10 +21,13 @@ const TrailInformationPage = ({
   }, [authToken, retrieveCTRResultsStart]);
 
   return (
-    <Grid container>
+    <Grid container className={classes.container}>
       <Grid item xs={2}>
         <Grid item container direction='column'>
-          <SubmissionSidebar category='Trial Information' isChecked={false} />
+          <SubmissionSidebar
+            category='Trial Information'
+            ctrResult={ctrResult}
+          />
           <ThirdSidebar />
         </Grid>
       </Grid>

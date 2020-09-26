@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Grid } from '@material-ui/core';
 
+import { GridContainer } from './author-dashboard.styles';
+
 import SecondSidebar from '../../components/shared/second-sidebar/second-sidebar.container';
 import SubmissionTabs from '../../components/author-dashboard/submission-tabs/submission-tabs.component';
 import TableStarted from '../../components/author-dashboard/table-started/table-started.container';
@@ -24,7 +26,7 @@ const AuthorDashboardPage = ({ retrieveCTRResultsStart, authToken }) => {
   }, [authToken, retrieveCTRResultsStart]);
 
   return (
-    <Grid container style={{ height: '75vh' }}>
+    <GridContainer container>
       <Grid item xs={1} />
       <Grid item xs={2}>
         <Grid item container direction='column'>
@@ -41,7 +43,7 @@ const AuthorDashboardPage = ({ retrieveCTRResultsStart, authToken }) => {
           {selected.published && <TablePublished />}
         </Grid>
       </Grid>
-    </Grid>
+    </GridContainer>
   );
 };
 

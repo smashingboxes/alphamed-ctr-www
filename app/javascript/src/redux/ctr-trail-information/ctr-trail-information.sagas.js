@@ -21,6 +21,7 @@ function* createTrailInformation({
     secondaryEndpoints,
     additionalDetails,
     investigatorsAssessment,
+    resultCount,
     id
   }
 }) {
@@ -30,6 +31,7 @@ function* createTrailInformation({
       authentication_token: authToken,
       result: {
         diseases,
+        result_count: resultCount,
         stage_of_disease_or_treatment: stageOfDisease,
         prior_therapy: priorTherapy,
         type_of_study_2: typeOfStudy2,
@@ -41,7 +43,6 @@ function* createTrailInformation({
     });
 
     if (response) {
-      console.log(response);
       yield put(createCTRTrailInformationSuccess());
       yield swalMessage(
         'Successfully stored CTR Trail Information!',

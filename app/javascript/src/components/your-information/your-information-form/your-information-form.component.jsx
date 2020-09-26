@@ -52,6 +52,7 @@ class YourInformationForm extends React.Component {
     correspondingAuthor: false,
     submitterOnly: false,
     assisted: false,
+    resultCount: 0,
     acknowledgements: '',
     firstNameError: '',
     middleNameError: '',
@@ -93,6 +94,7 @@ class YourInformationForm extends React.Component {
       author_submitter,
       author_assisted,
       author_acknowledgements,
+      result_count,
       _id
     } = ctrResult[0];
 
@@ -116,9 +118,9 @@ class YourInformationForm extends React.Component {
       addressOne: author_address_1 === null ? '' : author_address_1,
       addressTwo: author_address_2 === null ? '' : author_address_2,
       city: author_city === null ? '' : author_city,
-      stateProvince: author_statoid === null ? '' : author_statoid,
+      stateProvince: author_statoid === null ? 'Alabama' : author_statoid,
       zipCode: author_zip === null ? '' : author_zip,
-      country: author_country === null ? '' : author_country,
+      country: author_country === null ? 'United States' : author_country,
       telephone: author_phone === null ? '' : author_phone,
       institutions:
         author_institutions.length === 0 ? [''] : author_institutions,
@@ -127,7 +129,8 @@ class YourInformationForm extends React.Component {
       submitterOnly: author_submitter === null ? false : author_submitter,
       assisted: author_assisted === null ? false : author_assisted,
       acknowledgements:
-        author_acknowledgements === null ? '' : author_acknowledgements
+        author_acknowledgements === null ? '' : author_acknowledgements,
+      resultCount: result_count === null || result_count <= 1 ? 2 : result_count
     });
   }
 
@@ -153,6 +156,7 @@ class YourInformationForm extends React.Component {
       submitterOnly,
       assisted,
       acknowledgements,
+      resultCount,
       id
     } = this.state;
 
@@ -258,6 +262,7 @@ class YourInformationForm extends React.Component {
       submitterOnly,
       assisted,
       acknowledgements,
+      resultCount,
       id
     });
   };
@@ -433,8 +438,8 @@ class YourInformationForm extends React.Component {
                 error={otherInput ? '' : firstDegreeError}
               >
                 {ctrYourInformation &&
-                  ctrYourInformation.first_degree_list.map((degree) => (
-                    <option key={degree} value={degree}>
+                  ctrYourInformation.first_degree_list.map((degree, index) => (
+                    <option key={index} value={degree}>
                       {degree}
                     </option>
                   ))}
@@ -516,11 +521,13 @@ class YourInformationForm extends React.Component {
                 error={stateProvinceError}
               >
                 {ctrYourInformation &&
-                  ctrYourInformation.state_province_list.map((province) => (
-                    <option key={province} value={province}>
-                      {province}
-                    </option>
-                  ))}
+                  ctrYourInformation.state_province_list.map(
+                    (province, index) => (
+                      <option key={index} value={province}>
+                        {province}
+                      </option>
+                    )
+                  )}
               </CTRSelect>
             </FormContainer>
             <FormContainer>
@@ -548,8 +555,8 @@ class YourInformationForm extends React.Component {
                 error={countryError}
               >
                 {ctrYourInformation &&
-                  ctrYourInformation.country_list.map((country) => (
-                    <option key={country} value={country}>
+                  ctrYourInformation.country_list.map((country, index) => (
+                    <option key={index} value={country}>
                       {country}
                     </option>
                   ))}
@@ -573,8 +580,8 @@ class YourInformationForm extends React.Component {
 
           <YourInformationFormContainer style={{ paddingLeft: '80px' }}>
             {institutions.map((institution, index) => (
-              <InstitutionFormContainer>
-                <FormContainer key={index}>
+              <InstitutionFormContainer key={index}>
+                <FormContainer>
                   <CTRInput
                     type='text'
                     name={`institution-${index}`}
