@@ -8,7 +8,8 @@ import {
   FormContainer,
   ButtonContainer,
   FormEditorLabel,
-  GridContainer
+  GridContainer,
+  RequiredSpan
 } from './author-summary-abstract-form.styles';
 
 import CTRComments from '../../shared/ctr-comments/ctr-comments.component';
@@ -25,6 +26,7 @@ class AuthorSummaryAbstractForm extends React.Component {
     conclusions: '',
     discussion: '',
     lessonsLearned: '',
+    resultCount: 0,
     backgroundError: '',
     methodsError: '',
     resultsError: '',
@@ -46,6 +48,7 @@ class AuthorSummaryAbstractForm extends React.Component {
       abstract_conclusions,
       abstract_discussion,
       abstract_lessons_learned,
+      result_count,
       _id
     } = ctrResult[0];
 
@@ -57,7 +60,8 @@ class AuthorSummaryAbstractForm extends React.Component {
       conclusions: abstract_conclusions === null ? '' : abstract_conclusions,
       discussion: abstract_discussion === null ? '' : abstract_discussion,
       lessonsLearned:
-        abstract_lessons_learned === null ? '' : abstract_lessons_learned
+        abstract_lessons_learned === null ? '' : abstract_lessons_learned,
+      resultCount: result_count === null || result_count <= 3 ? 4 : result_count
     });
   }
 
@@ -71,46 +75,55 @@ class AuthorSummaryAbstractForm extends React.Component {
       conclusions,
       discussion,
       lessonsLearned,
+      resultCount,
       id
     } = this.state;
 
     const { createCTRAuthorSummaryStart, user } = this.props;
 
-    if (background.split(' ').length > 200) {
-      this.setState({
-        backgroundError: 'Must be 200 words at most.'
-      });
-      return;
+    if (!validator.isEmpty(background)) {
+      if (background.match(/(\w+)/g).length > 200) {
+        this.setState({
+          backgroundError: 'Must be 200 words at most.'
+        });
+        return;
+      }
     }
 
-    if (methods.split(' ').length > 200) {
-      this.setState({
-        methodsError: 'Must be 200 words at most.'
-      });
-      return;
+    if (!validator.isEmpty(methods)) {
+      if (methods.match(/(\w+)/g).length > 200) {
+        this.setState({
+          methodsError: 'Must be 200 words at most.'
+        });
+        return;
+      }
     }
 
-    if (results.split(' ').length > 200) {
-      this.setState({
-        resultsError: 'Must be 200 words at most.'
-      });
-      return;
+    if (!validator.isEmpty(results)) {
+      if (results.match(/(\w+)/g).length > 200) {
+        this.setState({
+          resultsError: 'Must be 200 words at most.'
+        });
+        return;
+      }
     }
 
-    if (conclusions.split(' ').length > 200) {
-      this.setState({
-        conclusionsError: 'Must be 200 words at most.'
-      });
-      return;
+    if (!validator.isEmpty(conclusions)) {
+      if (conclusions.match(/(\w+)/g).length > 200) {
+        this.setState({
+          conclusionsError: 'Must be 200 words at most.'
+        });
+        return;
+      }
     }
 
     if (validator.isEmpty(lessonsLearned)) {
       this.setState({
-        keywordsError: 'This field is mandatory.'
+        lessonsLearnedError: 'X This field is mandatory.'
       });
       return;
     } else {
-      if (lessonsLearned.split(' ').length > 75) {
+      if (lessonsLearned.match(/(\w+)/g).length > 75) {
         this.setState({
           lessonsLearnedError: 'Must be 75 words at most.'
         });
@@ -126,6 +139,7 @@ class AuthorSummaryAbstractForm extends React.Component {
       conclusions,
       discussion,
       lessonsLearned,
+      resultCount,
       id
     });
   };
@@ -267,9 +281,11 @@ class AuthorSummaryAbstractForm extends React.Component {
             <FormContainer>
               <GridContainer container alignItems='start' spacing={1}>
                 <Grid item xs={3}>
-                  <FormEditorLabel>Lessons Learned</FormEditorLabel>
+                  <FormEditorLabel>
+                    Lessons Learned <RequiredSpan>*</RequiredSpan>
+                  </FormEditorLabel>
                 </Grid>
-                <Grid container item xs={9}>
+                <Grid container item xs={9} direction='column'>
                   <FormEditor
                     require={true}
                     data={lessonsLearned}
@@ -279,8 +295,10 @@ class AuthorSummaryAbstractForm extends React.Component {
                         lessonsLearnedError: ''
                       })
                     }
-                    error={lessonsLearnedError}
                   />
+                  <RequiredSpan>
+                    {lessonsLearnedError && lessonsLearnedError}
+                  </RequiredSpan>
                 </Grid>
               </GridContainer>
             </FormContainer>

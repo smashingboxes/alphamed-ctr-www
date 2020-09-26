@@ -1,10 +1,14 @@
 import styled from 'styled-components';
 
-export const FooterContainer = styled.div`
+export const FooterContainer = styled.footer`
   background-color: whitesmoke;
   width: 100vw;
   height: 120px;
   padding: 10px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  right: 0;
 `;
 
 export const FooterText = styled.p`

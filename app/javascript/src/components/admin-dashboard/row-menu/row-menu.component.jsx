@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Menu, MenuItem } from '@material-ui/core';
+import { Button, Divider, Menu, MenuItem } from '@material-ui/core';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
@@ -27,6 +27,10 @@ export function RowMenu({ row, goToEdit, deleteCTR }) {
         onClose={handleClose}
       >
         <MenuItem onClick={(e) => goToEdit(row._id.$oid, e)}>Edit</MenuItem>
+        <MenuItem onClick={handleClose}>Manage Forms</MenuItem>
+        <MenuItem onClick={handleClose}>View Activity Log</MenuItem>
+        <MenuItem onClick={handleClose}>View Note</MenuItem>
+        <Divider />
         <MenuItem onClick={(e) => deleteCTR(row._id.$oid, e)}>Delete</MenuItem>
       </Menu>
       <Button

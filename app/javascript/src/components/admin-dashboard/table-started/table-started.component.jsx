@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Table,
@@ -9,31 +9,13 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
-  Paper,
-  Button,
-  Menu,
-  MenuItem
+  Paper
 } from '@material-ui/core';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
 import { useStyles } from './table-started.styles';
 
-function createData(title, authors, started) {
-  return { title, authors, started };
-}
-
-const rows = [
-  createData('CTR20-061', 'AlphaMed', '08/10/20'),
-  createData('CTR20-062', 'BlphaMed', '08/10/20'),
-  createData('CTR20-063', 'ClphaMed', '08/10/20'),
-  createData('CTR20-064', 'DlphaMed', '08/10/20'),
-  createData('CTR20-065', 'ElphaMed', '08/10/20'),
-  createData('CTR20-066', 'FlphaMed', '08/10/20'),
-  createData('CTR20-067', 'GlphaMed', '08/10/20'),
-  createData('CTR20-068', 'HlphaMed', '08/10/20'),
-  createData('CTR20-069', 'IlphaMed', '08/10/20')
-];
+import { RowMenu } from '../row-menu/row-menu.component';
+import { confirmSwalMessage } from '../../shared/swal-message/swal-message';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -63,9 +45,9 @@ function stableSort(array, comparator) {
 
 const headCells = [
   { id: 'title', disablePadding: false, label: 'Title' },
-  { id: 'authors', disablePadding: false, label: 'Author(s)' },
-  { id: 'started', disablePadding: false, label: 'Started' },
-  { id: 'actions', disablePadding: true, label: 'Actions' }
+  { id: 'author_name', disablePadding: false, label: 'Author(s)' },
+  { id: 'created_at', disablePadding: false, label: 'Started' },
+  { id: 'actions', disablePadding: false, label: 'Actions' }
 ];
 
 function EnhancedTableHead(props) {
@@ -116,13 +98,20 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired
 };
 
-const TableStarted = () => {
+const TableStarted = ({ ctrResults, deleteCTRResultsStart }) => {
   const classes = useStyles();
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [order, setOrder] = useState('desc');
+  const [orderBy, setOrderBy] = useState('created_at');
+  const [selected, setSelected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    if (ctrResults) {
+      setRows(ctrResults);
+    }
+  }, [ctrResults]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -139,26 +128,6 @@ const TableStarted = () => {
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -168,19 +137,22 @@ const TableStarted = () => {
     setPage(0);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const goToEdit = (id, e) => {
+    e.preventDefault();
+    window.location.href = `/submission/results/${id}`;
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  const deleteCTR = (resultId, e) => {
+    e.preventDefault();
+
+    confirmSwalMessage(
+      'Are you sure you want to delete the CTR details?',
+      'warning',
+      () => deleteCTRResultsStart(resultId)
+    );
   };
 
   return (
@@ -206,22 +178,18 @@ const TableStarted = () => {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
-                  console.log(labelId);
+                  let author_name = row.author_first_name
+                    ? row.author_first_name
+                    : '';
+
+                  author_name = row.author_last_name
+                    ? author_name + ' ' + row.author_last_name
+                    : 'N/A';
 
                   return (
-                    <TableRow
-                      className={classes.tableRow}
-                      hover
-                      onClick={(event) => handleClick(event, row.title)}
-                      role='checkbox'
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.title}
-                      selected={isItemSelected}
-                    >
+                    <TableRow className={classes.tableRow} key={index}>
                       <TableCell
                         className={classes.tableData}
                         padding='default'
@@ -231,45 +199,30 @@ const TableStarted = () => {
                       >
                         {row.title}
                       </TableCell>
-                      <TableCell className={classes.tableData} align='left'>
-                        {row.authors}
+                      <TableCell
+                        scope='row'
+                        className={classes.tableData}
+                        align='left'
+                      >
+                        {author_name}
                       </TableCell>
-                      <TableCell className={classes.tableData} align='left'>
-                        {row.started}
+                      <TableCell
+                        scope='row'
+                        className={classes.tableData}
+                        align='left'
+                      >
+                        {row.created_at.substring(0, 10)}
                       </TableCell>
-                      <TableCell className={classes.tableData} align='left'>
-                        <Button
-                          aria-controls='simple-menu'
-                          aria-haspopup='true'
-                          onClick={handleMenuClick}
-                          className={classes.menuButton}
-                          endIcon={
-                            anchorEl ? (
-                              <ArrowDropUpIcon />
-                            ) : (
-                              <ArrowDropDownIcon />
-                            )
-                          }
-                        >
-                          Actions
-                        </Button>
-                        <Menu
-                          id='simple-menu'
-                          anchorEl={anchorEl}
-                          keepMounted
-                          open={Boolean(anchorEl)}
-                          onClose={handleClose}
-                        >
-                          <MenuItem onClick={handleClose}>View</MenuItem>
-                          <MenuItem onClick={handleClose}>Edit</MenuItem>
-                          <MenuItem onClick={handleClose}>
-                            Manage Forms
-                          </MenuItem>
-                          <MenuItem onClick={handleClose}>
-                            Activity Log
-                          </MenuItem>
-                          <MenuItem onClick={handleClose}>Delete</MenuItem>
-                        </Menu>
+                      <TableCell
+                        scope='row'
+                        className={classes.tableData}
+                        align='left'
+                      >
+                        <RowMenu
+                          row={row}
+                          goToEdit={goToEdit}
+                          deleteCTR={deleteCTR}
+                        />
                       </TableCell>
                     </TableRow>
                   );

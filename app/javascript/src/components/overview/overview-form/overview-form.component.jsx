@@ -30,6 +30,7 @@ class OverviewForm extends React.Component {
     keywords: '',
     identifier: '',
     sponsor: '',
+    resultCount: 0,
     typeOfStudyError: '',
     titleError: '',
     runningHeadError: '',
@@ -54,6 +55,7 @@ class OverviewForm extends React.Component {
       identifier,
       irb_approved,
       sponsor,
+      result_count,
       _id
     } = ctrResult[0];
 
@@ -66,6 +68,8 @@ class OverviewForm extends React.Component {
       checked: irb_approved,
       sponsor,
       isEdit: true,
+      resultCount:
+        result_count === null || result_count <= 0 ? 1 : result_count,
       id: _id.$oid
     });
   }
@@ -82,6 +86,7 @@ class OverviewForm extends React.Component {
       sponsor,
       checked,
       isEdit,
+      resultCount,
       id
     } = this.state;
 
@@ -150,6 +155,12 @@ class OverviewForm extends React.Component {
       );
     }
 
+    if (resultCount === 0) {
+      this.setState({
+        resultCount: 1
+      });
+    }
+
     return createCTROverviewStart({
       authToken: user.authentication_token,
       typeOfStudy,
@@ -160,6 +171,7 @@ class OverviewForm extends React.Component {
       sponsor,
       checked,
       isEdit,
+      resultCount,
       id
     });
   };

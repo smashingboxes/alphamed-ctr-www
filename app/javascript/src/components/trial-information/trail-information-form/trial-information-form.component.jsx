@@ -33,11 +33,13 @@ import SecondaryButton from '../../shared/secondary-button/secondary-button.comp
 import DiseaseComboBox from '../disease-combobox/disease-combobox.component';
 import { GenericFormHeaderContainer } from '../../shared/styles/shared-styles';
 import ErrorButton from '../../shared/error-button/error-button.component';
+import CTRInput from '../../shared/ctr-input/ctr-input.component';
 
 class TrailInformationForm extends React.Component {
   state = {
     id: '',
     diseases: [],
+    retrievedDiseases: [],
     stageOfDisease: '',
     priorTherapy: '',
     typeOfStudy2: '',
@@ -45,9 +47,11 @@ class TrailInformationForm extends React.Component {
     secondaryEndpoints: [''],
     additionalDetails: '',
     investigatorsAssessment: '',
+    otherInvestigatorsAssessment: false,
     typeOfStudy2ComboBoxData: [],
     primaryEndpointsComboBoxData: [],
     secondaryEndpointsComboBoxData: [],
+    resultCount: 0,
     diseasesError: '',
     stageOfDiseaseError: '',
     priorTherapyError: '',
@@ -72,8 +76,21 @@ class TrailInformationForm extends React.Component {
       investigators_assessment,
       endpoints_details,
       study_phase,
+      result_count,
       _id
     } = ctrResult[0];
+
+    if (investigators_assessment) {
+      const result = investigatorsAssessmentData.filter(
+        (data) => data === investigators_assessment
+      );
+
+      if (result.length <= 0) {
+        this.setState({
+          otherInvestigatorsAssessment: true
+        });
+      }
+    }
 
     if (study_phase === 'Phase I') {
       this.setState({
@@ -93,7 +110,9 @@ class TrailInformationForm extends React.Component {
 
     return this.setState({
       id: _id.$oid,
-      diseases: diseases === null ? [] : diseases,
+      retrievedDiseases:
+        diseases === null || diseases.length === 0 ? [] : diseases,
+      diseases: diseases === null || diseases.length === 0 ? [] : diseases,
       stageOfDisease:
         stage_of_disease_or_treatment === null
           ? ''
@@ -106,7 +125,8 @@ class TrailInformationForm extends React.Component {
         secondary_endpoints.length === 0 ? [''] : secondary_endpoints,
       additionalDetails: endpoints_details === null ? '' : endpoints_details,
       investigatorsAssessment:
-        investigators_assessment === null ? '' : investigators_assessment
+        investigators_assessment === null ? '' : investigators_assessment,
+      resultCount: result_count === null || result_count <= 4 ? 5 : result_count
     });
   }
 
@@ -125,7 +145,9 @@ class TrailInformationForm extends React.Component {
   };
 
   handleChangePrimaryEndpoint = (e, index) => {
+    /* eslint-disable react/no-direct-mutation-state */
     this.state.primaryEndpoints[index] = e.target.value;
+
     this.setState({
       primaryEndpoints: this.state.primaryEndpoints
     });
@@ -168,7 +190,8 @@ class TrailInformationForm extends React.Component {
       primaryEndpoints,
       secondaryEndpoints,
       additionalDetails,
-      investigatorsAssessment
+      investigatorsAssessment,
+      resultCount
     } = this.state;
 
     const { createCTRTrailInformationStart, user } = this.props;
@@ -211,6 +234,7 @@ class TrailInformationForm extends React.Component {
       secondaryEndpoints,
       additionalDetails,
       investigatorsAssessment,
+      resultCount,
       id
     });
   };
@@ -230,16 +254,22 @@ class TrailInformationForm extends React.Component {
     this.setState({ [name]: value });
   };
 
-  onItemAdd = (diseases) => {
-    this.setState({
-      diseases
-    });
+  onDiseaseAdd = (newDisease) => {
+    this.setState(
+      (prevState) => ({
+        diseases: [...prevState.diseases, newDisease]
+      }),
+      () => console.log(this.state.diseases)
+    );
   };
 
-  onItemRemove = (diseases) => {
-    this.setState({
-      diseases
-    });
+  onDiseaseRemove = (removeDisease) => {
+    this.setState(
+      {
+        diseases: this.state.diseases.filter((data) => data !== removeDisease)
+      },
+      () => console.log(this.state.diseases)
+    );
   };
 
   handlePrevious = () =>
@@ -247,8 +277,8 @@ class TrailInformationForm extends React.Component {
 
   render() {
     const {
-      diseases,
       stageOfDisease,
+      retrievedDiseases,
       priorTherapy,
       typeOfStudy2,
       primaryEndpoints,
@@ -258,12 +288,12 @@ class TrailInformationForm extends React.Component {
       typeOfStudy2ComboBoxData,
       primaryEndpointsComboBoxData,
       secondaryEndpointsComboBoxData,
+      otherInvestigatorsAssessment,
       diseasesError,
       stageOfDiseaseError,
       priorTherapyError,
       typeOfStudy2Error,
-      additionalDetailsError,
-      investigatorsAssessmentError
+      additionalDetailsError
     } = this.state;
 
     return (
@@ -276,9 +306,9 @@ class TrailInformationForm extends React.Component {
             <FormContainer>
               <DiseaseComboBox
                 name='diseases'
-                diseases={diseases}
-                onItemAdd={this.onItemAdd}
-                onItemRemove={this.onItemRemove}
+                diseases={retrievedDiseases}
+                onDiseaseAdd={this.onDiseaseAdd}
+                onDiseaseRemove={this.onDiseaseRemove}
                 error={diseasesError}
                 handleError={this.changeDiseaseError}
               />
@@ -453,16 +483,48 @@ class TrailInformationForm extends React.Component {
               <CTRSelect
                 label='Investigator’s Assessment'
                 require={false}
-                onChange={this.handleChange}
+                onChange={(event) => {
+                  if (event.target.value === 'Other') {
+                    return this.setState({
+                      investigatorsAssessment: '',
+                      investigatorsAssessmentError: '',
+                      otherInvestigatorsAssessment: true
+                    });
+                  }
+
+                  return this.setState({
+                    investigatorsAssessment: event.target.value,
+                    investigatorsAssessmentError: '',
+                    otherInvestigatorsAssessment: false
+                  });
+                }}
                 name='investigatorsAssessment'
-                value={investigatorsAssessment}
-                error={investigatorsAssessmentError}
+                value={
+                  otherInvestigatorsAssessment
+                    ? 'Other'
+                    : investigatorsAssessment
+                }
               >
                 {investigatorsAssessmentData.map((stage, key) => (
                   <option key={key}>{stage}</option>
                 ))}
               </CTRSelect>
             </FormContainer>
+
+            {otherInvestigatorsAssessment ? (
+              <FormContainer>
+                <CTRInput
+                  type='text'
+                  name='investigatorsAssessment'
+                  require={false}
+                  value={
+                    otherInvestigatorsAssessment ? investigatorsAssessment : ''
+                  }
+                  onChange={this.handleChange}
+                  label='Investigator’s Assessment'
+                />
+              </FormContainer>
+            ) : null}
           </TrailInformationFormContainer>
 
           <CTRComments />

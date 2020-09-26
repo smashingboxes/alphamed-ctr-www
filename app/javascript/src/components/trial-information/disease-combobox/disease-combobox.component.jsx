@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Grid, Paper } from '@material-ui/core';
+import validator from 'validator';
 
 import { useStyles } from './disease-combobox.styles';
 
@@ -7,8 +8,8 @@ import { diseaseData } from './disease-combobox.data';
 import CTRInput from '../../shared/ctr-input/ctr-input.component';
 
 const DiseaseComboBox = ({
-  onItemAdd,
-  onItemRemove,
+  onDiseaseAdd,
+  onDiseaseRemove,
   error,
   handleError,
   diseases
@@ -40,30 +41,38 @@ const DiseaseComboBox = ({
 
     let currentSelected = preSelectedDiseasesElement.current.value;
 
+    if (validator.isEmpty(currentSelected)) return;
+
     if (currentSelected === 'Other') {
       setIsOtherSelected(true);
       setSelectedDiseases([...selectedDiseases, other]);
 
-      return onItemAdd(selectedDiseases);
+      return onDiseaseAdd(other);
     }
 
     setIsOtherSelected(false);
-    setDiseasesList(diseasesList.filter((data) => data !== currentSelected));
+
+    setDiseasesList((diseasesList) =>
+      diseasesList.filter((data) => data !== currentSelected)
+    );
     setSelectedDiseases([...selectedDiseases, currentSelected]);
 
-    onItemAdd(selectedDiseases);
+    onDiseaseAdd(currentSelected);
   };
 
   const handleOnRemove = (e) => {
     e.preventDefault();
+
     let removeSelected = selectedDiseaseElement.current.value;
+
+    if (validator.isEmpty(removeSelected)) return;
 
     if (!diseaseData.includes(removeSelected)) {
       setSelectedDiseases(
         selectedDiseases.filter((disease) => disease !== removeSelected)
       );
 
-      return onItemRemove(selectedDiseases);
+      return onDiseaseRemove(removeSelected);
     }
 
     setSelectedDiseases(
@@ -71,7 +80,7 @@ const DiseaseComboBox = ({
     );
     setDiseasesList([...diseasesList, removeSelected].sort());
 
-    onItemRemove(selectedDiseases);
+    onDiseaseRemove(removeSelected);
   };
 
   const handleChange = (event) => {
