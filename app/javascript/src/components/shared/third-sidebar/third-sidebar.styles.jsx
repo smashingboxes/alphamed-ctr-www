@@ -9,7 +9,6 @@ export const ButtonContainer = styled(PrimaryButton)`
 
 export const PaperContainer = styled(Paper)`
   margin: 50px 30px;
-  z-index: 1000;
 `;
 
 export const ButtonMailContainer = styled.a`

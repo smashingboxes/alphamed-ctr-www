@@ -1,5 +1,6 @@
 class ResultsController < ApplicationController
-  # before_action :set_result, only: [:show, :edit, :update, :destroy]
+  before_action :set_result, only: [:show, :edit, :update, :destroy]
+  skip_before_action :verify_authenticity_token
 
   # GET /results
   # GET /results.json
@@ -73,17 +74,21 @@ class ResultsController < ApplicationController
   # DELETE /results/1
   # DELETE /results/1.json
   def destroy
-    @result.destroy
-    respond_to do |format|
-      format.html { redirect_to results_url, notice: 'Result was successfully destroyed.' }
-      format.json { head :no_content }
+    if @result
+      @result.destroy
+      respond_to do |format|
+        format.html { redirect_to results_url, notice: 'Result was successfully destroyed.' }
+        format.json { head :no_content }
+      end
+    else
+      render json: {message:"CTR not found."}, status: 401
     end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_result
-      @result = Result.find(params[:id])
+      @result = Result.find_by(id:params[:id])
     end
 
     # Only allow a list of trusted parameters through.

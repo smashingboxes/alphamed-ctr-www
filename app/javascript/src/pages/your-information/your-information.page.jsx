@@ -23,10 +23,13 @@ const YourInformationPage = ({
   }, [authToken, retrieveCTRResultsStart, retrieveCTRYourInformationStart]);
 
   return (
-    <Grid container>
+    <Grid container className={classes.container}>
       <Grid item xs={2}>
         <Grid item container direction='column'>
-          <SubmissionSidebar category='Your Information' isChecked={false} />
+          <SubmissionSidebar
+            category='Your Information'
+            ctrResult={ctrResult}
+          />
           <ThirdSidebar />
         </Grid>
       </Grid>

@@ -19,6 +19,7 @@ function* createCTRAuthorSummary({
     conclusions,
     discussion,
     lessonsLearned,
+    resultCount,
     id
   }
 }) {
@@ -27,6 +28,7 @@ function* createCTRAuthorSummary({
       section: 'author_summary',
       authentication_token: authToken,
       result: {
+        result_count: resultCount,
         abstract_background: background,
         abstract_methods: methods,
         abstract_results: results,

@@ -4,7 +4,8 @@ import CTRResultsActionTypes from './ctr-results.types';
 
 import {
   retrieveCTRResultsSuccess,
-  retrieveCTRResultsFailure
+  retrieveCTRResultsFailure,
+  deleteCTRResultsSuccess
 } from './ctr-results.actions';
 
 import server from '../server';
@@ -23,6 +24,16 @@ function* retrieveCTRResults({ payload: { authToken } }) {
   }
 }
 
+function* deleteCTRResults({ payload: { resultId } }) {
+  try {
+    yield server.delete(`/results/${resultId}`);
+  } catch (error) {
+    yield put(deleteCTRResultsSuccess());
+    yield swalMessage('Successfully deleted CTR details!', 'success');
+    yield setTimeout(() => window.location.reload(), 2000);
+  }
+}
+
 function* onRetrieveCTRResultsStart() {
   yield takeLatest(
     CTRResultsActionTypes.RETRIEVE_CTR_RESULTS_START,
@@ -30,6 +41,13 @@ function* onRetrieveCTRResultsStart() {
   );
 }
 
+function* onDeleteCTRResultsStart() {
+  yield takeLatest(
+    CTRResultsActionTypes.DELETE_CTR_RESULTS_START,
+    deleteCTRResults
+  );
+}
+
 export function* ctrResultsSaga() {
-  yield all([call(onRetrieveCTRResultsStart)]);
+  yield all([call(onRetrieveCTRResultsStart), call(onDeleteCTRResultsStart)]);
 }

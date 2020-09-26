@@ -13,6 +13,11 @@ export const GridContainer = styled(Grid)`
   margin: 50px 0px;
 `;
 
+export const RequiredSpan = styled.span`
+  color: #ff5858;
+  font-size: 12px;
+`;
+
 export const AuthorSummaryAbstractFormContainer = styled.div`
   padding: 10px 10px 10px 50px;
   width: 70vw;

@@ -55,7 +55,7 @@ const AuthorRoute = () => {
         component={AuthorDrugInformationPage}
       />
       <PrivateRoute
-        path='/submission/results/patient-char/:id'
+        path='/submission/results/patient-characteristics/:id'
         exact
         component={AuthorPatientCharPage}
       />
@@ -65,22 +65,22 @@ const AuthorRoute = () => {
         component={AuthorPrimaryAssessmentPage}
       />
       <PrivateRoute
-        path='/submission/results/adverse-event/:id'
+        path='/submission/results/adverse-events/:id'
         exact
         component={AuthorAdverseEventPage}
       />
       <PrivateRoute
-        path='/submission/results/pharma/:id'
+        path='/submission/results/pharmacokinetics-pharmacodynamics/:id'
         exact
         component={AuthorPharmaPagePage}
       />
       <PrivateRoute
-        path='/submission/results/assessment-discussion/:id'
+        path='/submission/results/assessment-analysis-discussion/:id'
         exact
         component={AuthorAssessmentDiscussionPage}
       />
       <PrivateRoute
-        path='/submission/results/figure-table/:id'
+        path='/submission/results/figure-and-tables/:id'
         exact
         component={AuthorFigureTablePage}
       />

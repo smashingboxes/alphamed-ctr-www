@@ -9,3 +9,19 @@ export const swalMessage = (message, icon) => {
     timer: 1500
   });
 };
+
+export const confirmSwalMessage = (message, icon, cb) => {
+  Swal.fire({
+    position: 'center',
+    icon: icon,
+    title: message,
+    showCancelButton: true,
+    showConfirmButton: true,
+    confirmButtonText: `Confirm`,
+    reverseButtons: true
+  }).then((result) => {
+    if (result.isConfirmed) {
+      cb();
+    }
+  });
+};

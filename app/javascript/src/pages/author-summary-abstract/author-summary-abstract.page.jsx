@@ -21,12 +21,12 @@ const AuthorSummaryAbstractPage = ({
   }, [authToken, retrieveCTRResultsStart]);
 
   return (
-    <Grid container>
+    <Grid container className={classes.container}>
       <Grid item xs={3}>
         <Grid item container direction='column'>
           <SubmissionSidebar
             category='Author Summary/Abstract'
-            isChecked={false}
+            ctrResult={ctrResult}
           />
           <ThirdSidebar />
         </Grid>

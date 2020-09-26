@@ -21,12 +21,12 @@ const CoAuthorInformationPage = ({
   }, [authToken, retrieveCTRResultsStart]);
 
   return (
-    <Grid container>
+    <Grid container className={classes.container}>
       <Grid item xs={3}>
         <Grid item container direction='column'>
           <SubmissionSidebar
             category='Co-author Information & Order of Authors'
-            isChecked={false}
+            ctrResult={ctrResult}
           />
           <ThirdSidebar />
         </Grid>

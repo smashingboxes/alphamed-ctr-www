@@ -17,10 +17,10 @@ const OverviewPage = ({ ctrResult, retrieveCTRResultsStart, authToken }) => {
   }, [authToken, retrieveCTRResultsStart]);
 
   return (
-    <Grid container>
+    <Grid container className={classes.container}>
       <Grid item xs={2}>
         <Grid item container direction='column'>
-          <SubmissionSidebar category='Overview' isChecked={false} />
+          <SubmissionSidebar category='Overview' ctrResult={ctrResult} />
           <ThirdSidebar />
         </Grid>
       </Grid>
