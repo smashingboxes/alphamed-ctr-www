@@ -38,6 +38,9 @@
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
   },
+  "engines": {
+    "node": "^10"
+  },
   "devDependencies": {
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.3",
