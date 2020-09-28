@@ -1,5 +1,5 @@
-import 'core-js/stable'
-import 'regenerator-runtime/runtime'
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 // This is a manifest file that'll be compiled into application.js, which will include all the files
 // listed below.
 //
@@ -13,6 +13,5 @@ import 'regenerator-runtime/runtime'
 // about supported directives.
 //
 //= require rails-ujs
-//= require activestorage
 //= require turbolinks
 //= require_tree .
