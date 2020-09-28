@@ -69,7 +69,7 @@ Rails.application.routes.draw do
       collection do
         post "update", to: 'mail_templates#update'
         delete "destroy", to: 'mail_templates#destroy'
-        post :send_email
+        post :send_test_email
       end
     end
   end  

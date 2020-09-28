@@ -40,14 +40,14 @@ const AuthorRoute = () => {
         component={CoAuthorInformationPage}
       />
       <PrivateRoute
-        path='/submission/results/trial-information/:id'
-        exact
-        component={TrailInformationPage}
-      />
-      <PrivateRoute
         path='/submission/results/author-summary-abstract/:id'
         exact
         component={AuthorSummaryAbstractPage}
+      />
+      <PrivateRoute
+        path='/submission/results/trial-information/:id'
+        exact
+        component={TrailInformationPage}
       />
       <PrivateRoute
         path='/submission/results/drug-information/:id'
