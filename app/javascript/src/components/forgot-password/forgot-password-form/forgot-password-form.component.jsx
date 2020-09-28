@@ -43,7 +43,7 @@ class ForgotPasswordForm extends React.Component {
           error={emailError}
         />
         <PrimaryButtonContainer>
-          <PrimaryButton type='submit'>Reset Password</PrimaryButton>
+          <PrimaryButton type='submit'>Reset Your Password</PrimaryButton>
         </PrimaryButtonContainer>
       </form>
     );
