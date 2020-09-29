@@ -5,7 +5,7 @@ import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
 import { useStyles } from './row-menu.styles';
 
-export function RowMenu({ row, goToEdit }) {
+export function RowMenu({ row, goToEdit, deleteCTR }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const classes = useStyles();
 
@@ -27,7 +27,7 @@ export function RowMenu({ row, goToEdit }) {
         onClose={handleClose}
       >
         <MenuItem onClick={(e) => goToEdit(row._id.$oid, e)}>Edit</MenuItem>
-        <MenuItem onClick={handleClose}>Delete</MenuItem>
+        <MenuItem onClick={(e) => deleteCTR(row._id.$oid, e)}>Delete</MenuItem>
       </Menu>
       <Button
         aria-controls='simple-menu'

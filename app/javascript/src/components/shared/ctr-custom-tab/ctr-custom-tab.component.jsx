@@ -1,92 +1,78 @@
 import React, { useState, useEffect } from 'react';
-import { Paper, Grid } from '@material-ui/core';
+import useDeepCompareEffect from 'use-deep-compare-effect';
 
-import { } from './ctr-custom-tab.styles';
-
-import "./style.css";
+import {} from './ctr-custom-tab.styles';
+import './style.css';
 
 const CTRCustomTab = ({
-    label,
-    initialValue = null,
-    isAppendable = false,
-    appendLabel,
-    onTabAdd = (item) => {},
-    onTabSelectChange = (item, index) => {},
-    onTabItemRemoved = (item) => {} }) => {
-
-  const [tabItems, setTabitems] = useState([]);
+  label,
+  initialValue = null,
+  isAppendable = false,
+  isEditable = false,
+  tabLimit = 0,
+  appendLabel,
+  tabItems,
+  onTabAdd,
+  onTabSelectChange,
+  onTabUpdateItem
+}) => {
+  const [tabs, setTabs] = useState([]);
+  const [editTabMode, setEditTabMode] = useState(false);
 
   useEffect(() => {
-    if(isAppendable) appendInitialItem();
-  }, []);
+    if (tabItems) {
+      setTabs(tabItems);
+    }
+  }, [tabItems]);
 
-  const handleOnItemAdd = () => {
-    let tabItem = { value: appendLabel, isSelected: true };
-    setTabitems([...deselectOtherItems(), tabItem]);
-    onTabAdd(tabItem);
-  }
-
-  const handleOnItemSelect = (item, index) => {
-    setTabitems([...deselectOtherItems(item)]);
-    onTabSelectChange(item, index);
-  }
-
-  const handleOnItemRemove = (item, index) => {
-    let removeAt = tabItems.indexOf(item);
-    console.log(removeAt);
-    setTabitems([...tabItems.filter((item, index) => index == removeAt)]);
-    onTabItemRemoved(item, index);
-  }
-
-  const deselectOtherItems = (except = null) => {
-    return [...tabItems].map((item, index) => {
-      if(except != null && index == tabItems.indexOf(except)) return {...item, isSelected: true};
-      return {...item, isSelected: false}
+  const handleUpdateTabValue = (key, value) => {
+    const updatedTabs = tabs.map((tab, index) => {
+      if (key === index) tab.value = value;
+      return tab;
     });
-  }
+    onTabUpdateItem(updatedTabs);
+  };
 
-  const appendInitialItem = () => {
-    setTabitems([...tabItems, { value: initialValue != null ? initialValue : appendLabel, isSelected: true }]);
-  }
+  const handleTabRemove = (key) => {
+    const updatedTabs = tabs.filter((tab, index) => key !== index);
+    onTabUpdateItem(updatedTabs);
+  };
 
   return (
-    <div className = "custom-tab-container">
-      <div>
-          {label}
-      </div>
-      {
-        !isAppendable ?
-        (
-          <div className = "white-item">
-            {initialValue}
-          </div>
-        ) : null
-      }
-      {
-        tabItems && tabItems.map((item, key) => {
-           return (
-            <div
-              key = {key}
-              onClick = {() => handleOnItemSelect(item, key)}
-              className = { item.isSelected ? "white-item removable" : "removable"}>
-                <div> { key == 0 ? "" : "New" } {item.value}</div>
-                <div onClick = {() => handleOnItemRemove(item, key)}>X</div>
-            </div>
-          )
-        })
-      }
-      {
-        isAppendable ?
-        (
-        <div
-        className = "append"
-        onClick = {() => handleOnItemAdd()}
-        >
-        + Add {appendLabel}
+    <div className='custom-tab-container'>
+      <div>{label}</div>
+      {initialValue ? <div className='white-item'>{initialValue}</div> : null}
+      {tabs &&
+        tabs.map((item, key) => {
+          return editTabMode && item.isSelected ? (
+            <input
+              style={{ color: 'black' }}
+              key={key}
+              value={item.value}
+              onBlur={() => setEditTabMode(false)}
+              onChange={(e) => handleUpdateTabValue(key, e.target.value)}
+            />
+          ) : (
+            <>
+              <div
+                key={key}
+                onDoubleClick={() => setEditTabMode(isEditable ? true : false)}
+                onClick={() => onTabSelectChange(key)}
+                className={
+                  item.isSelected ? 'white-item removable' : 'removable'
+                }
+              >
+                <div>{item.value}</div>
+                <div onClick={() => handleTabRemove(key)}>X</div>
+              </div>
+            </>
+          );
+        })}
+      {isAppendable ? (
+        <div className='append' onClick={() => onTabAdd()}>
+          + Add {appendLabel}
         </div>
-        ) : null
-      }
-
+      ) : null}
     </div>
   );
 };

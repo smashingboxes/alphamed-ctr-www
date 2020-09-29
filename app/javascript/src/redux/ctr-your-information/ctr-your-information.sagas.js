@@ -4,7 +4,9 @@ import CTRYourInformationTypes from './ctr-your-information.types';
 
 import {
   createCTRYourInformationSuccess,
-  createCTRYourInformationFailure
+  createCTRYourInformationFailure,
+  retrieveCTRYourInformationFailure,
+  retrieveCTRYourInformationSuccess
 } from './ctr-your-information.actions';
 
 import server from '../server';
@@ -32,7 +34,8 @@ function* createCTRYourInformation({
     submitterOnly,
     assisted,
     acknowledgements,
-    id
+    id,
+    resultCount
   }
 }) {
   try {
@@ -40,6 +43,7 @@ function* createCTRYourInformation({
       section: 'your_information',
       authentication_token: authToken,
       result: {
+        result_count: resultCount,
         author_first_name: firstName,
         author_middle_name: middleName,
         author_last_name: lastName,
@@ -82,6 +86,28 @@ function* createCTRYourInformation({
   }
 }
 
+function* retrieveYourInformationData({ payload: { authToken } }) {
+  try {
+    const response = yield server.get(
+      `/api/results/your_information?auth_token=${authToken}`
+    );
+
+    if (response) {
+      yield put(retrieveCTRYourInformationSuccess(response.data));
+    }
+  } catch (error) {
+    yield put(retrieveCTRYourInformationFailure(error));
+    yield swalMessage('Something went wrong!', 'error');
+  }
+}
+
+function* onRetrieveYourInformationStart() {
+  yield takeLatest(
+    CTRYourInformationTypes.RETRIEVE_CTR_YOUR_INFORMATION_START,
+    retrieveYourInformationData
+  );
+}
+
 function* onCreateYourInformationStart() {
   yield takeLatest(
     CTRYourInformationTypes.CREATE_CTR_YOUR_INFORMATION_START,
@@ -90,5 +116,8 @@ function* onCreateYourInformationStart() {
 }
 
 export function* ctrYourInformationSaga() {
-  yield all([call(onCreateYourInformationStart)]);
+  yield all([
+    call(onCreateYourInformationStart),
+    call(onRetrieveYourInformationStart)
+  ]);
 }

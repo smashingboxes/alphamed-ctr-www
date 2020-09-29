@@ -10,13 +10,17 @@ import {
 import server from '../server';
 import { swalMessage } from '../../components/shared/swal-message/swal-message';
 
-function* createDrugInformation({ payload: { authToken, arms } }) {
+function* createDrugInformation({
+  payload: { authToken, arms, id, resultCount }
+}) {
   try {
-    const response = yield server.post('/api/results', {
+    const response = yield server.patch(`/api/results`, {
       section: 'drug_information',
       authentication_token: authToken,
+      result_id: id,
       result: {
-        arms
+        arms,
+        result_count: resultCount
       }
     });
 
@@ -25,6 +29,11 @@ function* createDrugInformation({ payload: { authToken, arms } }) {
       yield swalMessage(
         'Successfully created your CTR Drug Information!',
         'success'
+      );
+      yield setTimeout(
+        () =>
+          (window.location.href = `/submission/results/patient-characteristics/${response.data._id.$oid}`),
+        2000
       );
     }
   } catch (error) {

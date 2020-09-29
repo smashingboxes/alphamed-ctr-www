@@ -21,7 +21,7 @@ export const FormEditorContainer = styled.div`
 
 export const GroupContainer = styled.div`
   display: block;
-  margin: 45px 0;
+  margin-bottom: 45px;
 `;
 
 export const EditorLabelContainer = styled.div`

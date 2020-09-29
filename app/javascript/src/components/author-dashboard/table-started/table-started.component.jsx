@@ -15,6 +15,7 @@ import {
 import { useStyles } from './table-started.styles';
 
 import { RowMenu } from '../row-menu/row-menu.component';
+import { confirmSwalMessage } from '../../shared/swal-message/swal-message';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -97,10 +98,10 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired
 };
 
-const TableStarted = ({ ctrResults }) => {
+const TableStarted = ({ ctrResults, deleteCTRResultsStart }) => {
   const classes = useStyles();
-  const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('calories');
+  const [order, setOrder] = useState('desc');
+  const [orderBy, setOrderBy] = useState('created_at');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -108,7 +109,6 @@ const TableStarted = ({ ctrResults }) => {
 
   useEffect(() => {
     if (ctrResults) {
-      console.log(ctrResults);
       setRows(ctrResults);
     }
   }, [ctrResults]);
@@ -145,6 +145,16 @@ const TableStarted = ({ ctrResults }) => {
     window.location.href = `/submission/results/${id}`;
   };
 
+  const deleteCTR = (resultId, e) => {
+    e.preventDefault();
+
+    confirmSwalMessage(
+      'Are you sure you want to delete the CTR details?',
+      'warning',
+      () => deleteCTRResultsStart(resultId)
+    );
+  };
+
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -179,7 +189,7 @@ const TableStarted = ({ ctrResults }) => {
                     : 'N/A';
 
                   return (
-                    <TableRow className={classes.tableRow}>
+                    <TableRow className={classes.tableRow} key={index}>
                       <TableCell
                         className={classes.tableData}
                         padding='default'
@@ -208,7 +218,11 @@ const TableStarted = ({ ctrResults }) => {
                         className={classes.tableData}
                         align='left'
                       >
-                        <RowMenu row={row} goToEdit={goToEdit} />
+                        <RowMenu
+                          row={row}
+                          goToEdit={goToEdit}
+                          deleteCTR={deleteCTR}
+                        />
                       </TableCell>
                     </TableRow>
                   );

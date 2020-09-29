@@ -10,23 +10,29 @@ import CoAuthorForm from '../../components/co-author-information/co-author-infor
 const CoAuthorInformationPage = ({
   ctrResult,
   retrieveCTRResultsStart,
-  authToken
+  authToken,
+  match,
+  retrieveCTRCommentStart
 }) => {
   const classes = useStyles();
 
   useEffect(() => {
     if (authToken) {
       retrieveCTRResultsStart(authToken);
+
+      if (match) {
+        retrieveCTRCommentStart(match.params.id, 'coauthors_information');
+      }
     }
-  }, [authToken, retrieveCTRResultsStart]);
+  }, [authToken, retrieveCTRResultsStart, retrieveCTRCommentStart, match]);
 
   return (
-    <Grid container>
+    <Grid container className={classes.container}>
       <Grid item xs={3}>
         <Grid item container direction='column'>
           <SubmissionSidebar
             category='Co-author Information & Order of Authors'
-            isChecked={false}
+            ctrResult={ctrResult}
           />
           <ThirdSidebar />
         </Grid>

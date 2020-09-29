@@ -11,13 +11,14 @@ import server from '../server';
 import { swalMessage } from '../../components/shared/swal-message/swal-message';
 
 function* createCTRCoAuthor({
-  payload: { authToken, coAuthors, users, id, type }
+  payload: { authToken, coAuthors, users, id, type, resultCount }
 }) {
   try {
     const response = yield server.patch(`/api/results?result_id=${id}`, {
       section: 'coauthor_information',
       authentication_token: authToken,
       result: {
+        result_count: resultCount,
         coauthors: coAuthors,
         users
       }
@@ -37,7 +38,6 @@ function* createCTRCoAuthor({
           'Successfully stored new CTR co-authors details!',
           'success'
         );
-        yield setTimeout(() => window.location.reload(), 2000);
       } else {
         yield swalMessage(
           'Successfully stored new CTR co-authors details!',

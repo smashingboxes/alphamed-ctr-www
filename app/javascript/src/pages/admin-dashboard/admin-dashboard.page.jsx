@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid } from '@material-ui/core';
+
+import { GridContainer } from './admin-dashboard.styles';
 
 import SecondSidebar from '../../components/shared/second-sidebar/second-sidebar.container';
 import SubmissionTabs from '../../components/admin-dashboard/submission-tabs/submission-tabs.component';
-import TableStarted from '../../components/admin-dashboard/table-started/table-started.component';
+import TableStarted from '../../components/admin-dashboard/table-started/table-started.container';
 import TableSubmitted from '../../components/admin-dashboard/table-submitted/table-submitted.component';
-import TableInReview from '../../components/admin-dashboard/table-in-review/table-in-review.component';
 import TableRevisions from '../../components/admin-dashboard/table-revisions/table-revisions.component';
+import TablePublished from '../../components/admin-dashboard/table-published/table-published.component';
+import CTRSidebar from '../../components/shared/ctr-sidebar/ctr-sidebar.container';
+import TableInReview from '../../components/admin-dashboard/table-in-review/table-in-review.component';
 import TableAccepted from '../../components/admin-dashboard/table-accepted/table-accepted.component';
 import TableRejected from '../../components/admin-dashboard/table-rejected/table-rejected.component';
-import TablePublished from '../../components/admin-dashboard/table-published/table-published.component';
 
-const AdminDashboardPage = () => {
+const AuthorDashboardPage = ({ retrieveCTRResultsStart, authToken }) => {
   const [selected, isSelected] = useState({
     started: true,
     submitted: false,
@@ -22,12 +25,19 @@ const AdminDashboardPage = () => {
     published: false
   });
 
+  useEffect(() => {
+    if (authToken) {
+      retrieveCTRResultsStart(authToken);
+    }
+  }, [authToken, retrieveCTRResultsStart]);
+
   return (
-    <Grid container style={{ height: '75vh' }}>
+    <GridContainer container>
       <Grid item xs={1} />
       <Grid item xs={2}>
         <Grid item container direction='column'>
-          <SecondSidebar />
+          <SecondSidebar isSubmissionActive={true} />
+          <CTRSidebar />
         </Grid>
       </Grid>
       <Grid item xs={9}>
@@ -42,8 +52,8 @@ const AdminDashboardPage = () => {
           {selected.published && <TablePublished />}
         </Grid>
       </Grid>
-    </Grid>
+    </GridContainer>
   );
 };
 
-export default AdminDashboardPage;
+export default AuthorDashboardPage;

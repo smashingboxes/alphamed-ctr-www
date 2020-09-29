@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid } from '@material-ui/core';
 
 import { useStyles } from './author-adverse-event.styles';
+import { GridContainer } from './author-adverse-event.styles';
 
 import SubmissionSidebar from '../../components/shared/submission-sidebar/submission-sidebar.component';
 import ThirdSidebar from '../../components/shared/third-sidebar/third-sidebar.component';
@@ -11,7 +12,7 @@ const AuthorAdverseEventPage = ({ ctrResult }) => {
   const classes = useStyles();
 
   return (
-    <Grid container>
+    <Grid className={classes.gridContainer} container>
       <Grid item xs={2}>
         <Grid item container direction='column'>
           <SubmissionSidebar category='Adverse Events' isChecked={false} />

@@ -10,23 +10,29 @@ import AuthorSummaryAbstractForm from '../../components/author-summary-abstract/
 const AuthorSummaryAbstractPage = ({
   ctrResult,
   retrieveCTRResultsStart,
-  authToken
+  authToken,
+  match,
+  retrieveCTRCommentStart
 }) => {
   const classes = useStyles();
 
   useEffect(() => {
     if (authToken) {
       retrieveCTRResultsStart(authToken);
+
+      if (match) {
+        retrieveCTRCommentStart(match.params.id, 'author_summary');
+      }
     }
-  }, [authToken, retrieveCTRResultsStart]);
+  }, [authToken, retrieveCTRResultsStart, retrieveCTRCommentStart, match]);
 
   return (
-    <Grid container>
+    <Grid container className={classes.container}>
       <Grid item xs={3}>
         <Grid item container direction='column'>
           <SubmissionSidebar
             category='Author Summary/Abstract'
-            isChecked={false}
+            ctrResult={ctrResult}
           />
           <ThirdSidebar />
         </Grid>

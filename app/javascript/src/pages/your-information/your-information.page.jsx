@@ -10,6 +10,9 @@ import ThirdSidebar from '../../components/shared/third-sidebar/third-sidebar.co
 const YourInformationPage = ({
   ctrResult,
   retrieveCTRResultsStart,
+  retrieveCTRYourInformationStart,
+  retrieveCTRCommentStart,
+  match,
   authToken
 }) => {
   const classes = useStyles();
@@ -17,14 +20,28 @@ const YourInformationPage = ({
   useEffect(() => {
     if (authToken) {
       retrieveCTRResultsStart(authToken);
+      retrieveCTRYourInformationStart(authToken);
+
+      if (match) {
+        retrieveCTRCommentStart(match.params.id, 'your_information');
+      }
     }
-  }, [authToken, retrieveCTRResultsStart]);
+  }, [
+    authToken,
+    retrieveCTRCommentStart,
+    retrieveCTRResultsStart,
+    retrieveCTRYourInformationStart,
+    match
+  ]);
 
   return (
-    <Grid container>
+    <Grid container className={classes.container}>
       <Grid item xs={2}>
         <Grid item container direction='column'>
-          <SubmissionSidebar category='Your Information' isChecked={false} />
+          <SubmissionSidebar
+            category='Your Information'
+            ctrResult={ctrResult}
+          />
           <ThirdSidebar />
         </Grid>
       </Grid>

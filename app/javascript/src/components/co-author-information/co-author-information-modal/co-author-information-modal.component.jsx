@@ -21,9 +21,7 @@ import {
   FormContainer,
   RemoveButton,
   AddButtonContainer,
-  InstitutionContainer,
   AddButton,
-  InstitutionFormContainer,
   CheckboxContainer,
   ButtonContainer,
   ButtonMarginLeftContainer
@@ -252,6 +250,7 @@ class CoAuthorInformationModal extends React.Component {
   };
 
   handleChangeInstitution = (e, index) => {
+    /* eslint-disable react/no-direct-mutation-state */
     this.state.institutions[index] = e.target.value;
     this.setState({
       institutions: this.state.institutions,
