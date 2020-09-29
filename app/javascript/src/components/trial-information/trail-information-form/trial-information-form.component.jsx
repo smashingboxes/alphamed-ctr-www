@@ -1,30 +1,15 @@
 import React from 'react';
 import validator from 'validator';
-import { Grid, Paper, Typography } from '@material-ui/core';
-import RemoveIcon from '@material-ui/icons/Remove';
-import AddIcon from '@material-ui/icons/Add';
+import { Grid, Paper } from '@material-ui/core';
 
 import {
-  RemoveButton,
-  AddButton,
-  AddButtonContainer,
-  EndPointFormContainer,
+  TrailInformationContainer,
   TrailInformationFormContainer,
   FormContainer,
   ButtonContainer,
   FormSelectLabel,
   FormSelectLabelSmall
 } from './trial-information-form.styles';
-
-import {
-  stageOfDiseaseData,
-  priorTherapyData,
-  typeOfStudy2Phase1Data,
-  typeOfStudy2Phase2And3Data,
-  primaryAndSecondaryEndPointPhase1Data,
-  primaryAndSecondaryEndPointPhase2or3Data,
-  investigatorsAssessmentData
-} from './trial-information-form.data';
 
 import CTRSelect from '../../shared/ctr-select/ctr-select.component';
 import CTRComments from '../../shared/ctr-comments/ctr-comments.component';
@@ -43,8 +28,8 @@ class TrailInformationForm extends React.Component {
     stageOfDisease: '',
     priorTherapy: '',
     typeOfStudy2: '',
-    primaryEndpoints: [''],
-    secondaryEndpoints: [''],
+    primaryEndpoints: [],
+    secondaryEndpoints: [],
     additionalDetails: '',
     investigatorsAssessment: '',
     otherInvestigatorsAssessment: false,
@@ -56,6 +41,8 @@ class TrailInformationForm extends React.Component {
     stageOfDiseaseError: '',
     priorTherapyError: '',
     typeOfStudy2Error: '',
+    primaryEndpointsError: '',
+    secondaryEndpointsError: '',
     additionalDetailsError: '',
     investigatorsAssessmentError: ''
   };
@@ -119,10 +106,9 @@ class TrailInformationForm extends React.Component {
           : stage_of_disease_or_treatment,
       priorTherapy: prior_therapy === null ? '' : prior_therapy,
       typeOfStudy2: type_of_study_2 === null ? '' : type_of_study_2,
-      primaryEndpoints:
-        primary_endpoints.length === 0 ? [''] : primary_endpoints,
+      primaryEndpoints: primary_endpoints === 0 ? [''] : primary_endpoints,
       secondaryEndpoints:
-        secondary_endpoints.length === 0 ? [''] : secondary_endpoints,
+        secondary_endpoints === 0 ? [''] : secondary_endpoints,
       additionalDetails: endpoints_details === null ? '' : endpoints_details,
       investigatorsAssessment:
         investigators_assessment === null ? '' : investigators_assessment,
@@ -130,16 +116,9 @@ class TrailInformationForm extends React.Component {
     });
   }
 
-  addPrimaryEndPointField = () => {
-    this.setState({ primaryEndpoints: [...this.state.primaryEndpoints, ''] });
-  };
-
-  removePrimaryEndPointField = (index) => {
-    if (this.state.primaryEndpoints.length <= 1) {
-      return;
-    }
-
-    this.state.primaryEndpoints.splice(index, 1);
+  handleOnItemAdd = (disease) => {
+    console.log(disease);
+    let currentDiseases = [...this.state.diseases];
 
     return this.setState({ primaryEndpoints: this.state.primaryEndpoints });
   };
@@ -176,7 +155,11 @@ class TrailInformationForm extends React.Component {
     });
   };
 
-  changeDiseaseError = () => this.setState({ diseasesError: '' });
+  handleOnItemRemove = (disease) => {
+    let currentDiseases = [...this.state.diseases];
+    currentDiseases.splice(disease, 1);
+    this.setState({ diseases: currentDiseases });
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -196,7 +179,7 @@ class TrailInformationForm extends React.Component {
 
     const { createCTRTrailInformationStart, user } = this.props;
 
-    if (diseases.length === 0) {
+    if (diseases.length === 0 || diseases[0] === '') {
       this.setState({
         diseasesError: 'This field is mandatory.'
       });
@@ -224,6 +207,13 @@ class TrailInformationForm extends React.Component {
       return;
     }
 
+    if (validator.isEmpty(investigatorsAssessment)) {
+      this.setState({
+        investigatorsAssessmentError: 'This field is mandatory.'
+      });
+      return;
+    }
+
     return createCTRTrailInformationStart({
       authToken: user.authentication_token,
       diseases,
@@ -247,6 +237,8 @@ class TrailInformationForm extends React.Component {
       stageOfDiseaseError: '',
       priorTherapyError: '',
       typeOfStudy2Error: '',
+      primaryEndpointsError: '',
+      secondaryEndpointsError: '',
       additionalDetailsError: '',
       investigatorsAssessmentError: ''
     });
@@ -271,9 +263,6 @@ class TrailInformationForm extends React.Component {
       () => console.log(this.state.diseases)
     );
   };
-
-  handlePrevious = () =>
-    (window.location.href = `/submission/results/author-summary-abstract/${this.state.id}`);
 
   render() {
     const {
@@ -320,10 +309,14 @@ class TrailInformationForm extends React.Component {
                 require={true}
                 onChange={this.handleChange}
                 name='stageOfDisease'
-                value={stageOfDisease}
-                error={stageOfDiseaseError}
               >
-                {stageOfDiseaseData.map((stage, key) => (
+                {[
+                  'Prevention',
+                  'Neo-adjuvant',
+                  'Adjuvant',
+                  'Primary',
+                  'Metastatic/Advanced'
+                ].map((stage, key) => (
                   <option key={key}>{stage}</option>
                 ))}
               </CTRSelect>
@@ -335,11 +328,15 @@ class TrailInformationForm extends React.Component {
                 require={true}
                 onChange={this.handleChange}
                 name='priorTherapy'
-                value={priorTherapy}
-                error={priorTherapyError}
               >
-                {priorTherapyData.map((prior, key) => (
-                  <option key={key}>{prior}</option>
+                {[
+                  'None',
+                  '1 prior regimen',
+                  '2 prior regimens',
+                  'More than 2 prior regimens',
+                  'No designated number of regimens'
+                ].map((stage, key) => (
+                  <option key={key}>{stage}</option>
                 ))}
               </CTRSelect>
             </FormContainer>
@@ -350,92 +347,65 @@ class TrailInformationForm extends React.Component {
                 require={true}
                 onChange={this.handleChange}
                 name='typeOfStudy2'
-                value={typeOfStudy2}
-                error={typeOfStudy2Error}
               >
-                {typeOfStudy2ComboBoxData.map((stage, key) => (
+                {[
+                  '3+3',
+                  'Accelerated Titration',
+                  'Adaptive Design',
+                  'Modified Fibonacci',
+                  'Rolling Six',
+                  'Other'
+                ].map((stage, key) => (
                   <option key={key}>{stage}</option>
                 ))}
               </CTRSelect>
             </FormContainer>
 
-            {primaryEndpoints.map((primaryEndpoint, index) => (
-              <EndPointFormContainer key={index}>
-                <FormContainer>
-                  <CTRSelect
-                    require={false}
-                    onChange={(e) => this.handleChangePrimaryEndpoint(e, index)}
-                    name={`primary-endpoint-${index}`}
-                    value={primaryEndpoint}
-                    label={
-                      index === 0
-                        ? 'Primary Endpoint(s)'
-                        : 'Primary Endpoint(s)'
-                    }
-                  >
-                    {primaryEndpointsComboBoxData.map((stage, key) => (
-                      <option key={key}>{stage}</option>
-                    ))}
-                  </CTRSelect>
-                </FormContainer>
-                <RemoveButton
-                  onClick={() => this.removePrimaryEndPointField(index)}
-                  aria-label='delete'
-                  size='small'
-                >
-                  <RemoveIcon fontSize='small' />
-                </RemoveButton>
-              </EndPointFormContainer>
-            ))}
+            <FormContainer>
+              <CTRSelect
+                label='Primary Endpoint(s)'
+                require={true}
+                onChange={this.handleChange}
+                name='primaryEndpoints'
+              >
+                {[
+                  'Toxicity',
+                  'Tolerability',
+                  'Deliverability',
+                  'Safety',
+                  'Maximum Tolerated Dose',
+                  'Recommended Phase II Dose',
+                  'Pharmacodynamic',
+                  'Correlative Endpoint',
+                  'other'
+                ].map((stage, key) => (
+                  <option key={key}>{stage}</option>
+                ))}
+              </CTRSelect>
+            </FormContainer>
 
-            <AddButtonContainer onClick={this.addPrimaryEndPointField}>
-              <AddButton>
-                <AddIcon fontSize='small' />
-              </AddButton>
-              <Typography color='primary'>
-                Add another primary endpoint
-              </Typography>
-            </AddButtonContainer>
-
-            {secondaryEndpoints.map((secondaryEndpoint, index) => (
-              <EndPointFormContainer key={index}>
-                <FormContainer>
-                  <CTRSelect
-                    require={false}
-                    onChange={(e) =>
-                      this.handleChangeSecondaryEndpoint(e, index)
-                    }
-                    name={`secondary-endpoint-${index}`}
-                    value={secondaryEndpoint}
-                    label={
-                      index === 0
-                        ? 'Secondary Endpoint(s)'
-                        : 'Secondary Endpoint(s)'
-                    }
-                  >
-                    {secondaryEndpointsComboBoxData.map((stage, key) => (
-                      <option key={key}>{stage}</option>
-                    ))}
-                  </CTRSelect>
-                </FormContainer>
-                <RemoveButton
-                  onClick={() => this.removeSecondaryEndPointField(index)}
-                  aria-label='delete'
-                  size='small'
-                >
-                  <RemoveIcon fontSize='small' />
-                </RemoveButton>
-              </EndPointFormContainer>
-            ))}
-
-            <AddButtonContainer onClick={this.addSecondaryEndPointField}>
-              <AddButton>
-                <AddIcon fontSize='small' />
-              </AddButton>
-              <Typography color='primary'>
-                Add another secondary endpoint
-              </Typography>
-            </AddButtonContainer>
+            <FormContainer>
+              <CTRSelect
+                label='Secondary Endpoints(s)'
+                require={true}
+                onChange={this.handleChange}
+                name='secondaryEndpoints'
+              >
+                {[
+                  'Toxicity',
+                  'Tolerability',
+                  'Deliverability',
+                  'Safety',
+                  'Maximum Tolerated Dose',
+                  'Recommended Phase II Dose',
+                  'Pharmacodynamic',
+                  'Correlative Endpoint',
+                  'other'
+                ].map((stage, key) => (
+                  <option key={key}>{stage}</option>
+                ))}
+              </CTRSelect>
+            </FormContainer>
 
             <FormContainer>
               <Grid
@@ -458,18 +428,14 @@ class TrailInformationForm extends React.Component {
                   xs={9}
                 >
                   <FormEditor
-                    require={false}
-                    data={additionalDetails}
-                    setData={(value) =>
-                      this.setState({
-                        additionalDetails: value,
-                        additionalDetailsError: ''
-                      })
-                    }
-                    error={additionalDetailsError}
+                    require={true}
+                    data={lessonsLearned}
+                    //onChange={this.handleChange}
+                    name='additionalDetails'
+                    error={lessonsLearnedError}
                   />
                   <FormSelectLabelSmall>
-                    Include Endpoint Target and Power Analysis
+                    Include Endpoint Target and Power Analysis.
                   </FormSelectLabelSmall>
                   <FormSelectLabelSmall>
                     Include outcome considered positive or that would meet
@@ -505,7 +471,18 @@ class TrailInformationForm extends React.Component {
                     : investigatorsAssessment
                 }
               >
-                {investigatorsAssessmentData.map((stage, key) => (
+                {[
+                  'Active and should be pursued further',
+                  'Active but results overtaken by other developments',
+                  'Active but too toxic as administered in this study',
+                  'Inactive because results did not meet primary endpoint',
+                  'Correlative endpoints met but not powered to assess activity',
+                  'Correlative endpoints not met but clinical activity observed',
+                  'Evidence of target inhibition but no or minimal anti-tumor activity',
+                  'Poorly tolerated/not feasible',
+                  'Level of activity did not meet planned end point',
+                  'Other'
+                ].map((stage, key) => (
                   <option key={key}>{stage}</option>
                 ))}
               </CTRSelect>
@@ -530,11 +507,6 @@ class TrailInformationForm extends React.Component {
           <CTRComments />
 
           <Grid container justify='center' alignItems='center'>
-            <ButtonContainer>
-              <ErrorButton type='button' onClick={this.handlePrevious}>
-                Previous
-              </ErrorButton>
-            </ButtonContainer>
             <ButtonContainer>
               <SecondaryButton type='submit'>Save</SecondaryButton>
             </ButtonContainer>

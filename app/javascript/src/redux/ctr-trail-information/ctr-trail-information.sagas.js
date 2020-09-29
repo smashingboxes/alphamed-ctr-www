@@ -19,7 +19,7 @@ function* createTrailInformation({
     typeOfStudy2,
     primaryEndpoints,
     secondaryEndpoints,
-    additionalDetails,
+    endpointsDetails,
     investigatorsAssessment,
     resultCount,
     id
@@ -27,7 +27,7 @@ function* createTrailInformation({
 }) {
   try {
     const response = yield server.patch(`/api/results?result_id=${id}`, {
-      section: 'trial_information',
+      section: 'trail_information',
       authentication_token: authToken,
       result: {
         diseases,
@@ -37,7 +37,7 @@ function* createTrailInformation({
         type_of_study_2: typeOfStudy2,
         primary_endpoints: primaryEndpoints,
         secondary_endpoints: secondaryEndpoints,
-        endpoints_details: additionalDetails,
+        endpoints_details: endpointsDetails,
         investigators_assessment: investigatorsAssessment
       }
     });
@@ -47,11 +47,6 @@ function* createTrailInformation({
       yield swalMessage(
         'Successfully stored CTR Trail Information!',
         'success'
-      );
-      yield setTimeout(
-        () =>
-          (window.location.href = `/submission/results/drug-information/${response.data._id.$oid}`),
-        2000
       );
     }
   } catch (error) {

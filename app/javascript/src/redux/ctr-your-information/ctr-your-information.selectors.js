@@ -4,5 +4,5 @@ const selectCTRYourInformation = (state) => state.ctrYourInformation;
 
 export const selectCTRYourInformationDetails = createSelector(
   [selectCTRYourInformation],
-  (ctrYourInformation) => ctrYourInformation.ctrYourInformation
+  (ctrYourInformation) => ctrYourInformation.ctrYourInformationDetails
 );

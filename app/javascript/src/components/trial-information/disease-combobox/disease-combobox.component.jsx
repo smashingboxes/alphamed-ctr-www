@@ -5,7 +5,6 @@ import validator from 'validator';
 import { useStyles } from './disease-combobox.styles';
 
 import { diseaseData } from './disease-combobox.data';
-import CTRInput from '../../shared/ctr-input/ctr-input.component';
 
 const DiseaseComboBox = ({
   onDiseaseAdd,
@@ -15,31 +14,16 @@ const DiseaseComboBox = ({
   diseases
 }) => {
   const [selectedDiseases, setSelectedDiseases] = useState([]);
-  const [diseasesList, setDiseasesList] = useState([]);
-  const [isOtherSelected, setIsOtherSelected] = useState(false);
-  const [other, setOther] = useState('');
+  const [preSelectDiseases, setPreSelectDiseases] = useState([]);
   const preSelectedDiseasesElement = useRef(null);
-  const selectedDiseaseElement = useRef(null);
+  const selectedDiseasElement = useRef(null);
 
   const classes = useStyles();
 
-  const onChange = () => {
-    let currentSelected = preSelectedDiseasesElement.current.value;
-
-    handleError();
-
-    if (currentSelected === 'Other') {
-      return setIsOtherSelected(true);
-    }
-
-    setOther('');
-    setIsOtherSelected(false);
-  };
-
   const handleAddDisease = (e) => {
     e.preventDefault();
-
     let currentSelected = preSelectedDiseasesElement.current.value;
+    setSelectedDiseases([...selectedDiseases, currentSelected]);
 
     if (validator.isEmpty(currentSelected)) return;
 
@@ -119,34 +103,22 @@ const DiseaseComboBox = ({
         >
           <Paper elevation={0} className={classes.paper}>
             <select
-              onChange={onChange}
               ref={preSelectedDiseasesElement}
               className={classes.select}
               multiple
             >
-              {diseasesList.map((data) => (
+              {diseaseData.map((data) => (
                 <option key={data} value={data}>
                   {data}
                 </option>
               ))}
             </select>
           </Paper>
-          {error && <span style={{ color: '#FF5858' }}>&#10005; {error}</span>}
         </Grid>
-        {isOtherSelected && (
-          <CTRInput
-            type='text'
-            name='other'
-            require={false}
-            value={other}
-            onChange={handleChange}
-            label='Other'
-          />
-        )}
       </Grid>
 
       <Grid
-        style={{ paddingLeft: 40, margin: '10px 0px' }}
+        style={{ paddingLeft: 40, margin: '20px 0px' }}
         container
         alignItems='start'
         spacing={1}
@@ -168,7 +140,7 @@ const DiseaseComboBox = ({
           </div>
           <Paper elevation={0} className={classes.paper}>
             <select
-              ref={selectedDiseaseElement}
+              ref={selectedDiseasElement}
               className={classes.select}
               multiple
             >

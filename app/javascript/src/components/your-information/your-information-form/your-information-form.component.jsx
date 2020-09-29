@@ -14,6 +14,7 @@ import {
   YourInformationContainer,
   YourInformationFormContainer,
   FormContainer,
+  CheckboxContainer,
   ButtonContainer,
   InstitutionFormContainer,
   RemoveButton,
@@ -22,7 +23,11 @@ import {
   SubmitterDetails
 } from './your-information-form.styles';
 
-import { degreeData } from './your-information-form.data';
+import {
+  degreeData,
+  stateProvinceData,
+  countryData
+} from './your-information-form.data';
 
 import CTRInput from '../../shared/ctr-input/ctr-input.component';
 import CTRSelect from '../../shared/ctr-select/ctr-select.component';
@@ -374,8 +379,6 @@ class YourInformationForm extends React.Component {
       telephoneError,
       institutionsError
     } = this.state;
-
-    const { ctrYourInformation } = this.props;
 
     return (
       <Paper elevation={0}>

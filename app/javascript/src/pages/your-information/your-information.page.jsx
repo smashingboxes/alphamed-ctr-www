@@ -10,7 +10,6 @@ import ThirdSidebar from '../../components/shared/third-sidebar/third-sidebar.co
 const YourInformationPage = ({
   ctrResult,
   retrieveCTRResultsStart,
-  retrieveCTRYourInformationStart,
   authToken
 }) => {
   const classes = useStyles();
@@ -18,9 +17,8 @@ const YourInformationPage = ({
   useEffect(() => {
     if (authToken) {
       retrieveCTRResultsStart(authToken);
-      retrieveCTRYourInformationStart(authToken);
     }
-  }, [authToken, retrieveCTRResultsStart, retrieveCTRYourInformationStart]);
+  }, [authToken, retrieveCTRResultsStart]);
 
   return (
     <Grid container className={classes.container}>
