@@ -1,124 +1,196 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Grid } from '@material-ui/core';
-
-import {} from './ctr-custom-dose-table.styles';
-
+import uuid from 'uuid';
+​
 import './style.css';
 import CTRCustomTable from '../ctr-custom-table/ctr-custom-table.component';
-
-const spacerRow = {
-  type: 2,
-  input: { value: '' }
-};
-
-const normalRow = {
-  type: 1,
-  inputs: [{ value: '' }, { value: '' }, { value: '' }, { value: '' }]
-};
-
+​
 const CTRCustomDoseTable = ({
   heading,
   children,
   headers = [],
+  inputRows,
   onAddRow = (tabRows) => {},
   onRemoveRow = (tabRows) => {},
-  onRowUpdate = (tabRows) => {}
+  onRowUpdate = (tabRows) => {},
+  showSpacerRow = true,
+  showDeleteRow = true,
+  showAddColumn = true,
+  showCopyDrugRows = true,
+  showCopyDrugColumns = true,
+  showInsertSpecialChars = true
 }) => {
-  const [tableRows, setTableRows] = useState([normalRow]);
-  const [currentSelectedRow, setCurrentSelectedRow] = useState(null);
-
-  const handleInputOnchange = (value, type, rowIndex, inputIndex) => {
+  console.log(inputRows);
+  const spacerRow = (id) => {
+    return {
+      id: id,
+      type: 2,
+      input: { value: '' }
+    };
+  };
+​
+  const normalRow = (id) => {
+    const inputFields = [];
+    headers.forEach((e) => {
+      inputFields.push({ value: '' });
+    });
+    return {
+      id: id,
+      type: 1,
+      inputs: inputFields
+    };
+  };
+​
+  const [tableRows, setTableRows] = useState([]);
+  const [currentSelectedRow, setCurrentSelectedRow] = useState(0);
+​
+  useEffect(() => {
+    if (inputRows) {
+      setTableRows(inputRows);
+    }
+  }, [inputRows]);
+​
+  const handleInputOnchange = async (value, type, rowIndex, inputIndex) => {
     if (type === 1) {
-      console.log(tableRows[rowIndex]);
-      tableRows[rowIndex].inputs[inputIndex].value = value;
-      setTableRows([...tableRows]);
-
+      const updatedTableRows = tableRows.map((tableRow, index) => {
+        if (rowIndex === index) {
+          tableRow.inputs[inputIndex].value = value;
+        }
+        return tableRow;
+      });
+​
+      await setTableRows([...updatedTableRows]);
+​
       // check if a new row can be added
       if (rowIndex + 1 === tableRows.length) {
-        addNormalRow();
+        await addNormalRow(updatedTableRows, false);
       }
-    } else {
-      tableRows[rowIndex].input.value = value;
-      setTableRows([...tableRows]);
+    } else if (type === 2) {
+      const updatedTableRows = tableRows.map((tableRow, index) => {
+        if (rowIndex === index) {
+          tableRow.input.value = value;
+        }
+        return tableRow;
+      });
+      await setTableRows([...updatedTableRows]);
+​
+      // check if a new row can be added
+      if (rowIndex + 1 === tableRows.length) {
+        await addNormalRow(updatedTableRows, false);
+      }
     }
     onRowUpdate(tableRows);
   };
-
+​
   const handleInputOnTap = (rowIndex) => {
     setCurrentSelectedRow(rowIndex);
   };
-
+​
   const removeRow = () => {
     tableRows.splice(currentSelectedRow, 1);
     setTableRows([...tableRows]);
     onRemoveRow(tableRows);
   };
-
-  const addSpacerRow = () => {
-    setTableRows([...tableRows, spacerRow]);
+​
+  const addSpacerRow = (afterIndex) => {
+    if (afterIndex && tableRows.length > 0) {
+      const firstHalf = [...tableRows].splice(0, currentSelectedRow);
+      const secondHalf = [...tableRows].splice(
+        currentSelectedRow,
+        tableRows.length
+      );
+      console.log('First half', firstHalf);
+      console.log('Second half', secondHalf);
+      setTableRows([...tableRows, spacerRow(uuid())]);
+    } else {
+      setTableRows([...tableRows, spacerRow(uuid())]);
+    }
+​
     onAddRow(tableRows);
   };
-
-  const addNormalRow = () => {
-    setTableRows([...tableRows, normalRow]);
+​
+  const addNormalRow = (rows, afterIndex) => {
+    setTableRows([...rows, normalRow(uuid())]);
     onAddRow(tableRows);
   };
-
+​
   return (
-    <div style={{ marginBottom: 30 }}>
+    <div style={{ marginTop: 30 }}>
       <CTRCustomTable heading={heading}>
         <div className='dose-table-controller'>
-          <button onClick={() => addSpacerRow()}>Add Spacer Row</button>
-          <button onClick={() => removeRow()}>Delete Row</button>
-          <button>Add Columns</button>
-          <button>Copy Drug Rows</button>
-          <button>Copy Drug Columns</button>
+          {showSpacerRow ? (
+            <button type='button' onClick={() => addSpacerRow(true)}>
+              Add Spacer Row
+            </button>
+          ) : null}
+          {showDeleteRow ? (
+            <button type='button' onClick={() => removeRow()}>
+              Delete Row
+            </button>
+          ) : null}
+          {showAddColumn ? <button type='button'>Add Columns</button> : null}
+          {showCopyDrugRows ? (
+            <button type='button'>Copy Drug Rows</button>
+          ) : null}
+          {showCopyDrugColumns ? (
+            <button type='button'>Copy Drug Columns</button>
+          ) : null}
         </div>
-        <Grid container>
+        <Grid container xs={12}>
           <Grid container spacing={0}>
             {headers.map((value) => (
               <Grid
                 className='dose-table-header-item-container'
                 key={value}
                 item
-                xs
+                style={{ flex: 1 }}
               >
                 <div className='dose-table-header-item'>{value}</div>
               </Grid>
             ))}
           </Grid>
         </Grid>
-        <Grid container>
-          <Grid container spacing={0} className='dose-table-item-container'>
+        <Grid container xs={12}>
+          <Grid
+            container
+            xs={12}
+            spacing={0}
+            className='dose-table-item-container'
+          >
             {tableRows &&
               tableRows.map((row, rowIndex) => {
                 if (row.type === 1) {
-                  return row.inputs.map((rowInput, inputIndex) => {
-                    return (
-                      <Grid key={inputIndex} item xs={3}>
-                        <div>
-                          <input
-                            onClick={(e) => handleInputOnTap(rowIndex)}
-                            onChange={(e) => {
-                              handleInputOnchange(
-                                e.target.value,
-                                row.type,
-                                rowIndex,
-                                inputIndex
-                              );
-                            }}
-                            value={rowInput.value}
-                            className='dose-table-item'
-                          />
-                        </div>
-                      </Grid>
-                    );
-                  });
+                  return (
+                    <Grid item container key={rowIndex} xs={12}>
+                      {row.inputs.map((rowInput, inputIndex) => {
+                        return (
+                          <Grid key={inputIndex} item style={{ flex: 1 }}>
+                            <div>
+                              <input
+                                onClick={(e) => handleInputOnTap(rowIndex)}
+                                onChange={(e) => {
+                                  handleInputOnchange(
+                                    e.target.value,
+                                    row.type,
+                                    rowIndex,
+                                    inputIndex
+                                  );
+                                }}
+                                value={rowInput.value}
+                                className='dose-table-item'
+                              />
+                            </div>
+                          </Grid>
+                        );
+                      })}
+                    </Grid>
+                  );
                 } else {
                   return (
-                    <Grid key={rowIndex} item xs={12}>
+                    <Grid key={row.id} item xs={12}>
                       <div>
                         <input
+                          style={{ textAlign: 'center' }}
                           onClick={(e) => handleInputOnTap(rowIndex)}
                           onChange={(e) => {
                             handleInputOnchange(
@@ -137,15 +209,10 @@ const CTRCustomDoseTable = ({
               })}
           </Grid>
         </Grid>
-
         {children}
-
-        <div>
-          <button className='dose-table-save-button'>Save</button>
-        </div>
       </CTRCustomTable>
     </div>
   );
 };
-
+​
 export default CTRCustomDoseTable;

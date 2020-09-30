@@ -15,6 +15,7 @@
 
 .table-header-items {
     padding-left: 10px;
+    flex: 1;
 }
 
 .margin-top {

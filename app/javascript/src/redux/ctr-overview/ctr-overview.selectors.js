@@ -6,3 +6,8 @@ export const selectCTROverviewDetails = createSelector(
   [selectCTROverview],
   (ctrOverview) => ctrOverview.ctrOverviewDetails
 );
+
+export const selectCTROverviewComments = createSelector(
+  [selectCTROverview],
+  (ctrOverview) => ctrOverview.ctrComments
+);

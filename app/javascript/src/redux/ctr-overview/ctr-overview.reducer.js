@@ -2,21 +2,24 @@ import CTROverviewActionTypes from './ctr-overview.types';
 
 const INITIAL_STATE = {
   ctrOverviewDetails: null,
+  ctrComments: null,
   error: null
 };
 
 const ctrOverviewReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case CTROverviewActionTypes.RETRIEVE_CTR_OVERVIEW_SUCCESS:
+    case CTROverviewActionTypes.RETRIEVE_OVERVIEW_COMMENTS_SUCCESS:
+    case CTROverviewActionTypes.CREATE_CTR_OVERVIEW_SUCCESS:
       return {
         ...state,
-        ctrOverviewDetails: action.payload,
+        ctrComments: action.payload,
         error: null
       };
-    case CTROverviewActionTypes.RETRIEVE_CTR_OVERVIEW_FAILURE:
+    case CTROverviewActionTypes.RETRIEVE_OVERVIEW_COMMENTS_FAILURE:
+    case CTROverviewActionTypes.CREATE_CTR_OVERVIEW_FAILURE:
       return {
         ...state,
-        ctrOverviewDetails: null,
+        ctrComments: null,
         error: action.payload
       };
     default:

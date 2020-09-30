@@ -12,7 +12,7 @@ import {
   RequiredSpan
 } from './author-summary-abstract-form.styles';
 
-import CTRComments from '../../shared/ctr-comments/ctr-comments.component';
+import CTRComments from '../../shared/ctr-comments/ctr-comments.container';
 import FormEditor from '../../shared/form-editor/form-editor.component';
 import SecondaryButton from '../../shared/secondary-button/secondary-button.component';
 import ErrorButton from '../../shared/error-button/error-button.component';
@@ -164,6 +164,7 @@ class AuthorSummaryAbstractForm extends React.Component {
 
   render() {
     const {
+      id,
       background,
       methods,
       results,
@@ -303,7 +304,11 @@ class AuthorSummaryAbstractForm extends React.Component {
               </GridContainer>
             </FormContainer>
           </AuthorSummaryAbstractFormContainer>
-          <CTRComments />
+          <CTRComments
+            name='Abstract Comments'
+            resultId={id}
+            step='author_summary'
+          />
           <Grid container justify='center' alignItems='center'>
             <ButtonContainer>
               <ErrorButton type='button' onClick={this.handlePrevious}>

@@ -10,6 +10,8 @@ import ctrAuthorSummaryReducer from './ctr-author-summary/ctr-author-summary.red
 import ctrTrailInformationReducer from './ctr-trail-information/ctr-trail-information.reducer';
 import ctrDrugInformationReducer from './ctr-drug-information/ctr-drug-information.reducer';
 import ctrResultsReducer from './ctr-results/ctr-results.reducer';
+import ctrCommentsReducer from './ctr-comments/ctr-comments.reducer';
+import ctrPatientCharacteristicsReducer from './ctr-patient-characteristics/ctr-patient-characteristics.reducer';
 
 const persistConfig = {
   key: 'root',
@@ -25,7 +27,9 @@ const rootReducer = combineReducers({
   ctrAuthorSummary: ctrAuthorSummaryReducer,
   ctrTrailInformation: ctrTrailInformationReducer,
   ctrDrugInformation: ctrDrugInformationReducer,
-  ctrResults: ctrResultsReducer
+  ctrResults: ctrResultsReducer,
+  ctrComments: ctrCommentsReducer,
+  ctrPatientCharacteristics: ctrPatientCharacteristicsReducer
 });
 
 export default persistReducer(persistConfig, rootReducer);

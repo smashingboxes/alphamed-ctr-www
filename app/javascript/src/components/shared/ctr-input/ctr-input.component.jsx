@@ -25,7 +25,7 @@ const CTRInput = ({
     <Grid
       style={{ paddingLeft: 40, margin: '20px 0px' }}
       container
-      alignItems='start'
+      alignItems='flex-start'
       spacing={1}
       {...props}
     >
@@ -36,7 +36,7 @@ const CTRInput = ({
       <Grid
         container
         direction='column'
-        alignItems='start'
+        alignItems='flex-start'
         justify='flex-start'
         item
         xs={right}

@@ -4,7 +4,9 @@ import CTROverviewActionTypes from './ctr-overview.types';
 
 import {
   createCTROverviewSuccess,
-  createCTROverviewFailure
+  createCTROverviewFailure,
+  retrieveOverviewCommentsSuccess,
+  retrieveOverviewCommentsFailure
 } from './ctr-overview.actions';
 
 import server from '../server';
@@ -90,6 +92,21 @@ function* createCTROverview({
   }
 }
 
+function* retrieveOverviewComments({ payload }) {
+  try {
+    const response = yield server.get(
+      `/api/results/comments?result_id=${payload}&step=overview`
+    );
+
+    if (response) {
+      yield put(retrieveOverviewCommentsSuccess(response.data.comments));
+    }
+  } catch (error) {
+    yield put(retrieveOverviewCommentsFailure(error));
+    yield swalMessage('Something went wrong!', 'error');
+  }
+}
+
 function* onCreateCTROverviewStart() {
   yield takeLatest(
     CTROverviewActionTypes.CREATE_CTR_OVERVIEW_START,
@@ -97,6 +114,16 @@ function* onCreateCTROverviewStart() {
   );
 }
 
+function* onRetrieveOverviewCommentsStart() {
+  yield takeLatest(
+    CTROverviewActionTypes.RETRIEVE_OVERVIEW_COMMENTS_START,
+    retrieveOverviewComments
+  );
+}
+
 export function* ctrOverviewSaga() {
-  yield all([call(onCreateCTROverviewStart)]);
+  yield all([
+    call(onCreateCTROverviewStart),
+    call(onRetrieveOverviewCommentsStart)
+  ]);
 }

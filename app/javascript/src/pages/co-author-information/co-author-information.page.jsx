@@ -10,15 +10,21 @@ import CoAuthorForm from '../../components/co-author-information/co-author-infor
 const CoAuthorInformationPage = ({
   ctrResult,
   retrieveCTRResultsStart,
-  authToken
+  authToken,
+  match,
+  retrieveCTRCommentStart
 }) => {
   const classes = useStyles();
 
   useEffect(() => {
     if (authToken) {
       retrieveCTRResultsStart(authToken);
+
+      if (match) {
+        retrieveCTRCommentStart(match.params.id, 'coauthors_information');
+      }
     }
-  }, [authToken, retrieveCTRResultsStart]);
+  }, [authToken, retrieveCTRResultsStart, retrieveCTRCommentStart, match]);
 
   return (
     <Grid container className={classes.container}>

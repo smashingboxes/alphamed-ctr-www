@@ -11,7 +11,7 @@ import {
 } from './co-author-information-form.styles';
 
 import CTRInput from '../../shared/ctr-input/ctr-input.component';
-import CTRComments from '../../shared/ctr-comments/ctr-comments.component';
+import CTRComments from '../../shared/ctr-comments/ctr-comments.container';
 import PrimaryButton from '../../shared/primary-button/primary-button.component';
 import SecondaryButton from '../../shared/secondary-button/secondary-button.component';
 import CoAuthorInformationModal from '../co-author-information-modal/co-author-information-modal.container';
@@ -110,6 +110,7 @@ class CoAuthorForm extends React.Component {
 
   render() {
     const {
+      id,
       coAuthorEmail,
       coAuthorEmailError,
       isOpen,
@@ -153,7 +154,11 @@ class CoAuthorForm extends React.Component {
             handleOpen={this.handleEditOpen}
           />
         </CoAuthorTableContainer>
-        <CTRComments />
+        <CTRComments
+          name='Author Order Comments'
+          resultId={id}
+          step='coauthors_information'
+        />
         <CoAuthorInformationModal
           ctrData={ctrData}
           coAuthorEmail={coAuthorEmail}

@@ -7,14 +7,26 @@ import SubmissionSidebar from '../../components/shared/submission-sidebar/submis
 import OverviewForm from '../../components/overview/overview-form/overview-form.container';
 import ThirdSidebar from '../../components/shared/third-sidebar/third-sidebar.component';
 
-const OverviewPage = ({ ctrResult, retrieveCTRResultsStart, authToken }) => {
+const OverviewPage = ({
+  ctrResult,
+  retrieveCTRResultsStart,
+  authToken,
+  retrieveCTRCommentStart,
+  match
+}) => {
   const classes = useStyles();
 
   useEffect(() => {
     if (authToken) {
       retrieveCTRResultsStart(authToken);
+
+      if (match) {
+        if (match.params.id !== 'new') {
+          retrieveCTRCommentStart(match.params.id, 'overview');
+        }
+      }
     }
-  }, [authToken, retrieveCTRResultsStart]);
+  }, [match, authToken, retrieveCTRResultsStart, retrieveCTRCommentStart]);
 
   return (
     <Grid container className={classes.container}>

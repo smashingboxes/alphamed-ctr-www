@@ -14,7 +14,6 @@ import {
   YourInformationContainer,
   YourInformationFormContainer,
   FormContainer,
-  CheckboxContainer,
   ButtonContainer,
   InstitutionFormContainer,
   RemoveButton,
@@ -23,16 +22,12 @@ import {
   SubmitterDetails
 } from './your-information-form.styles';
 
-import {
-  degreeData,
-  stateProvinceData,
-  countryData
-} from './your-information-form.data';
+import { degreeData } from './your-information-form.data';
 
 import CTRInput from '../../shared/ctr-input/ctr-input.component';
 import CTRSelect from '../../shared/ctr-select/ctr-select.component';
 import SecondaryButton from '../../shared/secondary-button/secondary-button.component';
-import CTRComments from '../../shared/ctr-comments/ctr-comments.component';
+import CTRComments from '../../shared/ctr-comments/ctr-comments.container';
 import FormEditor from '../../shared/form-editor/form-editor.component';
 import ErrorButton from '../../shared/error-button/error-button.component';
 
@@ -334,6 +329,7 @@ class YourInformationForm extends React.Component {
   };
 
   handleChangeInstitution = (e, index) => {
+    /* eslint-disable react/no-direct-mutation-state */
     this.state.institutions[index] = e.target.value;
     this.setState({
       institutions: this.state.institutions,
@@ -346,6 +342,7 @@ class YourInformationForm extends React.Component {
 
   render() {
     const {
+      id,
       firstName,
       middleName,
       lastName,
@@ -379,6 +376,8 @@ class YourInformationForm extends React.Component {
       telephoneError,
       institutionsError
     } = this.state;
+
+    const { ctrYourInformation } = this.props;
 
     return (
       <Paper elevation={0}>
@@ -795,7 +794,12 @@ class YourInformationForm extends React.Component {
             </Grid>
           </FormContainer>
 
-          <CTRComments />
+          <CTRComments
+            name='Author Information Comments'
+            resultId={id}
+            step='your_information'
+          />
+
           <Grid container justify='center' alignItems='center'>
             <ButtonContainer>
               <ErrorButton type='button' onClick={this.handlePrevious}>

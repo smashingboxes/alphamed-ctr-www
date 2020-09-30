@@ -20,9 +20,7 @@ export const FormEditorContainer = styled.div`
   margin-bottom: 10px;
 `;
 
-export const GroupContainer = styled.div`
-  display: block;
-`;
+export const GroupContainer = styled.div``;
 
 export const EditorLabelContainer = styled.div`
   display: inline-block;

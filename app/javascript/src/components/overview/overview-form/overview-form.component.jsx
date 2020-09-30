@@ -19,7 +19,7 @@ import FormEditor from '../../shared/form-editor/form-editor.component';
 import CTRInput from '../../shared/ctr-input/ctr-input.component';
 import CTRSelect from '../../shared/ctr-select/ctr-select.component';
 import SecondaryButton from '../../shared/secondary-button/secondary-button.component';
-import CTRComments from '../../shared/ctr-comments/ctr-comments.component';
+import CTRComments from '../../shared/ctr-comments/ctr-comments.container';
 
 class OverviewForm extends React.Component {
   state = {
@@ -98,7 +98,7 @@ class OverviewForm extends React.Component {
       });
       return;
     } else {
-      if (title.trim().split(' ').length > 150) {
+      if (title.match(/(\w+)/g).length > 150) {
         this.setState({
           titleError: 'Must be 150 words at most.'
         });
@@ -112,7 +112,7 @@ class OverviewForm extends React.Component {
       });
       return;
     } else {
-      if (runningHead.trim().split(' ').length > 50) {
+      if (runningHead.match(/(\w+)/g).length > 50) {
         this.setState({
           runningHeadError: 'Must be 50 words at most.'
         });
@@ -126,7 +126,7 @@ class OverviewForm extends React.Component {
       });
       return;
     } else {
-      if (keywords.trim().split(' ').length > 5) {
+      if (keywords.match(/(\w+)/g).length > 5) {
         this.setState({
           keywordsError: 'Must be 5 words at most.'
         });
@@ -200,6 +200,7 @@ class OverviewForm extends React.Component {
   render() {
     const { user } = this.props;
     const {
+      id,
       typeOfStudy,
       title,
       runningHead,
@@ -330,7 +331,14 @@ class OverviewForm extends React.Component {
               </GridContainer>
             </FormContainer>
           </OverviewFormContainer>
-          <CTRComments />
+
+          {id ? (
+            <CTRComments
+              name='Overview Comments'
+              resultId={id}
+              step='overview'
+            />
+          ) : null}
 
           <Grid container justify='center' alignItems='center'>
             <ButtonContainer>
