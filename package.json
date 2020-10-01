@@ -59,6 +59,7 @@
     "enzyme-adapter-react-16": "^1.15.3",
     "jest-styled-components": "^7.0.2",
     "node-sass": "^4.14.1",
-    "react-test-renderer": "^16.13.1"
+    "react-test-renderer": "^16.13.1",
+    "webpack": "^4.44.2"
   }
 }
