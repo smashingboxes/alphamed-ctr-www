@@ -226,6 +226,42 @@ class Api::ResultsController < ApplicationController
     end
   end
 
+  def destroy_arm
+    if @result=Result.find_by(id:params[:result_id])
+      if @arm=@result.arms.find_by(id:params[:arm_id])
+        if @arm.destroy
+          render json: {message: "Successfully deleted Arm."}, status: 201
+        else
+          render json: @arm.errors, status: 422
+        end
+      else
+        render json: {message: "Arm not found."}, status: 422
+      end
+    else
+      render json: {message: "CTR not found."}, status: 422
+    end
+  end
+
+  def destroy_drug
+    if @result=Result.find_by(id:params[:result_id])
+      if @arm=@result.arms.find_by(id:params[:arm_id])
+        if @drug=@arm.drugs.find_by(id:params[:drug_id])
+          if @drug.destroy
+            render json: {message: "Successfully deleted Drug."}, status: 201
+          else
+            render json: @drug.errors, status: 422
+          end
+        else
+          render json: {message: "Drug not found."}, status: 422
+        end
+      else
+        render json: {message: "Arm not found."}, status: 422
+      end
+    else
+      render json: {message: "CTR not found."}, status: 422
+    end
+  end
+
   def submit
     if @result = Result.find_by(id:params[:result_id])
       @result.submit_result
