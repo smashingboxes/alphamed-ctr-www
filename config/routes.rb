@@ -54,6 +54,8 @@ Rails.application.routes.draw do
         patch :update
         patch 'update_disclosure', to: 'results#update_disclosure'
         delete :destroy
+        delete "destroy_arm", to: 'results#destroy_arm'
+        delete "destroy_drug", to: 'results#destroy_drug'
         post :submit
         post :in_review
         post :revision
